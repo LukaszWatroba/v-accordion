@@ -1,7 +1,7 @@
 # AngularJS multi-level accordion
   
   - Allows for a nested structure
-  - Works with (or without) ng-repeat
+  - Works with (or without) `ng-repeat`
   - Allows multiple sections open at once
   - Optimized for mobile devices
 
@@ -16,7 +16,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
 
 ## Usage
-  - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist)
+  - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist).
 
   - Include `angular.js`, `angular-animate.js`, `v-accoridon.js`, and `v-accoridon.css`:
   ```html
@@ -72,7 +72,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
   </v-accordion>
   ```
 
-  - You can also use v-accordion with `ng-repeat`
+  - You can also use `v-accordion` with `ng-repeat`:
   ```html
   <v-accordion>
 
@@ -116,4 +116,9 @@ Tu use API methods add `control` attribute:
   - `toggle(paneIndex)`
   - `expandAll()`
   - `collapseAll()`
+
+
+## Todo
+  - More tests
+  - Callbacks
 
