@@ -1,0 +1,117 @@
+/***************************************
+  Accordion
+ ***************************************/
+
+
+/**
+ * Example HTML:
+ *
+  <v-accordion>
+    <v-pane>
+      <v-pane-header>[content]</v-pane-header>
+      <v-pane-content>[content]</v-pane-content>
+    </v-pane>
+  </v-accordion>
+ */
+
+
+$accordion-spacing: 20px;
+$accordion-expand-duration: 0.5s;
+
+.Accordion {
+  height: 100%;
+  width: 100%;
+
+  .Accordion {
+    margin-top: $accordion-spacing;
+    padding-left: $accordion-spacing;
+  }
+}
+
+.Accordion-paneHeader {
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: $accordion-spacing;
+  user-select: none;
+}
+
+.Accordion-paneContent {
+  position: relative;
+  overflow: hidden;
+  max-height: 0px;
+
+  > div {
+    padding-bottom: $accordion-spacing;
+    opacity: 0;
+    transition: opacity $accordion-expand-duration;
+  }
+
+  &.is-expanded > div {
+    opacity: 1;
+  }
+
+  &.is-expanded-add,
+  &.is-expanded-remove {
+    transition: max-height $accordion-expand-duration;
+  }
+}
+
+
+/* Accordion modifires
+ ***************************************/
+
+/* Modifier: default accordion */
+
+.Accordion--dafault .Accordion-paneHeader {
+  padding: 5px 0;
+  border-bottom: 2px solid #D8D8D8;
+  transition: color 0.25s, border-color $accordion-expand-duration;
+
+  &::after,
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 10px;
+    height: 1px;
+    background-color: #2196F3;
+    transform-origin: 50% 50%;
+    transition: all 0.25s;
+  }
+
+  &::before {
+    transform: rotate(-90deg);
+  }
+
+  &:hover {
+    color: #2196F3;
+  }
+
+  &.is-expanded {
+    border-bottom-color: #2196F3;
+
+    &::after {
+      transform: rotate(90deg);
+      opacity: 0;
+    }
+
+    &::before {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+.Accordion--dafault .Accordion-paneContent {
+  > div {
+    transform: translateY(30px);
+    transition: transform $accordion-expand-duration, opacity $accordion-expand-duration;
+  }
+
+  &.is-expanded > div {
+    transform: translateY(0);
+  }
+}
+
