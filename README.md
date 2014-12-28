@@ -103,12 +103,14 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
 
 ## API
-Tu use API methods add `control` attribute:
+Tu use API methods add `control` attribute, like so:
 ```html
 <v-accordion allow-multiple control="accordionControl">
   [content]
 </v-accordion>
 
+<button ng-click="accordionControl.toggle(0)">Toggle first pane</button>
+<button ng-click="accordionControl.expandAll()">Expand all</button>
 <button ng-click="accordionControl.collapseAll()">Collapse all</button>
 ```
 
@@ -121,4 +123,5 @@ Tu use API methods add `control` attribute:
 ## Todo
   - More tests
   - Callbacks
+  - Update README.md
 
