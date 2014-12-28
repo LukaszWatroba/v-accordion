@@ -1,11 +1,14 @@
 {
   "name": "v-accordion",
   "description": "vAccordion - AngularJS multi-level accordion directive",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Łukasz Wątroba <l@lukaszwatroba.com>",
   "license": "MIT",
   "keywords": [
-    "AngularJS"
+    "AngularJS",
+    "accordion",
+    "directive",
+    "module"
   ],
   "repository": {
     "type": "git",

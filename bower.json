@@ -1,17 +1,26 @@
 {
   "name": "v-accordion",
   "description": "vAccordion - AngularJS multi-level accordion directive.",
-  "authors": [
-    {
-      "name": "Łukasz Wątroba",
-      "email": "l@lukaszwatroba.com"
-    }
+  "keywords": [
+    "AngularJS",
+    "accordion",
+    "directive",
+    "module"
   ],
-  "main": ["dist/v-accordion.js"],
+  "authors": [
+    "Łukasz Wątroba <l@lukaszwatroba.com>"
+  ],
+  "main": [
+    "dist/v-accordion.js",
+    "dist/v-accordion.css"
+  ],
   "ignore": [
     "src",
     "test",
+    "demo",
     "Gruntfile.js",
+    "gulpfile.js",
+    "karma.conf",
     "**/.*"
   ],
   "dependencies": {
