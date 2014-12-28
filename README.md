@@ -4,20 +4,31 @@
   - Works with (or without) ng-repeat
   - Allows multiple sections open at once
   - Optimized for mobile devices
-  
 
-### Usage:
-  - If you use bower, just `bower install v-accordion`. If not, download files [from the github repo](./dist)
+
+### Demo
+Watch the vAccordion component in action on the [demo page](http://lukaszwatroba.github.io/v-accordion).
+
+
+### Requirements
+  - AngularJS
+  - ngAnimate
+
+
+### Usage
+  - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist)
 
   - Include `angular.js`, `angular-animate.js`, `v-accoridon.js`, and `v-accoridon.css`:
   ```html
   <link href="v-accoridon.css" rel="stylesheet" />
+
   <script src="angular.js"></script>
   <script src="angular-animate.js"></script>
+
   <script src="v-accordion.js"></script>
   ```
 
-  - Add a dependency to the `vAccordion` module in your application:
+  - Add `vAccordion` as a dependency to your application module:
   ```js
   angular.module('myApp', ['vAccordion']);
   ```
@@ -72,9 +83,24 @@
 
       <v-pane-content>
         <p>{{ pane.content }}</p>
+        
+        <!-- accordions can be nested :) -->
+        <v-accordion ng-if="pane.subpanes">
+          <v-pane ng-repeat="subpane in pane.subpanes">
+            <v-pane-header>
+              <h5>{{ subpane.header }}</h5>
+            </v-pane-header>
+            <v-pane-content>
+              <p>{{ subpane.content }}</p>
+            </v-pane-content>
+          </v-pane>
+        </v-accordion>
       </v-pane-content>
     </v-pane>
 
   </v-accordion>
   ```
+
+
+### API
 
