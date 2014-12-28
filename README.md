@@ -6,16 +6,16 @@
   - Optimized for mobile devices
 
 
-### Demo
+## Demo
 Watch the vAccordion component in action on the [demo page](http://lukaszwatroba.github.io/v-accordion).
 
 
-### Requirements
+## Requirements
   - AngularJS
   - ngAnimate
 
 
-### Usage
+## Usage
   - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist)
 
   - Include `angular.js`, `angular-animate.js`, `v-accoridon.js`, and `v-accoridon.css`:
@@ -33,7 +33,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
   angular.module('myApp', ['vAccordion']);
   ```
 
-  - Put the following markup in your code:
+  - Put the following markup in your template:
   ```html
   <!-- add allow-multiple attribute to allow multiple sections open at once -->
   <v-accordion allow-multiple>
@@ -72,7 +72,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
   </v-accordion>
   ```
 
-  - You can also use v-accordion with ng-repeat
+  - You can also use v-accordion with `ng-repeat`
   ```html
   <v-accordion>
 
@@ -102,5 +102,18 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
   ```
 
 
-### API
+## API
+Tu use API methods add `control` attribute:
+```html
+<v-accordion allow-multiple control="accordionControl">
+  [content]
+</v-accordion>
+
+<button ng-click="accordionControl.collapseAll()">Collapse all</button>
+```
+
+#### API methods
+  - `toggle(paneIndex)`
+  - `expandAll()`
+  - `collapseAll()`
 
