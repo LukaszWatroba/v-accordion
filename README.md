@@ -59,16 +59,6 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
       </v-pane-content>
     </v-pane>
 
-    <v-pane>
-      <v-pane-header>
-        <h5>Pane header #3</h5>
-      </v-pane-header>
-
-      <v-pane-content>
-        <p>Pane content #3</p>
-      </v-pane-content>
-    </v-pane>
-
   </v-accordion>
   ```
 
@@ -103,7 +93,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
 
 ## API
-Tu use API methods add `control` attribute, like so:
+To use API methods add `control` attribute, like so:
 ```html
 <v-accordion allow-multiple control="accordionControl">
   [content]
