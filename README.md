@@ -41,21 +41,21 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
     <!-- add expanded attribute to open first section -->
     <v-pane expanded>
       <v-pane-header>
-        <h5>Pane header #1</h5>
+        Pane header #1
       </v-pane-header>
 
       <v-pane-content>
-        <p>Pane content #1</p>
+        Pane content #1
       </v-pane-content>
     </v-pane>
 
     <v-pane>
       <v-pane-header>
-        <h5>Pane header #2</h5>
+        Pane header #2
       </v-pane-header>
 
       <v-pane-content>
-        <p>Pane content #2</p>
+        Pane content #2
       </v-pane-content>
     </v-pane>
 
@@ -68,20 +68,20 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
     <v-pane ng-repeat="pane in panes" expanded="$first">
       <v-pane-header>
-        <h5>{{ pane.header }}</h5>
+        {{ pane.header }}
       </v-pane-header>
 
       <v-pane-content>
-        <p>{{ pane.content }}</p>
+        {{ pane.content }}
         
         <!-- accordions can be nested :) -->
         <v-accordion ng-if="pane.subpanes">
           <v-pane ng-repeat="subpane in pane.subpanes">
             <v-pane-header>
-              <h5>{{ subpane.header }}</h5>
+              {{ subpane.header }}
             </v-pane-header>
             <v-pane-content>
-              <p>{{ subpane.content }}</p>
+              {{ subpane.content }}
             </v-pane-content>
           </v-pane>
         </v-accordion>
@@ -96,7 +96,15 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 To use API methods add `control` attribute, like so:
 ```html
 <v-accordion allow-multiple control="accordionControl">
-  [content]
+  <v-pane ng-repeat="pane in panes" expanded="$first">
+    <v-pane-header>
+      {{ pane.header }}
+    </v-pane-header>
+
+    <v-pane-content>
+      {{ pane.content }}
+    </v-pane-content>
+  </v-pane>
 </v-accordion>
 
 <button ng-click="accordionControl.toggle(0)">Toggle first pane</button>
