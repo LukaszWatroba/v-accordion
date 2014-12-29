@@ -137,7 +137,23 @@ $scope.accordionControl = {
   - `onCollapse(paneIndex)`
 
 
+## Config
+You can override the default class names:
+
+```js
+angular
+  .module('myApp', [ 'vAccordion' ])
+
+  .config(function (accordionConfig) {
+    
+    accordionConfig.classes.accordion = 'MyAccordion';
+    accordionConfig.classes.pane = 'MyAccordion-pane';
+    accordionConfig.classes.paneHeader = 'MyAccordion-paneHeader';
+    accordionConfig.classes.paneContent = 'MyAccordion-paneContent';
+
+  })
+```
+
 ## Todo
   - More tests
-  - Update README.md
 

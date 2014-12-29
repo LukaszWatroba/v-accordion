@@ -1,14 +1,25 @@
 (function (angular) {
   'use strict';
 
-  angular.module('myApp',
-      [
-        'vAccordion'
-      ]
-    )
+  angular
+    .module('myApp', [ 'vAccordion' ])
+
+    // You can override the default class names
+    .config(function (accordionConfig) {
+
+      accordionConfig.classes = {
+        accordion: 'Accordion Accordion--dafault',
+        pane: 'Accordion-pane',
+        paneHeader: 'Accordion-paneHeader',
+        paneContent: 'Accordion-paneContent',
+
+        expandedState: 'is-expanded'
+      };
+
+    })
 
     .controller('MainController', function ($scope) {
-      
+
       $scope.firstAccordionControl = {
         onExpand: function (expandedPaneIndex) {
           console.log('expanded:', expandedPaneIndex);
