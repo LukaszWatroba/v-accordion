@@ -151,9 +151,11 @@ angular
     accordionConfig.classes.paneHeader = 'MyAccordion-paneHeader';
     accordionConfig.classes.paneContent = 'MyAccordion-paneContent';
 
+    accordionConfig.classes.expandedState = 'active';
+
   })
 ```
 
 ## Todo
-  - More tests
+  - More tests!
 
