@@ -114,6 +114,8 @@ To use API methods add `control` attribute, like so:
 
 #### API methods
   - `toggle(paneIndex)`
+  - `expand(paneIndex)`
+  - `collapse(paneIndex)`
   - `expandAll()`
   - `collapseAll()`
 

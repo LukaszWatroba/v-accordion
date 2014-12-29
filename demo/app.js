@@ -7,7 +7,7 @@
       ]
     )
 
-    .controller('AccordionController', function ($scope) {
+    .controller('MainController', function ($scope) {
 
       $scope.panes = [
         {

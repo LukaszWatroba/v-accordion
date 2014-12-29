@@ -57,9 +57,9 @@ function vAccordionController ($scope) {
   };
 
   ctrl.addPane = function (pane) {
-    if (!$scope.allowMultiple && pane.isExpanded) {
-      if (hasExpandedPane()) {
-        throw new Error('allow-multiple attribute is not set');
+    if (!$scope.allowMultiple) {
+      if (hasExpandedPane() && pane.isExpanded) {
+        throw new Error('The allow-multiple attribute is not set');
       } 
     }
 
@@ -82,7 +82,7 @@ function vAccordionController ($scope) {
         iteratedPane.isExpanded = true;
       });
     } else {
-      throw new Error('allow-multiple attribute is not set');
+      throw new Error('The attribute allow-multiple is not set');
     }
   };
 
@@ -96,24 +96,44 @@ function vAccordionController ($scope) {
     });
   };
 
-  ctrl.toggle = function (paneToExpand) {
-    if ($scope.isDisabled) { return; }
+  ctrl.toggle = function (paneToToggle) {
+    if ($scope.isDisabled || !paneToToggle) { return; }
 
-    if ($scope.allowMultiple) {
-      paneToExpand.isExpanded = !paneToExpand.isExpanded;
-    } else {
-      ctrl.collapseAll(paneToExpand);
-      paneToExpand.isExpanded = !paneToExpand.isExpanded;
+    if (!$scope.allowMultiple) {
+      ctrl.collapseAll(paneToToggle);
     }
+
+    paneToToggle.isExpanded = !paneToToggle.isExpanded;
+  };
+
+  ctrl.expand = function (paneToExpand) {
+    if ($scope.isDisabled || !paneToExpand) { return; }
+
+    if (!$scope.allowMultiple) {
+      ctrl.collapseAll(paneToExpand);
+    }
+
+    paneToExpand.isExpanded = true;
+  };
+
+  ctrl.collapse = function (paneToCollapse) {
+    if ($scope.isDisabled || !paneToCollapse) { return; }
+    
+    paneToCollapse.isExpanded = false;
   };
 
   $scope.internalControl = {
     toggle: function (paneIndex) {
+      var paneToToggle = $scope.panes[paneIndex];
+      ctrl.toggle(paneToToggle);
+    },
+    expand: function (paneIndex) {
       var paneToExpand = $scope.panes[paneIndex];
-
-      if (paneToExpand) {
-        ctrl.toggle(paneToExpand);
-      }
+      ctrl.expand(paneToExpand);
+    },
+    collapse: function (paneIndex) {
+      var paneToCollapse = $scope.panes[paneIndex];
+      ctrl.collapse(paneToCollapse);
     },
     expandAll: ctrl.expandAll,
     collapseAll: ctrl.collapseAll
