@@ -139,6 +139,5 @@ $scope.accordionControl = {
 
 ## Todo
   - More tests
-  - Callbacks
   - Update README.md
 
