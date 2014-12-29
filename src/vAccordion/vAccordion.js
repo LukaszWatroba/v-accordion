@@ -56,14 +56,12 @@ function vAccordionController ($scope) {
     return bool;
   };
 
-  ctrl.addPane = function (pane) {
-    if (!$scope.allowMultiple) {
-      if (hasExpandedPane() && pane.isExpanded) {
-        throw new Error('The allow-multiple attribute is not set');
-      } 
-    }
+  var getPaneByIndex = function (index) {
+    return $scope.panes[index];
+  };
 
-    $scope.panes.push(pane);
+  var getPaneIndex = function (pane) {
+    return $scope.panes.indexOf(pane);
   };
 
   ctrl.disable = function () {
@@ -74,26 +72,18 @@ function vAccordionController ($scope) {
     $scope.isDisabled = false;
   };
 
-  ctrl.expandAll = function () {
-    if ($scope.isDisabled) { return; }
-
-    if ($scope.allowMultiple) {
-      angular.forEach($scope.panes, function (iteratedPane) {
-        iteratedPane.isExpanded = true;
-      });
-    } else {
-      throw new Error('The attribute allow-multiple is not set');
+  ctrl.addPane = function (pane) {
+    if (!$scope.allowMultiple) {
+      if (hasExpandedPane() && pane.isExpanded) {
+        throw new Error('allow-multiple attribute is not set');
+      } 
     }
-  };
 
-  ctrl.collapseAll = function (exceptionalPane) {
-    if ($scope.isDisabled) { return; }
+    $scope.panes.push(pane);
 
-    angular.forEach($scope.panes, function (iteratedPane) {
-      if (iteratedPane !== exceptionalPane) {
-        iteratedPane.isExpanded = false;
-      }
-    });
+    if (pane.isExpanded) {
+      $scope.internalControl.onExpand( getPaneIndex(pane) );
+    }
   };
 
   ctrl.toggle = function (paneToToggle) {
@@ -104,6 +94,12 @@ function vAccordionController ($scope) {
     }
 
     paneToToggle.isExpanded = !paneToToggle.isExpanded;
+
+    if (paneToToggle.isExpanded) {
+      $scope.internalControl.onExpand( getPaneIndex(paneToToggle) );
+    } else {
+      $scope.internalControl.onCollapse( getPaneIndex(paneToToggle) );
+    }
   };
 
   ctrl.expand = function (paneToExpand) {
@@ -113,30 +109,63 @@ function vAccordionController ($scope) {
       ctrl.collapseAll(paneToExpand);
     }
 
-    paneToExpand.isExpanded = true;
+    if (!paneToExpand.isExpanded) {
+      paneToExpand.isExpanded = true;
+
+      $scope.internalControl.onExpand( getPaneIndex(paneToExpand) );
+    }
   };
 
   ctrl.collapse = function (paneToCollapse) {
     if ($scope.isDisabled || !paneToCollapse) { return; }
     
-    paneToCollapse.isExpanded = false;
+    if (paneToCollapse.isExpanded) {
+      paneToCollapse.isExpanded = false;
+
+      $scope.internalControl.onCollapse( getPaneIndex(paneToCollapse) );
+    }
   };
 
+  ctrl.expandAll = function () {
+    if ($scope.isDisabled) { return; }
+
+    if ($scope.allowMultiple) {
+      angular.forEach($scope.panes, function (iteratedPane) {
+        ctrl.expand(iteratedPane);
+      });
+    } else {
+      throw new Error('allow-multiple attribute is not set');
+    }
+  };
+
+  ctrl.collapseAll = function (exceptionalPane) {
+    if ($scope.isDisabled) { return; }
+
+    angular.forEach($scope.panes, function (iteratedPane) {
+      if (iteratedPane !== exceptionalPane) {
+        ctrl.collapse(iteratedPane);
+      }
+    });
+  };
+
+  // API
   $scope.internalControl = {
+    // Methods
     toggle: function (paneIndex) {
-      var paneToToggle = $scope.panes[paneIndex];
-      ctrl.toggle(paneToToggle);
+      ctrl.toggle( getPaneByIndex(paneIndex) );
     },
     expand: function (paneIndex) {
-      var paneToExpand = $scope.panes[paneIndex];
-      ctrl.expand(paneToExpand);
+      ctrl.expand( getPaneByIndex(paneIndex) );
     },
     collapse: function (paneIndex) {
-      var paneToCollapse = $scope.panes[paneIndex];
-      ctrl.collapse(paneToCollapse);
+      ctrl.collapse( getPaneByIndex(paneIndex) );
     },
     expandAll: ctrl.expandAll,
-    collapseAll: ctrl.collapseAll
+    collapseAll: ctrl.collapseAll,
+
+    // Callbacks
+    onExpand: function () {},
+    onCollapse: function () {}
   };
 }
 vAccordionController.$inject = ['$scope'];
@@ -183,7 +212,26 @@ function vAccordionDirective (accordionConfig) {
           scope.allowMultiple = angular.isDefined(iAttrs.allowMultiple);
         }
 
-        scope.control = scope.internalControl;
+        if (scope.control) {
+          var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
+
+          angular.forEach(protectedApiMethods, function (iteratedMethodName) {
+            if (scope.control[iteratedMethodName]) {
+              throw new Error(iteratedMethodName + ' method can not be overwritten');
+            }
+          });
+
+          var mergedControl = angular.extend({}, scope.internalControl, scope.control);
+          scope.control = scope.internalControl = mergedControl;
+
+          if (!angular.isFunction( scope.control.onExpand )) {
+            throw new Error('onExpand callback must be a function');
+          }
+
+          if (!angular.isFunction( scope.control.onCollapse )) {
+            throw new Error('onCollapse callback must be a function');
+          }
+        }
       };
     }
   };

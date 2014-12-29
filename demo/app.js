@@ -8,6 +8,15 @@
     )
 
     .controller('MainController', function ($scope) {
+      
+      $scope.firstAccordionControl = {
+        onExpand: function (expandedPaneIndex) {
+          console.log('expanded:', expandedPaneIndex);
+        },
+        onCollapse: function (collapsedPaneIndex) {
+          console.log('collapsed:', collapsedPaneIndex);
+        }
+      };
 
       $scope.panes = [
         {

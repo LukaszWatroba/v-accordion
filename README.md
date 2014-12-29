@@ -93,6 +93,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
 
 ## API
+
 To use API methods add `control` attribute, like so:
 ```html
 <v-accordion allow-multiple control="accordionControl">
@@ -112,12 +113,28 @@ To use API methods add `control` attribute, like so:
 <button ng-click="accordionControl.collapseAll()">Collapse all</button>
 ```
 
-#### API methods
+Use these callbacks to get expanded pane index:
+```js
+$scope.accordionControl = {
+  onExpand: function (expandedPaneIndex) {
+    console.log('expanded:', expandedPaneIndex);
+  },
+  onCollapse: function (collapsedPaneIndex) {
+    console.log('collapsed:', collapsedPaneIndex);
+  }
+};
+```
+
+#### Methods
   - `toggle(paneIndex)`
   - `expand(paneIndex)`
   - `collapse(paneIndex)`
   - `expandAll()`
   - `collapseAll()`
+
+#### Callbacks
+  - `onExpand(paneIndex)`
+  - `onCollapse(paneIndex)`
 
 
 ## Todo
