@@ -19,15 +19,6 @@ var gulp = require('gulp'),
     minifycss = require('gulp-minify-css'),
     header = require('gulp-header');
 
-gulp.task('lint', function() {
-  return gulp.src([
-      'src/vAccordion/**/*.js',
-      'test/**/*Spec.js'
-    ])
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('jshint-stylish'));
-});
-
 gulp.task('scripts', function() {
   gulp.src([
       'src/vAccordion/vAccordion.prefix',
@@ -62,10 +53,27 @@ gulp.task('test', function (done) {
   }, done);
 });
 
-gulp.task('default', ['lint', 'test', 'scripts', 'styles']);
+gulp.task('lint-src', function() {
+  return gulp.src([
+      'src/vAccordion/**/*.js',
+    ])
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('lint-tests', function() {
+  return gulp.src([
+      'test/**/*Spec.js'
+    ])
+    .pipe(jshint('.jshintrc'))
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('default', ['lint-src', 'test', 'scripts', 'styles']);
 
 gulp.task('watch', function() {
-  gulp.watch('src/vAccordion/**/*.js', ['lint', 'scripts']);
+  gulp.watch('src/vAccordion/**/*.js', ['lint-src', 'scripts']);
+  gulp.watch('test/**/*Spec.js', ['lint-tests', 'test']);
+  
   gulp.watch('src/vAccordion/styles/**/*.scss', ['styles']);
-  gulp.watch('test/**/*Spec.js', ['lint', 'test']);
 });
