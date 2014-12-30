@@ -24,7 +24,8 @@ module.exports = function(config) {
       'bower/angular/angular.js',
       'bower/angular-mocks/angular-mocks.js',
       'bower/angular-animate/angular-animate.js',
-      'src/**/*.js',
+      'src/vAccordion/*.js',
+      'src/vAccordion/directives/*.js',
       'test/unit/**/*.js'
     ],
 

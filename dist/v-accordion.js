@@ -6,26 +6,12 @@
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 
-(function(angular) {
-
+(function (angular) {
 'use strict';
-
-// Module
-angular
-  .module('vAccordion', 
-    [
-      'ngAnimate',
-
-      'vAccordion.config',
-      'vAccordion.controllers',
-      'vAccordion.directives'
-    ]);
 
 
 // Config
-angular
-  .module('vAccordion.config', [])
-
+angular.module('vAccordion.config', [])
   .constant('accordionConfig', {
     classes: {
       accordion: 'Accordion Accordion--dafault',
@@ -38,14 +24,85 @@ angular
   });
 
 
-// Controllers
-angular
-  .module('vAccordion.controllers', [])
+// Modules
+angular.module('vAccordion.directives', [ 'ngAnimate' ]);
+angular.module('vAccordion', 
+  [
+    'vAccordion.config',
+    'vAccordion.directives'
+  ]);
 
-  .controller('vAccordionController', vAccordionController)
-  .controller('vPaneController', vPaneController);
 
-function vAccordionController ($scope) {
+
+
+// vAccordion directive
+angular.module('vAccordion.directives')
+  .directive('vAccordion', vAccordionDirective);
+
+
+function vAccordionDirective (accordionConfig) {
+  return {
+    restrict: 'EA',
+    replace: true,
+    transclude: true,
+    template: '<div ng-transclude></div>',
+    scope: {
+      control: '=?',
+      allowMultiple: '=?'
+    },
+    controllerAs: 'accordionCtrl',
+    controller: AccordionDirectiveController,
+    compile: function (tElement) {
+      tElement.addClass(accordionConfig.classes.accordion);
+
+      return function postLink (scope, iElement, iAttrs) {
+        if (!angular.isDefined(scope.allowMultiple)) {
+          scope.allowMultiple = angular.isDefined(iAttrs.allowMultiple);
+        }
+
+        var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
+
+        function checkCustomControlAPIMethods () {
+          angular.forEach(protectedApiMethods, function (iteratedMethodName) {
+            if (scope.control[iteratedMethodName]) {
+              throw new Error(iteratedMethodName + ' method can not be overwritten');
+            }
+          });
+        }
+
+        function checkCustomControlCallbacks () {
+          if (!angular.isFunction( scope.control.onExpand )) {
+            throw new Error('onExpand callback must be a function');
+          }
+
+          if (!angular.isFunction( scope.control.onCollapse )) {
+            throw new Error('onCollapse callback must be a function');
+          }
+        }
+
+        scope.$watch('control', function () {
+          if (scope.control && scope.control !== scope.internalControl) {
+            checkCustomControlAPIMethods();
+
+            var mergedControl = angular.extend({}, scope.internalControl, scope.control);
+            scope.control = scope.internalControl = mergedControl;
+
+            checkCustomControlCallbacks();
+          } 
+          else if (!angular.isDefined(scope.control)) {
+            scope.control = scope.internalControl;
+          }
+        });
+        
+      };
+    }
+  };
+}
+vAccordionDirective.$inject = ['accordionConfig'];
+
+
+// vAccordion directive controller
+function AccordionDirectiveController ($scope) {
   var ctrl = this;
   
   $scope.isDisabled = false;
@@ -178,78 +235,68 @@ function vAccordionController ($scope) {
     onCollapse: function () {}
   };
 }
-vAccordionController.$inject = ['$scope'];
+AccordionDirectiveController.$inject = ['$scope'];
 
 
-function vPaneController ($scope) {
-  var ctrl = this;
-
-  ctrl.toggle = function () {
-    if (!$scope.isAnimating) {
-      $scope.accordionCtrl.toggle($scope);
-    }
-  };
-}
-vPaneController.$inject = ['$scope'];
 
 
-// Directives
-angular
-  .module('vAccordion.directives', [])
-
-  .directive('vAccordion', vAccordionDirective)
-  .directive('vPane', vPaneDirective)
-  .directive('vPaneHeader', vPaneHeaderDirective)
+// vPaneContent directive
+angular.module('vAccordion.directives')
   .directive('vPaneContent', vPaneContentDirective);
 
-function vAccordionDirective (accordionConfig) {
+
+function vPaneContentDirective (accordionConfig) {
   return {
     restrict: 'EA',
-    replace: true,
+    require: '^vPane',
     transclude: true,
-    template: '<div ng-transclude></div>',
-    scope: {
-      control: '=?',
-      allowMultiple: '=?'
-    },
-    controllerAs: 'accordionCtrl',
-    controller: 'vAccordionController',
+    replace: true,
+    template: '<div><div ng-transclude></div></div>',
+    scope: {},
     compile: function (tElement) {
-      tElement.addClass(accordionConfig.classes.accordion);
+      tElement.addClass(accordionConfig.classes.paneContent);
 
-      return function postLink (scope, iElement, iAttrs) {
-        if (!angular.isDefined(scope.allowMultiple)) {
-          scope.allowMultiple = angular.isDefined(iAttrs.allowMultiple);
-        }
-
-        if (!scope.control) {
-          scope.control = scope.internalControl;
-          return;
-        }
-
-        var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
-
-        angular.forEach(protectedApiMethods, function (iteratedMethodName) {
-          if (scope.control[iteratedMethodName]) {
-            throw new Error(iteratedMethodName + ' method can not be overwritten');
-          }
-        });
-
-        var mergedControl = angular.extend({}, scope.internalControl, scope.control);
-        scope.control = scope.internalControl = mergedControl;
-
-        if (!angular.isFunction( scope.control.onExpand )) {
-          throw new Error('onExpand callback must be a function');
-        }
-
-        if (!angular.isFunction( scope.control.onCollapse )) {
-          throw new Error('onCollapse callback must be a function');
-        }
+      return function postLink (scope, iElement, iAttrs, paneCtrl) {
+        scope.paneCtrl = paneCtrl;
       };
     }
   };
 }
-vAccordionDirective.$inject = ['accordionConfig'];
+vPaneContentDirective.$inject = ['accordionConfig'];
+
+
+
+
+// vPaneHeader directive
+angular.module('vAccordion.directives')
+  .directive('vPaneHeader', vPaneHeaderDirective);
+
+
+function vPaneHeaderDirective (accordionConfig) {
+  return {
+    restrict: 'EA',
+    require: '^vPane',
+    transclude: true,
+    replace: true,
+    template: '<div ng-click="paneCtrl.toggle()"><div ng-transclude></div></div>',
+    scope: {},
+    compile: function (tElement) {
+      tElement.addClass(accordionConfig.classes.paneHeader);
+
+      return function postLink (scope, iElement, iAttrs, paneCtrl) {
+        scope.paneCtrl = paneCtrl;
+      };
+    }
+  };
+}
+vPaneHeaderDirective.$inject = ['accordionConfig'];
+
+
+
+
+// vPane directive
+angular.module('vAccordion.directives')
+  .directive('vPane', vPaneDirective);
 
 
 function vPaneDirective ($timeout, $animate, accordionConfig) {
@@ -263,7 +310,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       isExpanded: '=?expanded'
     },
     controllerAs: 'paneCtrl',
-    controller: 'vPaneController',
+    controller: PaneDirectiveController,
     compile: function (tElement) {
       tElement.addClass(accordionConfig.classes.pane);
 
@@ -356,43 +403,17 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 vPaneDirective.$inject = ['$timeout', '$animate', 'accordionConfig'];
 
 
-function vPaneHeaderDirective (accordionConfig) {
-  return {
-    restrict: 'EA',
-    require: '^vPane',
-    transclude: true,
-    replace: true,
-    template: '<div ng-click="paneCtrl.toggle()"><div ng-transclude></div></div>',
-    scope: {},
-    compile: function (tElement) {
-      tElement.addClass(accordionConfig.classes.paneHeader);
+// vPane directive controller
+function PaneDirectiveController ($scope) {
+  var ctrl = this;
 
-      return function postLink (scope, iElement, iAttrs, paneCtrl) {
-        scope.paneCtrl = paneCtrl;
-      };
+  ctrl.toggle = function () {
+    if (!$scope.isAnimating) {
+      $scope.accordionCtrl.toggle($scope);
     }
   };
 }
-vPaneHeaderDirective.$inject = ['accordionConfig'];
+PaneDirectiveController.$inject = ['$scope'];
 
 
-function vPaneContentDirective (accordionConfig) {
-  return {
-    restrict: 'EA',
-    require: '^vPane',
-    transclude: true,
-    replace: true,
-    template: '<div><div ng-transclude></div></div>',
-    scope: {},
-    compile: function (tElement) {
-      tElement.addClass(accordionConfig.classes.paneContent);
-
-      return function postLink (scope, iElement, iAttrs, paneCtrl) {
-        scope.paneCtrl = paneCtrl;
-      };
-    }
-  };
-}
-vPaneContentDirective.$inject = ['accordionConfig'];
-
-}(angular));
+})(angular);

@@ -22,7 +22,9 @@ var gulp = require('gulp'),
 gulp.task('scripts', function() {
   gulp.src([
       'src/vAccordion/vAccordion.prefix',
-      'src/vAccordion/**/*.js',
+      'src/vAccordion/*.js',
+      'src/vAccordion/directives/*.js',
+      'src/vAccordion/services/*.js',
       'src/vAccordion/vAccordion.suffix'
     ])
     .pipe(concat('v-accordion.js'))
@@ -72,8 +74,8 @@ gulp.task('lint-tests', function() {
 gulp.task('default', ['lint-src', 'test', 'scripts', 'styles']);
 
 gulp.task('watch', function() {
-  gulp.watch('src/vAccordion/**/*.js', ['lint-src', 'scripts']);
-  gulp.watch('test/**/*Spec.js', ['lint-tests', 'test']);
+  gulp.watch('src/vAccordion/**/*.js', ['lint-src', 'test', 'scripts']);
+  gulp.watch('test/**/*.spec.js', ['lint-tests', 'test']);
   
   gulp.watch('src/vAccordion/styles/**/*.scss', ['styles']);
 });
