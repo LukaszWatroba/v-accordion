@@ -113,7 +113,7 @@ To use API methods add `control` attribute, like so:
 <button ng-click="accordionControl.collapseAll()">Collapse all</button>
 ```
 
-Use these callbacks to get expanded pane index:
+Use these callbacks to get expanded/collapsed pane index:
 ```js
 $scope.accordionControl = {
   onExpand: function (expandedPaneIndex) {
