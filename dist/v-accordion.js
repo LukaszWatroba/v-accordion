@@ -222,25 +222,28 @@ function vAccordionDirective (accordionConfig) {
           scope.allowMultiple = angular.isDefined(iAttrs.allowMultiple);
         }
 
-        if (scope.control) {
-          var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
+        if (!scope.control) {
+          scope.control = scope.internalControl;
+          return;
+        }
 
-          angular.forEach(protectedApiMethods, function (iteratedMethodName) {
-            if (scope.control[iteratedMethodName]) {
-              throw new Error(iteratedMethodName + ' method can not be overwritten');
-            }
-          });
+        var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
 
-          var mergedControl = angular.extend({}, scope.internalControl, scope.control);
-          scope.control = scope.internalControl = mergedControl;
-
-          if (!angular.isFunction( scope.control.onExpand )) {
-            throw new Error('onExpand callback must be a function');
+        angular.forEach(protectedApiMethods, function (iteratedMethodName) {
+          if (scope.control[iteratedMethodName]) {
+            throw new Error(iteratedMethodName + ' method can not be overwritten');
           }
+        });
 
-          if (!angular.isFunction( scope.control.onCollapse )) {
-            throw new Error('onCollapse callback must be a function');
-          }
+        var mergedControl = angular.extend({}, scope.internalControl, scope.control);
+        scope.control = scope.internalControl = mergedControl;
+
+        if (!angular.isFunction( scope.control.onExpand )) {
+          throw new Error('onExpand callback must be a function');
+        }
+
+        if (!angular.isFunction( scope.control.onCollapse )) {
+          throw new Error('onCollapse callback must be a function');
         }
       };
     }

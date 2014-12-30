@@ -213,7 +213,7 @@ function vAccordionDirective (accordionConfig) {
         }
 
         if (!scope.control) {
-          scope.control = scope.internalControl();
+          scope.control = scope.internalControl;
           return;
         }
 
