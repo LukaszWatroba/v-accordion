@@ -47,6 +47,7 @@
         <div class="Grid-cell u-marginBl">
           <h4 class="u-h4">Works with (or without) ng-repeat</h4>
 
+
           <v-accordion control="firstAccordionControl">
 
             <v-pane ng-repeat="pane in panes" expanded="$last">
@@ -72,6 +73,7 @@
 
           </v-accordion>
 
+
           <div class="ButtonGroup ButtonGroup--hz ButtonGroup--borderCollapse u-marginTm">
             <div class="ButtonGroup-item">
               <button class="Button Button--default" ng-click="firstAccordionControl.toggle(0)">Toogle first</button>
@@ -84,7 +86,8 @@
 
         <div class="Grid-cell u-marginBl">
           <h4 class="u-h4">Allows multiple sections open at once</h4>
-          <!--
+     
+
           <v-accordion allow-multiple control="secondAccordionControl">
 
             <v-pane ng-repeat="pane in panes" expanded="$first">
@@ -109,7 +112,7 @@
             </v-pane>
 
           </v-accordion>
-          -->
+
           
           <div class="ButtonGroup ButtonGroup--hz ButtonGroup--borderCollapse u-marginTm">
             <div class="ButtonGroup-item">

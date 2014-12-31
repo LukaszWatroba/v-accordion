@@ -1,21 +1,23 @@
 describe('v-pane-header directive', function () {
 
-  var $scope;
   var $compile;
+  var $rootScope;
   var acordionConfig;
+  var scope;
 
 
 
   beforeEach(module('vAccordion'));
 
   beforeEach(inject(function (_$rootScope_, _$compile_, _accordionConfig_) {
-    $scope = _$rootScope_;
+    $rootScope = _$rootScope_;
+    scope = $rootScope.$new();
     $compile = _$compile_;
     accordionConfig = _accordionConfig_;
   }));
 
   afterEach(function () {
-    $scope.$destroy();
+    scope.$destroy();
   });
   
 
@@ -23,11 +25,11 @@ describe('v-pane-header directive', function () {
   it('should throw an error if is used outside v-pane directive', function () {
     var template = '<v-pane-header></v-pane-header>';
 
-    expect(function () { $compile(template)($scope); }).toThrow();
+    expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
-  it('should replace v-pane-header with div element and add a class', function () {
+  it('should replace v-pane-header with div accordion and add a class', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -35,11 +37,11 @@ describe('v-pane-header directive', function () {
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    var $element = $compile(template)($scope);
-    var $paneHeader = $element.find('.' + accordionConfig.classes.paneHeader);
+    var accordion = $compile(template)(scope);
+    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
 
-    expect($paneHeader[0]).toBeDefined();
-    expect($paneHeader.prop('tagName')).toBe('DIV');
+    expect(paneHeader[0]).toBeDefined();
+    expect(paneHeader.prop('tagName')).toBe('DIV');
   });
 
 
@@ -53,14 +55,14 @@ describe('v-pane-header directive', function () {
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    var $element = $compile(template)($scope);
-    var $paneHeader = $element.find('.' + accordionConfig.classes.paneHeader);
+    var accordion = $compile(template)(scope);
+    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
 
-    $scope.message = message;
-    $scope.$digest();
+    scope.message = message;
+    scope.$digest();
 
-    expect($paneHeader.html()).toContain(message);
-    expect($paneHeader.html()).toContain('<div ng-transclude="">');
+    expect(paneHeader.html()).toContain(message);
+    expect(paneHeader.html()).toContain('<div ng-transclude="">');
   });
 
 
@@ -72,16 +74,16 @@ describe('v-pane-header directive', function () {
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    var $element = $compile(template)($scope);
-    var $pane = $element.find('.' + accordionConfig.classes.pane);
-    var $paneHeader = $element.find('.' + accordionConfig.classes.paneHeader);
+    var accordion = $compile(template)(scope);
+    var pane = accordion.find('.' + accordionConfig.classes.pane);
+    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
 
-    var paneIsolateScope = $pane.isolateScope();
+    var paneIsolateScope = pane.isolateScope();
 
     expect(paneIsolateScope.isExpanded).toBe(false);
-    $paneHeader.click();
+    paneHeader.click();
     expect(paneIsolateScope.isExpanded).toBe(true);
-    $paneHeader.click();
+    paneHeader.click();
     expect(paneIsolateScope.isExpanded).toBe(false);
   });
 

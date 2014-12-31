@@ -1,21 +1,23 @@
 describe('v-pane-content directive', function () {
   
-  var $scope;
   var $compile;
+  var $rootScope;
   var acordionConfig;
+  var scope;
 
 
 
   beforeEach(module('vAccordion'));
 
   beforeEach(inject(function (_$rootScope_, _$compile_, _accordionConfig_) {
-    $scope = _$rootScope_;
+    $rootScope = _$rootScope_;
+    scope = $rootScope.$new();
     $compile = _$compile_;
     accordionConfig = _accordionConfig_;
   }));
 
   afterEach(function () {
-    $scope.$destroy();
+    scope.$destroy();
   });
   
   
@@ -23,7 +25,7 @@ describe('v-pane-content directive', function () {
   it('should throw an error if is used outside v-pane directive', function () {
     var template = '<v-pane-content></v-pane-content>';
 
-    expect(function () { $compile(template)($scope); }).toThrow();
+    expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
@@ -35,11 +37,11 @@ describe('v-pane-content directive', function () {
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    var $element = $compile(template)($scope);
-    var $paneContent = $element.find('.' + accordionConfig.classes.paneContent);
+    var accordion = $compile(template)(scope);
+    var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
 
-    expect($paneContent[0]).toBeDefined();
-    expect($paneContent.prop('tagName')).toBe('DIV');
+    expect(paneContent[0]).toBeDefined();
+    expect(paneContent.prop('tagName')).toBe('DIV');
   });
 
 
@@ -53,14 +55,14 @@ describe('v-pane-content directive', function () {
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    var $element = $compile(template)($scope);
-    var $paneContent = $element.find('.' + accordionConfig.classes.paneContent);
+    var accordion = $compile(template)(scope);
+    var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
 
-    $scope.message = message;
-    $scope.$digest();
+    scope.message = message;
+    scope.$digest();
 
-    expect($paneContent.html()).toContain(message);
-    expect($paneContent.html()).toContain('<div ng-transclude="">');
+    expect(paneContent.html()).toContain(message);
+    expect(paneContent.html()).toContain('<div ng-transclude="">');
   });
 
 });
