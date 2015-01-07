@@ -94,7 +94,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
 ## API
 
-To use API methods add `control` attribute, like so:
+Use API methods to control accordion component:
 ```html
 <v-accordion allow-multiple control="accordionControl">
   <v-pane ng-repeat="pane in panes" expanded="$first">
@@ -138,7 +138,7 @@ $scope.accordionControl = {
 
 
 ## Config
-You can override the default class names:
+You can easily change the default class names:
 
 ```js
 angular
