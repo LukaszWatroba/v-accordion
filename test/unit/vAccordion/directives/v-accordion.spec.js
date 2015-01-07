@@ -2,7 +2,7 @@ describe('v-accordion directive', function () {
 
   var $compile;
   var $rootScope;
-  var acordionConfig;
+  var accordionConfig;
   var scope;
 
   var generateTemplate = function (options) {

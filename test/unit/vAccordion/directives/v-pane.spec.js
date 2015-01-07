@@ -2,7 +2,7 @@ describe('v-pane directive', function () {
   
   var $compile;
   var $rootScope;
-  var acordionConfig;
+  var accordionConfig;
   var scope;
 
   var generatePanes = function (length) {
