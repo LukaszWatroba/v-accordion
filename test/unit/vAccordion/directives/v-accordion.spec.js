@@ -9,7 +9,7 @@ describe('v-accordion directive', function () {
     var dafaults = {
       allowMultiple: false,
       customControl: false,
-      transcludedContent: null
+      transcludedContent: ''
     };
 
     if (options) {
@@ -17,11 +17,11 @@ describe('v-accordion directive', function () {
     }
 
     var template = '<v-accordion';
-    template += (dafaults.allowMultiple) ? ' allow-multiple' : '';
-    template += (dafaults.customControl) ? ' control="customControl"' : '';
-    template += '>\n';
-    template += (dafaults.transcludedContent) ? dafaults.transcludedContent : '';
-    template += '</v-accordion>';
+        template += (dafaults.allowMultiple) ? ' allow-multiple' : '';
+        template += (dafaults.customControl) ? ' control="customControl"' : '';
+        template += '>\n';
+        template += dafaults.transcludedContent;
+        template += '</v-accordion>';
 
     return template;
   };

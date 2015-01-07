@@ -5,6 +5,25 @@ describe('v-pane-header directive', function () {
   var accordionConfig;
   var scope;
 
+  var generateTemplate = function (options) {
+    var dafaults = {
+      transcludedContent: ''
+    };
+
+    if (options) {
+      angular.extend(dafaults, options);
+    }
+
+    var template = '<v-accordion>\n';
+        template += '<v-pane>\n';
+        template += '<v-pane-header>' + dafaults.transcludedContent + '</v-pane-header>\n';
+        template += '<v-pane-content></v-pane-content>\n';
+        template += '</v-pane>\n';
+        template += '</v-accordion>';
+
+    return template;
+  };
+
 
 
   beforeEach(module('vAccordion'));
@@ -30,12 +49,7 @@ describe('v-pane-header directive', function () {
 
 
   it('should replace v-pane-header with div accordion and add a class', function () {
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+    var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
     var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
@@ -48,12 +62,7 @@ describe('v-pane-header directive', function () {
   it('should transclude scope and create inner div wrapper', function () {
     var message = 'Hello World!';
 
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header>{{ message }}</v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+    var template = generateTemplate({ transcludedContent: '{{ message }}' });
 
     var accordion = $compile(template)(scope);
     var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
@@ -67,12 +76,7 @@ describe('v-pane-header directive', function () {
 
 
   it('should toggle the pane on click', function () {
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+    var template =  generateTemplate();
 
     var accordion = $compile(template)(scope);
     var pane = accordion.find('.' + accordionConfig.classes.pane);

@@ -5,6 +5,24 @@ describe('v-pane-content directive', function () {
   var accordionConfig;
   var scope;
 
+  var generateTemplate = function (options) {
+    var dafaults = {
+      transcludedContent: ''
+    };
+
+    if (options) {
+      angular.extend(dafaults, options);
+    }
+
+    var template = '<v-accordion>\n';
+        template += '<v-pane>\n';
+        template += '<v-pane-header></v-pane-header>\n';
+        template += '<v-pane-content>' + dafaults.transcludedContent + '</v-pane-content>\n';
+        template += '</v-pane>\n';
+        template += '</v-accordion>';
+
+    return template;
+  };
 
 
   beforeEach(module('vAccordion'));
@@ -30,12 +48,7 @@ describe('v-pane-content directive', function () {
 
 
   it('should replace v-pane-content with div element and add a class', function () {
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+    var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
     var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
@@ -48,12 +61,7 @@ describe('v-pane-content directive', function () {
   it('should transclude scope and create inner div wrapper', function () {
     var message = 'Hello World!';
 
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content>{{ message }}</v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+    var template = generateTemplate({ transcludedContent: '{{ message }}' });
 
     var accordion = $compile(template)(scope);
     var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
