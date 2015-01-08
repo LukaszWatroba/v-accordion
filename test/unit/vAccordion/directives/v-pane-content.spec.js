@@ -40,14 +40,14 @@ describe('v-pane-content directive', function () {
   
   
 
-  it('should throw an error if is used outside v-pane directive', function () {
+  it('should throw an error if `v-pane` directive controller can\'t be found', function () {
     var template = '<v-pane-content></v-pane-content>';
 
     expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
-  it('should replace v-pane-content with div element and add a class', function () {
+  it('should replace `v-pane-content` with `div` element and add `Pane-content` class', function () {
     var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
@@ -58,7 +58,7 @@ describe('v-pane-content directive', function () {
   });
 
 
-  it('should transclude scope and create inner div wrapper', function () {
+  it('should transclude scope and create inner `div` wrapper', function () {
     var message = 'Hello World!';
 
     var template = generateTemplate({ transcludedContent: '{{ message }}' });

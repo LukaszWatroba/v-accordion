@@ -29,11 +29,11 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
             paneContentNative = iElement[0].querySelector('.' + accordionConfig.classes.paneContent);
 
         if (!paneHeaderNative) {
-          throw new Error('v-pane-header not found');
+          throw new Error('The `v-pane-header` directive can\'t be found');
         }
 
         if (!paneContentNative) {
-          throw new Error('v-pane-content not found');
+          throw new Error('The `v-pane-content` directive can\'t be found');
         }
 
         var paneInnerNative = paneContentNative.querySelector('div');

@@ -37,34 +37,34 @@ describe('v-pane directive', function () {
 
 
 
-  it('should throw an error if is used outside v-accordion directive', function () {
+  it('should throw an error if `v-accordion` directive controller can\'t be found', function () {
     var template = '<v-pane></v-pane>';
 
     expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
-  it('should throw an error if v-pane-header is not found', function () {
+  it('should throw an error if `v-pane-header` can\'t be found found', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane></v-pane>\n' +
                     '</v-accordion>';
 
-    expect(function () { $compile(template)(scope); }).toThrow(new Error('v-pane-header not found'));
+    expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
-  it('should throw an error if v-pane-content is not found', function () {
+  it('should throw an error if `v-pane-content` can\'t be found found', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    expect(function () { $compile(template)(scope); }).toThrow(new Error('v-pane-content not found'));
+    expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
-  it('should replace v-pane with div element and add a class', function () {
+  it('should replace `v-pane` with `div` element and add `Pane` class', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -101,7 +101,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should set isExpanded flag to true if expanded attribute is added and has no value', function () {
+  it('should set `isExpanded` flag to `true` if expanded attribute is added and has no value', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane expanded>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -116,7 +116,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should throw an error if multiple panes has expanded attribute, but the allow-multiple is not set', function () {
+  it('should throw an error if multiple panes has `expanded` attribute, but the `allow-multiple` is not set', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane expanded>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -132,7 +132,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should works with ng-repeat', function () {
+  it('should works with `ng-repeat` directive', function () {
     var length = 3;
    
     var template =  '<v-accordion>\n' +
@@ -151,7 +151,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should watch the isExpanded value and add expanded state classes when it is changed to true', function () {
+  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', function () {
     var expandedStateClass = accordionConfig.classes.expandedState;
 
     var template =  '<v-accordion>\n' +

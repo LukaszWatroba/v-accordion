@@ -30,18 +30,18 @@ function vAccordionDirective (accordionConfig) {
         function checkCustomControlAPIMethods () {
           angular.forEach(protectedApiMethods, function (iteratedMethodName) {
             if (scope.control[iteratedMethodName]) {
-              throw new Error(iteratedMethodName + ' method can not be overwritten');
+              throw new Error('The `' + iteratedMethodName + '` method can not be overwritten');
             }
           });
         }
 
         function checkCustomControlCallbacks () {
           if (!angular.isFunction( scope.control.onExpand )) {
-            throw new Error('onExpand callback must be a function');
+            throw new Error('The `onExpand` callback must be a function');
           }
 
           if (!angular.isFunction( scope.control.onCollapse )) {
-            throw new Error('onCollapse callback must be a function');
+            throw new Error('The `onCollapse` callback must be a function');
           }
         }
 
@@ -107,7 +107,7 @@ function AccordionDirectiveController ($scope) {
   ctrl.addPane = function (pane) {
     if (!$scope.allowMultiple) {
       if (hasExpandedPane() && pane.isExpanded) {
-        throw new Error('allow-multiple attribute is not set');
+        throw new Error('The `allow-multiple` attribute is not set');
       } 
     }
 
@@ -166,7 +166,7 @@ function AccordionDirectiveController ($scope) {
         ctrl.expand(iteratedPane);
       });
     } else {
-      throw new Error('allow-multiple attribute is not set');
+      throw new Error('The `allow-multiple` attribute can\'t be found');
     }
   };
 

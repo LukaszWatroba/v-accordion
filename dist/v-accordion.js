@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v0.0.4
+ * @version v0.1.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -65,18 +65,18 @@ function vAccordionDirective (accordionConfig) {
         function checkCustomControlAPIMethods () {
           angular.forEach(protectedApiMethods, function (iteratedMethodName) {
             if (scope.control[iteratedMethodName]) {
-              throw new Error(iteratedMethodName + ' method can not be overwritten');
+              throw new Error('The `' + iteratedMethodName + '` method can not be overwritten');
             }
           });
         }
 
         function checkCustomControlCallbacks () {
           if (!angular.isFunction( scope.control.onExpand )) {
-            throw new Error('onExpand callback must be a function');
+            throw new Error('The `onExpand` callback must be a function');
           }
 
           if (!angular.isFunction( scope.control.onCollapse )) {
-            throw new Error('onCollapse callback must be a function');
+            throw new Error('The `onCollapse` callback must be a function');
           }
         }
 
@@ -142,7 +142,7 @@ function AccordionDirectiveController ($scope) {
   ctrl.addPane = function (pane) {
     if (!$scope.allowMultiple) {
       if (hasExpandedPane() && pane.isExpanded) {
-        throw new Error('allow-multiple attribute is not set');
+        throw new Error('The `allow-multiple` attribute is not set');
       } 
     }
 
@@ -201,7 +201,7 @@ function AccordionDirectiveController ($scope) {
         ctrl.expand(iteratedPane);
       });
     } else {
-      throw new Error('allow-multiple attribute is not set');
+      throw new Error('The `allow-multiple` attribute can\'t be found');
     }
   };
 
@@ -323,11 +323,11 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
             paneContentNative = iElement[0].querySelector('.' + accordionConfig.classes.paneContent);
 
         if (!paneHeaderNative) {
-          throw new Error('v-pane-header not found');
+          throw new Error('The `v-pane-header` directive can\'t be found');
         }
 
         if (!paneContentNative) {
-          throw new Error('v-pane-content not found');
+          throw new Error('The `v-pane-content` directive can\'t be found');
         }
 
         var paneInnerNative = paneContentNative.querySelector('div');

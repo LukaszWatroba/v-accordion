@@ -3,6 +3,12 @@
  ***************************************/
 
 
+/* Settings */
+
+$accordion-spacing: 20px;
+$accordion-expand-duration: 0.5s;
+
+
 /**
  * Example HTML:
  *
@@ -14,9 +20,6 @@
   </v-accordion>
  */
 
-
-$accordion-spacing: 20px;
-$accordion-expand-duration: 0.5s;
 
 .Accordion {
   height: 100%;

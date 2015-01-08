@@ -43,7 +43,7 @@ describe('v-accordion directive', function () {
 
 
 
-  it('should replace v-accordion with div element and add a class', function () {
+  it('should replace `v-accordion` with `div` element and `Accordion` class', function () {
     var template = generateTemplate();
     var accordion = $compile(template)(scope);
 
@@ -66,7 +66,7 @@ describe('v-accordion directive', function () {
   });
 
 
-  it('should allow multiple selections even if allow-multiple attribute has no value', function () {
+  it('should allow multiple selections if `allow-multiple` attribute is defined', function () {
     var template = generateTemplate({ allowMultiple: true });
     var accordion = $compile(template)(scope);
 
@@ -74,7 +74,7 @@ describe('v-accordion directive', function () {
   });
 
 
-  it('should merge custom control object with internal control', function () {
+  it('should extend custom control object with internal control', function () {
     var template = generateTemplate({ customControl: true });
     var accordion = $compile(template)(scope);
 
@@ -141,7 +141,7 @@ describe('v-accordion directive', function () {
 
 
 
-    it('should add pane to array', function () {
+    it('should add new pane object to `panes` array', function () {
       var samplePane = generatePanes(1)[0];
 
       expect(isolateScope.panes.length).toBe(0);
@@ -152,7 +152,7 @@ describe('v-accordion directive', function () {
     });
 
 
-    it('should expand pane and call onExpand callback', function () {
+    it('should expand pane and call `onExpand` callback', function () {
       var samplePanes = generatePanes(5);
       var paneToExpandIndex = 0;
       var paneToExpand = samplePanes[paneToExpandIndex];
