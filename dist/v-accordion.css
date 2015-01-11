@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v0.1.0
+ * @version v0.2.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -93,12 +93,11 @@
               transform: rotate(0deg); }
 
 .Accordion--dafault .Accordion-paneContent > div {
-  -webkit-transform: translateY(30px);
-      -ms-transform: translateY(30px);
-          transform: translateY(30px);
+  will-change: transform, opacity;
+  -webkit-transform: translate3d(0, 30px, 0);
+          transform: translate3d(0, 30px, 0);
   -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
           transition: transform 0.5s, opacity 0.5s; }
 .Accordion--dafault .Accordion-paneContent.is-expanded > div {
-  -webkit-transform: translateY(0);
-      -ms-transform: translateY(0);
-          transform: translateY(0); }
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0); }

@@ -109,12 +109,13 @@ $accordion-expand-duration: 0.5s;
 
 .Accordion--dafault .Accordion-paneContent {
   > div {
-    transform: translateY(30px);
+    will-change: transform, opacity;
+    transform: translate3d(0, 30px, 0);
     transition: transform $accordion-expand-duration, opacity $accordion-expand-duration;
   }
 
   &.is-expanded > div {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
