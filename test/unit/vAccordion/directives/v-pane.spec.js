@@ -151,7 +151,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', function () {
+  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', inject(function ($timeout) {
     var expandedStateClass = accordionConfig.classes.expandedState;
 
     var template =  '<v-accordion>\n' +
@@ -177,9 +177,11 @@ describe('v-pane directive', function () {
     paneIsolateScope.isExpanded = true;
     paneIsolateScope.$digest();
 
+    $timeout.flush();
+
     expect(pane.hasClass(expandedStateClass) &&
            paneContent.hasClass(expandedStateClass) &&
            paneHeader.hasClass(expandedStateClass)).toBe(true);
-  });
+  }));
 
 });

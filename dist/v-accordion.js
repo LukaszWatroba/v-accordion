@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v0.1.0
+ * @version v0.2.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -335,6 +335,8 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
         var paneHeaderElement = angular.element(paneHeaderNative),
             paneContentElement = angular.element(paneContentNative);
 
+        var expandedStateClass = accordionConfig.classes.expandedState;
+
         accordionCtrl.addPane(scope);
         scope.accordionCtrl = accordionCtrl;
 
@@ -346,18 +348,18 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           var paneInnerHeight = paneInnerNative.offsetHeight;
           paneContentNative.style.maxHeight = '0px';
 
-          $animate.addClass(paneContentElement, accordionConfig.classes.expandedState)
-            .then(function () {
-              accordionCtrl.enable();
-              paneContentNative.style.maxHeight = 'none';
-            });
-
-          setTimeout(function () {
+          $timeout(function () {
+            $animate.addClass(paneContentElement, expandedStateClass)
+              .then(function () {
+                accordionCtrl.enable();
+                paneContentNative.style.maxHeight = 'none';
+              });
+              
             paneContentNative.style.maxHeight = paneInnerHeight + 'px';
           }, 0);
 
-          iElement.addClass(accordionConfig.classes.expandedState);
-          paneHeaderElement.addClass(accordionConfig.classes.expandedState);
+          iElement.addClass(expandedStateClass);
+          paneHeaderElement.addClass(expandedStateClass);
         }
 
         function collapse () {
@@ -367,17 +369,17 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
           paneContentNative.style.maxHeight = paneInnerHeight + 'px';
 
-          $animate.removeClass(paneContentElement, accordionConfig.classes.expandedState)
-            .then(function () {
-              accordionCtrl.enable();
-            });
+          $timeout(function () {
+            $animate.removeClass(paneContentElement, expandedStateClass)
+              .then(function () {
+                accordionCtrl.enable();
+              });
 
-          setTimeout(function () {
             paneContentNative.style.maxHeight = '0px';
           }, 0);
 
-          iElement.removeClass(accordionConfig.classes.expandedState);
-          paneHeaderElement.removeClass(accordionConfig.classes.expandedState);
+          iElement.removeClass(expandedStateClass);
+          paneHeaderElement.removeClass(expandedStateClass);
         }
 
         $timeout(function () {
