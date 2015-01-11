@@ -60,8 +60,10 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
                 accordionCtrl.enable();
                 paneContentNative.style.maxHeight = 'none';
               });
-              
-            paneContentNative.style.maxHeight = paneInnerHeight + 'px';
+
+            setTimeout(function () {
+              paneContentNative.style.maxHeight = paneInnerHeight + 'px';
+            }, 0);
           }, 0);
 
           iElement.addClass(expandedStateClass);
@@ -81,7 +83,9 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
                 accordionCtrl.enable();
               });
 
-            paneContentNative.style.maxHeight = '0px';
+            setTimeout(function () {
+              paneContentNative.style.maxHeight = '0px';
+            }, 0);
           }, 0);
 
           iElement.removeClass(expandedStateClass);
