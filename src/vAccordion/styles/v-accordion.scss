@@ -5,8 +5,15 @@
 
 /* Settings */
 
-$accordion-spacing: 20px;
-$accordion-expand-duration: 0.5s;
+$accordion-spacing: 20px !default;
+
+$pane-header-border-color: #D8D8D8 !default;
+$pane-header-expanded-border-color: #2196F3 !default;
+$pane-header-icon-color: #2196F3 !default;
+$pane-header-hover-color: #2196F3 !default;
+
+$pane-expand-duration: 0.5s !default;
+$pane-hover-duration: 0.25s !default;
 
 
 /**
@@ -47,7 +54,7 @@ $accordion-expand-duration: 0.5s;
   > div {
     padding-bottom: $accordion-spacing;
     opacity: 0;
-    transition: opacity $accordion-expand-duration;
+    transition: opacity $pane-expand-duration;
   }
 
   &.is-expanded > div {
@@ -56,7 +63,7 @@ $accordion-expand-duration: 0.5s;
 
   &.is-expanded-add,
   &.is-expanded-remove {
-    transition: max-height $accordion-expand-duration;
+    transition: max-height $pane-expand-duration;
   }
 }
 
@@ -68,8 +75,8 @@ $accordion-expand-duration: 0.5s;
 
 .Accordion--dafault .Accordion-paneHeader {
   padding: 5px 0;
-  border-bottom: 2px solid #D8D8D8;
-  transition: color 0.25s, border-color $accordion-expand-duration;
+  border-bottom: 2px solid $pane-header-border-color;
+  transition: color $pane-hover-duration, border-color $pane-expand-duration;
 
   &::after,
   &::before {
@@ -80,9 +87,9 @@ $accordion-expand-duration: 0.5s;
     right: 0;
     width: 10px;
     height: 1px;
-    background-color: #2196F3;
+    background-color: $pane-header-icon-color;
     transform-origin: 50% 50%;
-    transition: all 0.25s;
+    transition: all $pane-hover-duration;
   }
 
   &::before {
@@ -90,11 +97,11 @@ $accordion-expand-duration: 0.5s;
   }
 
   &:hover {
-    color: #2196F3;
+    color: $pane-header-hover-color;
   }
 
   &.is-expanded {
-    border-bottom-color: #2196F3;
+    border-bottom-color: $pane-header-expanded-border-color;
 
     &::after {
       transform: rotate(90deg);
@@ -111,7 +118,7 @@ $accordion-expand-duration: 0.5s;
   > div {
     will-change: transform, opacity;
     transform: translate3d(0, 30px, 0);
-    transition: transform $accordion-expand-duration, opacity $accordion-expand-duration;
+    transition: transform $pane-expand-duration, opacity $pane-expand-duration;
   }
 
   &.is-expanded > div {
