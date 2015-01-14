@@ -4,6 +4,10 @@
   angular
     .module('myApp', [ 'vAccordion' ])
 
+    .config(function ($compileProvider) {
+      $compileProvider.debugInfoEnabled(false);
+    })
+
     // You can override the default class names
     .config(function (accordionConfig) {
 
