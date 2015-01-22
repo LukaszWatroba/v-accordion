@@ -18,9 +18,9 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 ## Usage
   - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist).
 
-  - Include `angular.js`, `angular-animate.js`, `v-accoridon.js`, and `v-accoridon.css`:
+  - Include `angular.js`, `angular-animate.js`, `v-accordion.js`, and `v-accordion.css`:
   ```html
-  <link href="v-accoridon.css" rel="stylesheet" />
+  <link href="v-accordion.css" rel="stylesheet" />
 
   <script src="angular.js"></script>
   <script src="angular-animate.js"></script>
