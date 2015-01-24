@@ -156,6 +156,3 @@ angular
   })
 ```
 
-## Todo
-  - More tests!
-
