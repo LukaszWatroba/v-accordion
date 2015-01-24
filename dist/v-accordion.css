@@ -9,7 +9,6 @@
 /***************************************
   Accordion
  ***************************************/
-/* Settings */
 /**
  * Example HTML:
  *
@@ -20,6 +19,9 @@
     </v-pane>
   </v-accordion>
  */
+/***************************************
+  Accordion
+ ***************************************/
 .Accordion {
   height: 100%;
   width: 100%; }
@@ -52,9 +54,8 @@
     -webkit-transition: max-height 0.5s;
             transition: max-height 0.5s; }
 
-/* Accordion modifires
- ***************************************/
-/* Modifier: default accordion */
+/* Accordion theme: default
+   ***************************************/
 .Accordion--dafault .Accordion-paneHeader {
   padding: 5px 0;
   border-bottom: 2px solid #D8D8D8;

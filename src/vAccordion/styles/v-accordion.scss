@@ -3,19 +3,6 @@
  ***************************************/
 
 
-/* Settings */
-
-$accordion-spacing: 20px !default;
-
-$pane-header-border-color: #D8D8D8 !default;
-$pane-header-expanded-border-color: #2196F3 !default;
-$pane-header-icon-color: #2196F3 !default;
-$pane-header-hover-color: #2196F3 !default;
-
-$pane-expand-duration: 0.5s !default;
-$pane-hover-duration: 0.25s !default;
-
-
 /**
  * Example HTML:
  *
@@ -28,101 +15,6 @@ $pane-hover-duration: 0.25s !default;
  */
 
 
-.Accordion {
-  height: 100%;
-  width: 100%;
-
-  .Accordion {
-    margin-top: $accordion-spacing;
-    padding-left: $accordion-spacing;
-  }
-}
-
-.Accordion-paneHeader {
-  position: relative;
-  cursor: pointer;
-  text-decoration: none;
-  margin-bottom: $accordion-spacing;
-  user-select: none;
-}
-
-.Accordion-paneContent {
-  position: relative;
-  overflow: hidden;
-  max-height: 0px;
-
-  > div {
-    padding-bottom: $accordion-spacing;
-    opacity: 0;
-    transition: opacity $pane-expand-duration;
-  }
-
-  &.is-expanded > div {
-    opacity: 1;
-  }
-
-  &.is-expanded-add,
-  &.is-expanded-remove {
-    transition: max-height $pane-expand-duration;
-  }
-}
-
-
-/* Accordion modifires
- ***************************************/
-
-/* Modifier: default accordion */
-
-.Accordion--dafault .Accordion-paneHeader {
-  padding: 5px 0;
-  border-bottom: 2px solid $pane-header-border-color;
-  transition: color $pane-hover-duration, border-color $pane-expand-duration;
-
-  &::after,
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 10px;
-    height: 1px;
-    background-color: $pane-header-icon-color;
-    transform-origin: 50% 50%;
-    transition: all $pane-hover-duration;
-  }
-
-  &::before {
-    transform: rotate(-90deg);
-  }
-
-  &:hover {
-    color: $pane-header-hover-color;
-  }
-
-  &.is-expanded {
-    border-bottom-color: $pane-header-expanded-border-color;
-
-    &::after {
-      transform: rotate(90deg);
-      opacity: 0;
-    }
-
-    &::before {
-      transform: rotate(0deg);
-    }
-  }
-}
-
-.Accordion--dafault .Accordion-paneContent {
-  > div {
-    will-change: transform, opacity;
-    transform: translate3d(0, 30px, 0);
-    transition: transform $pane-expand-duration, opacity $pane-expand-duration;
-  }
-
-  &.is-expanded > div {
-    transform: translate3d(0, 0, 0);
-  }
-}
+@import 'settings';
+@import 'accordion';
 
