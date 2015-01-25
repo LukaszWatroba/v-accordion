@@ -43,8 +43,8 @@
 }
 
 
-@if $default-theme {
-  /* Accordion theme: default
+@if $accordion-default-theme {
+  /* Theme: default
    ***************************************/
 
   .Accordion--dafault .Accordion-paneHeader {

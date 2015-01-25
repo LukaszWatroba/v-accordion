@@ -3,7 +3,7 @@
 // -------------------------------------
 
 
-$default-theme: true !default;
+$accordion-default-theme: true !default;
 
 
 // Accordion
@@ -11,11 +11,11 @@ $default-theme: true !default;
 
 $accordion-spacing: 20px !default;
 
-$pane-header-border-color: #D8D8D8          !default;
+$pane-header-border-color:          #D8D8D8 !default;
 $pane-header-expanded-border-color: #2196F3 !default;
-$pane-header-icon-color: #2196F3            !default;
-$pane-header-hover-color: #2196F3           !default;
+$pane-header-icon-color:            #2196F3 !default;
+$pane-header-hover-color:           #2196F3 !default;
 
-$pane-expand-duration: 0.5s !default;
-$pane-hover-duration: 0.25s !default;
+$pane-expand-duration:  0.5s  !default;
+$pane-hover-duration:   0.25s !default;
 
