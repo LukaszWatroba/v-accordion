@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="vAccordion - AngularJS accordion directive.">
+    <meta name="description" content="vAccordion - AngularJS multi-level accordion component.">
     <meta name="author" content="Łukasz Wątroba">
 
     <title>vAccordion</title>
@@ -45,10 +45,10 @@
 
       <div class="Grid Grid--gutters md-Grid--2col">
         <div class="Grid-cell u-marginBl">
-          <h4 class="u-h4">Works with (or without) ng-repeat</h4>
+          <h4 class="u-marginVm">Works with (or without) ng-repeat</h4>
 
 
-          <v-accordion control="firstAccordionControl">
+          <v-accordion class="vAccordion--default" control="accordionA" onexpand="expandCallback(index)" oncollapse="collapseCallback(index)">
 
             <v-pane ng-repeat="pane in panes" expanded="$last">
               <v-pane-header>
@@ -74,21 +74,21 @@
           </v-accordion>
 
 
-          <div class="ButtonGroup ButtonGroup--hz ButtonGroup--collapse u-marginTm">
+          <div class="ButtonGroup ButtonGroup--hz ButtonGroup--collapse u-marginVm">
             <div class="ButtonGroup-item">
-              <button class="Button Button--default" ng-click="firstAccordionControl.toggle(0)">Toogle first</button>
+              <button class="Button Button--default" ng-click="accordionA.toggle(0)">Toogle first</button>
             </div>
             <div class="ButtonGroup-item">
-              <button class="Button Button--default" ng-click="firstAccordionControl.toggle(panes.length - 1)">Toogle last</button>
+              <button class="Button Button--default" ng-click="accordionA.toggle(panes.length - 1)">Toogle last</button>
             </div>
           </div>
         </div>
 
         <div class="Grid-cell u-marginBl">
-          <h4 class="u-h4">Allows multiple sections open at once</h4>
+          <h4 class="u-marginVm">Allows multiple sections open at once</h4>
      
 
-          <v-accordion allow-multiple control="secondAccordionControl">
+          <v-accordion class="vAccordion--default" multiple control="accordionB">
 
             <v-pane ng-repeat="pane in panes" expanded="$first">
               <v-pane-header>
@@ -98,7 +98,7 @@
               <v-pane-content>
                 <p>{{ pane.content }}</p>
 
-                <v-accordion allow-multiple ng-if="pane.subpanes">
+                <v-accordion multiple ng-if="pane.subpanes">
                   <v-pane ng-repeat="subpane in pane.subpanes">
                     <v-pane-header>
                       <h5>{{ subpane.header }}</h5>
@@ -114,12 +114,12 @@
           </v-accordion>
 
           
-          <div class="ButtonGroup ButtonGroup--hz ButtonGroup--collapse u-marginTm">
+          <div class="ButtonGroup ButtonGroup--hz ButtonGroup--collapse u-marginVm">
             <div class="ButtonGroup-item">
-              <button class="Button Button--default" ng-click="secondAccordionControl.expandAll()">Expand all</button>
+              <button class="Button Button--default" ng-click="accordionB.expandAll()">Expand all</button>
             </div>
             <div class="ButtonGroup-item">
-              <button class="Button Button--default" ng-click="secondAccordionControl.collapseAll()">Collapse all</button>
+              <button class="Button Button--default" ng-click="accordionB.collapseAll()">Collapse all</button>
             </div>
           </div>
         </div>

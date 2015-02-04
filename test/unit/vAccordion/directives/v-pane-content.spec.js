@@ -47,30 +47,19 @@ describe('v-pane-content directive', function () {
   });
 
 
-  it('should replace `v-pane-content` with `div` element and add `Pane-content` class', function () {
-    var template = generateTemplate();
-
-    var accordion = $compile(template)(scope);
-    var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
-
-    expect(paneContent[0]).toBeDefined();
-    expect(paneContent.prop('tagName')).toBe('DIV');
-  });
-
-
-  it('should transclude scope and create inner `div` wrapper', function () {
+  it('should transclude scope and add `v-pane-content-inner` element', function () {
     var message = 'Hello World!';
 
     var template = generateTemplate({ transcludedContent: '{{ message }}' });
 
     var accordion = $compile(template)(scope);
-    var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
+    var paneContent = accordion.find('v-pane-content');
 
     scope.message = message;
     scope.$digest();
 
     expect(paneContent.html()).toContain(message);
-    expect(paneContent.html()).toContain('<div ng-transclude="">');
+    expect(paneContent.html()).toContain('</v-pane-content-inner>');
   });
 
 });

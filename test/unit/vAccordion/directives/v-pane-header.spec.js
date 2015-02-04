@@ -48,30 +48,19 @@ describe('v-pane-header directive', function () {
   });
 
 
-  it('should replace `v-pane-header` with `div` accordion and add `Pane-header` class', function () {
-    var template = generateTemplate();
-
-    var accordion = $compile(template)(scope);
-    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
-
-    expect(paneHeader[0]).toBeDefined();
-    expect(paneHeader.prop('tagName')).toBe('DIV');
-  });
-
-
-  it('should transclude scope and create inner `div` wrapper', function () {
+  it('should transclude scope and add `v-pane-header-inner` element', function () {
     var message = 'Hello World!';
 
     var template = generateTemplate({ transcludedContent: '{{ message }}' });
 
     var accordion = $compile(template)(scope);
-    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
+    var paneHeader = accordion.find('v-pane-header');
 
     scope.message = message;
     scope.$digest();
 
     expect(paneHeader.html()).toContain(message);
-    expect(paneHeader.html()).toContain('<div ng-transclude="">');
+    expect(paneHeader.html()).toContain('</v-pane-header-inner>');
   });
 
 
@@ -79,8 +68,8 @@ describe('v-pane-header directive', function () {
     var template =  generateTemplate();
 
     var accordion = $compile(template)(scope);
-    var pane = accordion.find('.' + accordionConfig.classes.pane);
-    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
+    var pane = accordion.find('v-pane');
+    var paneHeader = accordion.find('v-pane-header');
 
     var paneIsolateScope = pane.isolateScope();
 

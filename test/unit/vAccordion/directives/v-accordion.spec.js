@@ -9,6 +9,8 @@ describe('v-accordion directive', function () {
     var dafaults = {
       allowMultiple: false,
       customControl: false,
+      expandCb: false,
+      collapseCb: false,
       transcludedContent: ''
     };
 
@@ -17,8 +19,10 @@ describe('v-accordion directive', function () {
     }
 
     var template = '<v-accordion';
-        template += (dafaults.allowMultiple) ? ' allow-multiple' : '';
+        template += (dafaults.allowMultiple) ? ' multiple' : '';
         template += (dafaults.customControl) ? ' control="customControl"' : '';
+        template += (dafaults.expandCb) ? ' onexpand="onExpand(index)"' : '';
+        template += (dafaults.collapseCb) ? ' oncollapse="onCollapse(index)"' : '';
         template += '>\n';
         template += dafaults.transcludedContent;
         template += '</v-accordion>';
@@ -43,15 +47,6 @@ describe('v-accordion directive', function () {
 
 
 
-  it('should replace `v-accordion` with `div` element and `Accordion` class', function () {
-    var template = generateTemplate();
-    var accordion = $compile(template)(scope);
-
-    expect(accordion.prop('tagName')).toBe('DIV');
-    expect(accordion.hasClass(accordionConfig.classes.accordion)).toBe(true);
-  });
-
-
   it('should transclude scope', function () {
     var message = 'Hello World!';
 
@@ -62,11 +57,10 @@ describe('v-accordion directive', function () {
     scope.$digest();
 
     expect(accordion.html()).toContain(message);
-    expect(accordion.attr('ng-transclude')).toBeDefined();
   });
 
 
-  it('should allow multiple selections if `allow-multiple` attribute is defined', function () {
+  it('should allow multiple selections if `multiple` attribute is defined', function () {
     var template = generateTemplate({ allowMultiple: true });
     var accordion = $compile(template)(scope);
 
@@ -75,11 +69,10 @@ describe('v-accordion directive', function () {
 
 
   it('should extend custom control object with internal control', function () {
+    scope.customControl = { someProperty: 'test' };
+
     var template = generateTemplate({ customControl: true });
     var accordion = $compile(template)(scope);
-
-    scope.customControl = { someProperty: 'test' };
-    scope.$digest();
 
     expect(accordion.isolateScope().internalControl.someProperty).toBeDefined();
     expect(accordion.isolateScope().internalControl.someProperty).toBe('test');
@@ -87,24 +80,12 @@ describe('v-accordion directive', function () {
 
 
   it('should throw an error if api method is overriden in custom control object', function () {
-    var template = generateTemplate({ customControl: true });
-    var accordion = $compile(template)(scope);
-
     scope.customControl = { toggle: function () {} };
-    
-    expect(function () { scope.$digest(); }).toThrow();
-  });
 
-
-  it('should throw an error if callback is not a function', function () {
     var template = generateTemplate({ customControl: true });
-    var accordion = $compile(template)(scope);
 
-    scope.customControl = { onExpand: 'not a function' };
-    
-    expect(function () { scope.$digest(); }).toThrow();
+    expect(function () { $compile(template)(scope) }).toThrow();
   });
-
 
 
   describe('controller', function () {
@@ -131,7 +112,14 @@ describe('v-accordion directive', function () {
 
 
     beforeEach(function () {
-      var template = generateTemplate({ allowMultiple: true, customControl: true });
+      var options = {
+        allowMultiple: true,
+        customControl: true,
+        expandCb: true,
+        collapseCb: true
+      };
+
+      var template = generateTemplate( options );
       accordion = $compile(template)(scope);
       $rootScope.$digest();
 
@@ -145,9 +133,7 @@ describe('v-accordion directive', function () {
       var samplePane = generatePanes(1)[0];
 
       expect(isolateScope.panes.length).toBe(0);
-
       controller.addPane(samplePane);
-
       expect(isolateScope.panes.length).toBeGreaterThan(0);
     });
 
@@ -161,14 +147,35 @@ describe('v-accordion directive', function () {
         controller.addPane(samplePanes[i]);
       };
 
-      spyOn(isolateScope.internalControl, 'onExpand');
+      scope.onExpand = jasmine.createSpy('onExpand spy');
+      scope.$digest();
 
       expect(isolateScope.panes[paneToExpandIndex].isExpanded).toBeFalsy();
-
       controller.expand(paneToExpand);
-
       expect(isolateScope.panes[paneToExpandIndex].isExpanded).toBeTruthy();
 
+      expect(scope.onExpand).toHaveBeenCalled();
+    });
+
+
+    it('should collapse pane and call `onCollapse` callback', function () {
+      var samplePanes = generatePanes(5);
+      var paneToExpandIndex = 0;
+      var paneToExpand = samplePanes[paneToExpandIndex];
+          paneToExpand.isExpanded = true;
+
+      for (var i = 0; i < samplePanes.length; i++) {
+        controller.addPane(samplePanes[i]);
+      };
+
+      scope.onCollapse = jasmine.createSpy('onCollapse spy');
+      scope.$digest();
+
+      expect(isolateScope.panes[paneToExpandIndex].isExpanded).toBeTruthy();
+      controller.collapse(paneToExpand);
+      expect(isolateScope.panes[paneToExpandIndex].isExpanded).toBeFalsy();
+
+      expect(scope.onCollapse).toHaveBeenCalled();
     });
 
   });

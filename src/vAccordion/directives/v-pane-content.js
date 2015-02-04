@@ -5,22 +5,14 @@ angular.module('vAccordion.directives')
   .directive('vPaneContent', vPaneContentDirective);
 
 
-function vPaneContentDirective (accordionConfig) {
+function vPaneContentDirective () {
   return {
-    restrict: 'EA',
+    restrict: 'E',
     require: '^vPane',
     transclude: true,
-    replace: true,
-    template: '<div><div ng-transclude></div></div>',
+    template: '<v-pane-content-inner ng-transclude></v-pane-content-inner>',
     scope: {},
-    compile: function (tElement) {
-      tElement.addClass(accordionConfig.classes.paneContent);
-
-      return function postLink (scope, iElement, iAttrs, paneCtrl) {
-        scope.paneCtrl = paneCtrl;
-      };
-    }
+    link: function () {}
   };
 }
-vPaneContentDirective.$inject = ['accordionConfig'];
 

@@ -5,22 +5,20 @@ angular.module('vAccordion.directives')
   .directive('vPaneHeader', vPaneHeaderDirective);
 
 
-function vPaneHeaderDirective (accordionConfig) {
+function vPaneHeaderDirective () {
   return {
-    restrict: 'EA',
+    restrict: 'E',
     require: '^vPane',
     transclude: true,
-    replace: true,
-    template: '<div ng-click="paneCtrl.toggle()"><div ng-transclude></div></div>',
+    template: '<v-pane-header-inner ng-transclude></v-pane-header-inner>',
     scope: {},
-    compile: function (tElement) {
-      tElement.addClass(accordionConfig.classes.paneHeader);
-
-      return function postLink (scope, iElement, iAttrs, paneCtrl) {
-        scope.paneCtrl = paneCtrl;
-      };
+    link: function (scope, iElement, iAttrs, paneCtrl) {
+      iElement.on('click', function () {
+        scope.$apply(function () {
+          paneCtrl.toggle();
+        });
+      });
     }
   };
 }
-vPaneHeaderDirective.$inject = ['accordionConfig'];
 

@@ -64,22 +64,6 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should replace `v-pane` with `div` element and add `Pane` class', function () {
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
-
-    var accordion = $compile(template)(scope);
-    var pane = accordion.find('.' + accordionConfig.classes.pane);
-
-    expect(pane[0]).toBeDefined();
-    expect(pane.prop('tagName')).toBe('DIV');
-  });
-
-
   it('should transclude scope', function () {
     var message = 'Hello World!';
 
@@ -92,7 +76,7 @@ describe('v-pane directive', function () {
                     '</v-accordion>';
 
     var accordion = $compile(template)(scope);
-    var pane = accordion.find('.' + accordionConfig.classes.pane);
+    var pane = accordion.find('v-pane');
 
     scope.message = message;
     scope.$digest();
@@ -110,7 +94,7 @@ describe('v-pane directive', function () {
                     '</v-accordion>';
 
     var accordion = $compile(template)(scope);
-    var pane = accordion.find('.' + accordionConfig.classes.pane);
+    var pane = accordion.find('v-pane');
 
     expect(pane.isolateScope().isExpanded).toBe(true);
   });
@@ -147,13 +131,11 @@ describe('v-pane directive', function () {
     scope.panes = generatePanes(length);
     scope.$digest();
     
-    expect(accordion.find('.' + accordionConfig.classes.pane).length).toEqual(length);
+    expect(accordion.find('v-pane').length).toEqual(length);
   });
 
 
   it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', inject(function ($timeout) {
-    var expandedStateClass = accordionConfig.classes.expandedState;
-
     var template =  '<v-accordion>\n' +
                     '  <v-pane>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -163,25 +145,19 @@ describe('v-pane directive', function () {
 
     var accordion = $compile(template)(scope);
 
-    var pane = accordion.find('.' + accordionConfig.classes.pane);
-    var paneContent = accordion.find('.' + accordionConfig.classes.paneContent);
-    var paneHeader = accordion.find('.' + accordionConfig.classes.paneHeader);
+    var pane = accordion.find('v-pane');
 
     var paneIsolateScope = pane.isolateScope();
         paneIsolateScope.$digest();
 
-    expect(pane.hasClass(expandedStateClass) &&
-           paneContent.hasClass(expandedStateClass) &&
-           paneHeader.hasClass(expandedStateClass)).toBe(false);
+    expect(pane.hasClass('is-expanded')).toBe(false);
 
     paneIsolateScope.isExpanded = true;
     paneIsolateScope.$digest();
 
     $timeout.flush();
 
-    expect(pane.hasClass(expandedStateClass) &&
-           paneContent.hasClass(expandedStateClass) &&
-           paneHeader.hasClass(expandedStateClass)).toBe(true);
+    expect(pane.hasClass('is-expanded')).toBe(true);
   }));
 
 });

@@ -1,3 +1,4 @@
+
 # AngularJS multi-level accordion
   
   - Allows for a nested structure
@@ -6,16 +7,14 @@
   - Optimized for mobile devices
 
 
-## Demo
-Watch the vAccordion component in action on the [demo page](http://lukaszwatroba.github.io/v-accordion).
+## Demos
 
-
-## Requirements
-  - AngularJS
-  - ngAnimate
+  - [GitHub](http://lukaszwatroba.github.io/v-accordion)
+  - [CodePen](http://codepen.io/LukaszWatroba/pen/pvEOBZ)
 
 
 ## Usage
+
   - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist).
 
   - Include `angular.js`, `angular-animate.js`, `v-accordion.js`, and `v-accordion.css`:
@@ -35,8 +34,8 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
   - Put the following markup in your template:
   ```html
-  <!-- add allow-multiple attribute to allow multiple sections open at once -->
-  <v-accordion allow-multiple>
+  <!-- add `multiple` attribute to allow multiple sections open at once -->
+  <v-accordion class="vAccordion--dafault" multiple>
     
     <!-- add expanded attribute to open first section -->
     <v-pane expanded>
@@ -64,7 +63,7 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 
   - You can also use `v-accordion` with `ng-repeat`:
   ```html
-  <v-accordion>
+  <v-accordion class="vAccordion--dafault">
 
     <v-pane ng-repeat="pane in panes" expanded="$first">
       <v-pane-header>
@@ -95,9 +94,11 @@ Watch the vAccordion component in action on the [demo page](http://lukaszwatroba
 ## API
 
 Use API methods to control accordion component:
+
 ```html
-<v-accordion allow-multiple control="accordionControl">
-  <v-pane ng-repeat="pane in panes" expanded="$first">
+<v-accordion multiple control="accordion">
+
+  <v-pane ng-repeat="pane in panes">
     <v-pane-header>
       {{ pane.header }}
     </v-pane-header>
@@ -106,53 +107,52 @@ Use API methods to control accordion component:
       {{ pane.content }}
     </v-pane-content>
   </v-pane>
+  
 </v-accordion>
 
-<button ng-click="accordionControl.toggle(0)">Toggle first pane</button>
-<button ng-click="accordionControl.expandAll()">Expand all</button>
-<button ng-click="accordionControl.collapseAll()">Collapse all</button>
-```
-
-Use these callbacks to get expanded/collapsed pane index:
-```js
-$scope.accordionControl = {
-  onExpand: function (expandedPaneIndex) {
-    console.log('expanded:', expandedPaneIndex);
-  },
-  onCollapse: function (collapsedPaneIndex) {
-    console.log('collapsed:', collapsedPaneIndex);
-  }
-};
+<button ng-click="accordion.toggle(0)">Toggle first pane</button>
+<button ng-click="accordion.expandAll()">Expand all</button>
+<button ng-click="accordion.collapseAll()">Collapse all</button>
 ```
 
 #### Methods
+
   - `toggle(paneIndex)`
   - `expand(paneIndex)`
   - `collapse(paneIndex)`
   - `expandAll()`
   - `collapseAll()`
 
-#### Callbacks
-  - `onExpand(paneIndex)`
-  - `onCollapse(paneIndex)`
+
+## Callbacks
+
+Use these callbacks to get expanded/collapsed pane index:
 
 
-## Config
-You can easily change the default class names:
+```html
+<v-accordion onexpand="expandCallback(index)" oncollapse="collapseCallback(index)">
+
+  <v-pane ng-repeat="pane in panes">
+    <v-pane-header>
+      {{ pane.header }}
+    </v-pane-header>
+
+    <v-pane-content>
+      {{ pane.content }}
+    </v-pane-content>
+  </v-pane>
+
+</v-accordion>
+```
+
 
 ```js
-angular
-  .module('myApp', [ 'vAccordion' ])
+$scope.expandCallback = function (index) {
+  console.log('expanded pane index:', index);
+};
 
-  .config(function (accordionConfig) {
-    
-    accordionConfig.classes.accordion = 'MyAccordion';
-    accordionConfig.classes.pane = 'MyAccordion-pane';
-    accordionConfig.classes.paneHeader = 'MyAccordion-paneHeader';
-    accordionConfig.classes.paneContent = 'MyAccordion-paneContent';
-
-    accordionConfig.classes.expandedState = 'active';
-
-  })
+$scope.collapseCallback = function (index) {
+  console.log('collapsed pane index:', index);
+};
 ```
 

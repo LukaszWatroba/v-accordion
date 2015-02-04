@@ -1,0 +1,40 @@
+/* Base styles
+ ***************************************/
+
+
+v-accordion {
+  display: block;
+}
+
+v-pane {
+  display: block;
+
+  &.is-expanded {
+    > v-pane-content > v-pane-content-inner {
+      visibility: visible;
+    }
+  }
+}
+
+v-pane-header {
+  display: block;
+  position: relative;
+  cursor: pointer;
+}
+
+v-pane-header-inner {
+  display: block;
+}
+
+v-pane-content {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  max-height: 0px;
+}
+
+v-pane-content-inner {
+  display: block;
+  visibility: none;
+}
+

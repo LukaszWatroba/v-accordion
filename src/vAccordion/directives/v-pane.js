@@ -7,108 +7,84 @@ angular.module('vAccordion.directives')
 
 function vPaneDirective ($timeout, $animate, accordionConfig) {
   return {
-    restrict: 'EA',
+    restrict: 'E',
     require: '^vAccordion',
     transclude: true,
-    replace: true,
-    template: '<div ng-transclude></div>',
+    controller: PaneDirectiveController,
     scope: {
       isExpanded: '=?expanded'
     },
-    controllerAs: 'paneCtrl',
-    controller: PaneDirectiveController,
-    compile: function (tElement) {
-      tElement.addClass(accordionConfig.classes.pane);
+    link: function (scope, iElement, iAttrs, accordionCtrl, transclude) {
+      transclude(scope.$parent, function (clone) {
+        iElement.append(clone);
+      });
 
-      return function postLink (scope, iElement, iAttrs, accordionCtrl) {
-        if (!angular.isDefined(scope.isExpanded)) {
-          scope.isExpanded = angular.isDefined(iAttrs.expanded);
-        }
+      if (!angular.isDefined(scope.isExpanded)) {
+        scope.isExpanded = angular.isDefined(iAttrs.expanded);
+      }
 
-        var paneHeaderNative = iElement[0].querySelector('.' + accordionConfig.classes.paneHeader),
-            paneContentNative = iElement[0].querySelector('.' + accordionConfig.classes.paneContent);
+      var states = accordionConfig.states;
 
-        if (!paneHeaderNative) {
-          throw new Error('The `v-pane-header` directive can\'t be found');
-        }
+      var paneHeader = iElement.find('v-pane-header'),
+          paneContent = iElement.find('v-pane-content'),
+          paneInner = iElement.find('v-pane-content-inner');
 
-        if (!paneContentNative) {
-          throw new Error('The `v-pane-content` directive can\'t be found');
-        }
+      if (!paneHeader[0]) {
+        throw new Error('The `v-pane-header` directive can\'t be found');
+      }
 
-        var paneInnerNative = paneContentNative.querySelector('div');
+      if (!paneContent[0]) {
+        throw new Error('The `v-pane-content` directive can\'t be found');
+      }
 
-        var paneHeaderElement = angular.element(paneHeaderNative),
-            paneContentElement = angular.element(paneContentNative);
+      accordionCtrl.addPane(scope);
+      scope.accordionCtrl = accordionCtrl;
 
-        var expandedStateClass = accordionConfig.classes.expandedState;
+      paneContent[0].style.maxHeight = '0px';
 
-        accordionCtrl.addPane(scope);
-        scope.accordionCtrl = accordionCtrl;
-
-        paneContentNative.style.maxHeight = '0px';
-
-        function expand () {
-          accordionCtrl.disable();
-
-          var paneInnerHeight = paneInnerNative.offsetHeight;
-          paneContentNative.style.maxHeight = '0px';
-
-          $timeout(function () {
-            $animate.addClass(paneContentElement, expandedStateClass)
-              .then(function () {
-                accordionCtrl.enable();
-                paneContentNative.style.maxHeight = 'none';
-              });
-
-            setTimeout(function () {
-              paneContentNative.style.maxHeight = paneInnerHeight + 'px';
-            }, 0);
-          }, 0);
-
-          iElement.addClass(expandedStateClass);
-          paneHeaderElement.addClass(expandedStateClass);
-        }
-
-        function collapse () {
-          accordionCtrl.disable();
-
-          var paneInnerHeight = paneInnerNative.offsetHeight;
-
-          paneContentNative.style.maxHeight = paneInnerHeight + 'px';
-
-          $timeout(function () {
-            $animate.removeClass(paneContentElement, expandedStateClass)
-              .then(function () {
-                accordionCtrl.enable();
-              });
-
-            setTimeout(function () {
-              paneContentNative.style.maxHeight = '0px';
-            }, 0);
-          }, 0);
-
-          iElement.removeClass(expandedStateClass);
-          paneHeaderElement.removeClass(expandedStateClass);
-        }
+      function expand () {
+        accordionCtrl.disable();
+        paneContent[0].style.maxHeight = '0px';
 
         $timeout(function () {
-          if (scope.isExpanded) {
-            expand();
-          }
-        }, 100);
+          $animate.addClass(iElement, states.expanded)
+            .then(function () {
+              accordionCtrl.enable();
+              paneContent[0].style.maxHeight = 'none';
+            });
 
-        scope.$watch('isExpanded', function (newValue, oldValue) {
-          if (newValue === oldValue) { return true; }
+          setTimeout(function () {
+            paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
+          }, 0);
+        }, 0);
+      }
 
-          if (newValue) {
-            expand();
-          } else {
-            collapse();
-          }            
-        });
+      function collapse () {
+        accordionCtrl.disable();
+        paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
 
-      };
+        $timeout(function () {
+          $animate.removeClass(iElement, states.expanded)
+            .then(function () {
+              accordionCtrl.enable();
+            });
+
+          setTimeout(function () {
+            paneContent[0].style.maxHeight = '0px';
+          }, 0);
+        }, 0);
+      }
+
+      if (scope.isExpanded) {
+        iElement.addClass(states.expanded);
+        paneContent[0].style.maxHeight = 'none';
+      }
+
+      scope.$watch('isExpanded', function (newValue, oldValue) {
+        if (newValue === oldValue) { return true; }
+        if (newValue) { expand(); }
+        else { collapse(); }            
+      });
     }
   };
 }

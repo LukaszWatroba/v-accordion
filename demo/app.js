@@ -2,37 +2,13 @@
   'use strict';
 
   angular
-    .module('myApp', [ 'vAccordion' ])
+    .module('myApp', [ 'ngAnimate', 'vAccordion' ])
 
     .config(function ($compileProvider) {
       $compileProvider.debugInfoEnabled(false);
     })
 
-    // You can override the default class names
-    .config(function (accordionConfig) {
-
-      accordionConfig.classes = {
-        accordion: 'Accordion Accordion--dafault',
-        pane: 'Accordion-pane',
-        paneHeader: 'Accordion-paneHeader',
-        paneContent: 'Accordion-paneContent',
-
-        expandedState: 'is-expanded'
-      };
-
-    })
-
     .controller('MainController', function ($scope) {
-
-      $scope.firstAccordionControl = {
-        onExpand: function (expandedPaneIndex) {
-          console.log('expanded:', expandedPaneIndex);
-        },
-        onCollapse: function (collapsedPaneIndex) {
-          console.log('collapsed:', collapsedPaneIndex);
-        }
-      };
-
       $scope.panes = [
         {
           header: 'Pane 1',
@@ -58,6 +34,14 @@
           ]
         }
       ];
+
+      $scope.expandCallback = function (index) {
+        console.log('expand:', index);
+      };
+
+      $scope.collapseCallback = function (index) {
+        console.log('collapse:', index);
+      };
       
     });
 
