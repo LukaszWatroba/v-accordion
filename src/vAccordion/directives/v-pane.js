@@ -27,7 +27,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
       var paneHeader = iElement.find('v-pane-header'),
           paneContent = iElement.find('v-pane-content'),
-          paneInner = iElement.find('v-pane-content-inner');
+          paneInner = paneContent.find('div');
 
       if (!paneHeader[0]) {
         throw new Error('The `v-pane-header` directive can\'t be found');
@@ -40,11 +40,14 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       accordionCtrl.addPane(scope);
       scope.accordionCtrl = accordionCtrl;
 
-      paneContent[0].style.maxHeight = '0px';
-
       function expand () {
         accordionCtrl.disable();
+
         paneContent[0].style.maxHeight = '0px';
+        paneHeader.attr({
+          'aria-selected': 'true',
+          'tabindex': 0
+        });
 
         $timeout(function () {
           $animate.addClass(iElement, states.expanded)
@@ -61,7 +64,12 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
       function collapse () {
         accordionCtrl.disable();
+
         paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
+        paneHeader.attr({
+          'aria-selected': 'false',
+          'tabindex': -1
+        });
 
         $timeout(function () {
           $animate.removeClass(iElement, states.expanded)
@@ -78,6 +86,19 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       if (scope.isExpanded) {
         iElement.addClass(states.expanded);
         paneContent[0].style.maxHeight = 'none';
+
+        paneHeader.attr({
+          'aria-selected': 'true',
+          'tabindex': 0
+        });
+      } else {
+        paneHeader.attr('aria-selected', 'false');
+        paneContent[0].style.maxHeight = '0px';
+
+        paneHeader.attr({
+          'aria-selected': 'false',
+          'tabindex': -1
+        });
       }
 
       scope.$watch('isExpanded', function (newValue, oldValue) {

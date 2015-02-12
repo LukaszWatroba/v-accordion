@@ -27,7 +27,7 @@
           }
         }
 
-        > v-pane-content > v-pane-content-inner {
+        > v-pane-content > div {
           transform: translate3d(0, 0, 0);
         }
       }
@@ -67,7 +67,7 @@
       }
     }
 
-    v-pane-content-inner {
+    v-pane-content > div {
       padding-bottom: $v-accordion-spacing;
       will-change: transform, opacity;
       transform: translate3d(0, 30px, 0);

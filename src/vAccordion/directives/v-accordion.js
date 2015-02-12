@@ -20,7 +20,7 @@ function vAccordionDirective () {
       transclude(scope.$parent, function(clone) {
         iElement.append(clone);
       });
-
+      
       var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
 
       function checkCustomControlAPIMethods () {
@@ -33,6 +33,12 @@ function vAccordionDirective () {
 
       if (!angular.isDefined(scope.allowMultiple)) {
         scope.allowMultiple = angular.isDefined(iAttrs.multiple);
+      }
+
+      iAttrs.$set('role', 'tablist');
+
+      if (scope.allowMultiple) {
+        iAttrs.$set('aria-multiselectable', 'true');
       }
 
       if (angular.isDefined(scope.control)) {
@@ -56,7 +62,8 @@ function AccordionDirectiveController ($scope) {
 
   $scope.panes = [];
 
-  function hasExpandedPane () {
+
+  ctrl.hasExpandedPane = function () {
     var bool = false;
 
     for (var i = 0, length = $scope.panes.length; i < length; i++) {
@@ -69,15 +76,16 @@ function AccordionDirectiveController ($scope) {
     }
 
     return bool;
-  }
-
-  function getPaneByIndex (index) {
+  };
+  
+  ctrl.getPaneByIndex = function (index) {
     return $scope.panes[index];
-  }
+  };
 
-  function getPaneIndex (pane) {
+  ctrl.getPaneIndex = function (pane) {
     return $scope.panes.indexOf(pane);
-  }
+  };
+
 
   ctrl.disable = function () {
     isDisabled = true;
@@ -89,7 +97,7 @@ function AccordionDirectiveController ($scope) {
 
   ctrl.addPane = function (paneToAdd) {
     if (!$scope.allowMultiple) {
-      if (hasExpandedPane() && paneToAdd.isExpanded) {
+      if (ctrl.hasExpandedPane() && paneToAdd.isExpanded) {
         throw new Error('The `multiple` attribute can\'t be found');
       } 
     }
@@ -97,7 +105,7 @@ function AccordionDirectiveController ($scope) {
     $scope.panes.push(paneToAdd);
 
     if (paneToAdd.isExpanded) {
-      $scope.expandCb({ index: getPaneIndex(paneToAdd) });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd) });
     }
   };
 
@@ -111,9 +119,9 @@ function AccordionDirectiveController ($scope) {
     paneToToggle.isExpanded = !paneToToggle.isExpanded;
 
     if (paneToToggle.isExpanded) {
-      $scope.expandCb({ index: getPaneIndex(paneToToggle) });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToToggle) });
     } else {
-      $scope.collapseCb({ index: getPaneIndex(paneToToggle) });
+      $scope.collapseCb({ index: ctrl.getPaneIndex(paneToToggle) });
     }
   };
 
@@ -126,7 +134,7 @@ function AccordionDirectiveController ($scope) {
 
     if (!paneToExpand.isExpanded) {
       paneToExpand.isExpanded = true;
-      $scope.expandCb({ index: getPaneIndex(paneToExpand) });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToExpand) });
     }
   };
 
@@ -135,7 +143,7 @@ function AccordionDirectiveController ($scope) {
     
     if (paneToCollapse.isExpanded) {
       paneToCollapse.isExpanded = false;
-      $scope.collapseCb({ index: getPaneIndex(paneToCollapse) });
+      $scope.collapseCb({ index: ctrl.getPaneIndex(paneToCollapse) });
     }
   };
 
@@ -164,13 +172,13 @@ function AccordionDirectiveController ($scope) {
   // API
   $scope.internalControl = {
     toggle: function (index) {
-      ctrl.toggle( getPaneByIndex(index) );
+      ctrl.toggle( ctrl.getPaneByIndex(index) );
     },
     expand: function (index) {
-      ctrl.expand( getPaneByIndex(index) );
+      ctrl.expand( ctrl.getPaneByIndex(index) );
     },
     collapse: function (index) {
-      ctrl.collapse( getPaneByIndex(index) );
+      ctrl.collapse( ctrl.getPaneByIndex(index) );
     },
     expandAll: ctrl.expandAll,
     collapseAll: ctrl.collapseAll

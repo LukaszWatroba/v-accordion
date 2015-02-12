@@ -47,7 +47,7 @@ describe('v-pane-content directive', function () {
   });
 
 
-  it('should transclude scope and add `v-pane-content-inner` element', function () {
+  it('should transclude scope and add inner `div` wrapper', function () {
     var message = 'Hello World!';
 
     var template = generateTemplate({ transcludedContent: '{{ message }}' });
@@ -59,7 +59,7 @@ describe('v-pane-content directive', function () {
     scope.$digest();
 
     expect(paneContent.html()).toContain(message);
-    expect(paneContent.html()).toContain('</v-pane-content-inner>');
+    expect(paneContent.html()).toContain('</div>');
   });
 
 });

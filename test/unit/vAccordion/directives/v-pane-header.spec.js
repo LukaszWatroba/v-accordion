@@ -48,7 +48,7 @@ describe('v-pane-header directive', function () {
   });
 
 
-  it('should transclude scope and add `v-pane-header-inner` element', function () {
+  it('should transclude scope and add inner `div` wrapper', function () {
     var message = 'Hello World!';
 
     var template = generateTemplate({ transcludedContent: '{{ message }}' });
@@ -60,7 +60,7 @@ describe('v-pane-header directive', function () {
     scope.$digest();
 
     expect(paneHeader.html()).toContain(message);
-    expect(paneHeader.html()).toContain('</v-pane-header-inner>');
+    expect(paneHeader.html()).toContain('</div>');
   });
 
 

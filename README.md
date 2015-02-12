@@ -3,7 +3,7 @@
   
   - Allows for a nested structure
   - Works with (or without) `ng-repeat`
-  - Allows multiple sections open at once
+  - Allows multiple sections to be open at once
   - Optimized for mobile devices
 
 
@@ -34,10 +34,10 @@
 
   - Put the following markup in your template:
   ```html
-  <!-- add `multiple` attribute to allow multiple sections open at once -->
+  <!-- add `multiple` attribute to allow multiple sections to open at once -->
   <v-accordion class="vAccordion--dafault" multiple>
     
-    <!-- add expanded attribute to open first section -->
+    <!-- add expanded attribute to open the section -->
     <v-pane expanded>
       <v-pane-header>
         Pane header #1
@@ -155,4 +155,24 @@ $scope.collapseCallback = function (index) {
   console.log('collapsed pane index:', index);
 };
 ```
+
+## Accessibility
+vAccordion manages keyboard focus and adds some common aria-* attributes. BUT you should additionally place the `aria-controls` and `aria-labelledby` as follows:
+
+```html
+<v-accordion>
+
+  <v-pane ng-repeat="pane in panes">
+    <v-pane-header id="pane{{$index}}-header" aria-controls="pane{{$index}}-content">
+      {{ pane.header }}
+    </v-pane-header>
+
+    <v-pane-content id="pane{{$index}}-content" aria-labelledby="pane{{$index}}-header">
+      {{ pane.content }}
+    </v-pane-content>
+  </v-pane>
+
+</v-accordion>
+```
+
 

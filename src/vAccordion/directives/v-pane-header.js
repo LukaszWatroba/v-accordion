@@ -10,9 +10,11 @@ function vPaneHeaderDirective () {
     restrict: 'E',
     require: '^vPane',
     transclude: true,
-    template: '<v-pane-header-inner ng-transclude></v-pane-header-inner>',
+    template: '<div ng-transclude></div>',
     scope: {},
     link: function (scope, iElement, iAttrs, paneCtrl) {
+      iAttrs.$set('role', 'tab');
+
       iElement.on('click', function () {
         scope.$apply(function () {
           paneCtrl.toggle();

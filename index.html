@@ -51,19 +51,19 @@
           <v-accordion class="vAccordion--default" control="accordionA" onexpand="expandCallback(index)" oncollapse="collapseCallback(index)">
 
             <v-pane ng-repeat="pane in panes" expanded="$last">
-              <v-pane-header>
+              <v-pane-header id="pane0{{$index}}-header" aria-controls="pane0{{$index}}-content">
                 <h5>{{ pane.header }}</h5>
               </v-pane-header>
 
-              <v-pane-content>
+              <v-pane-content id="pane0{{$index}}-content" aria-labelledby="pane0{{$index}}-header">
                 <p>{{ pane.content }}</p>
 
                 <v-accordion ng-if="pane.subpanes">
                   <v-pane ng-repeat="subpane in pane.subpanes">
-                    <v-pane-header>
+                    <v-pane-header id="pane1{{$index}}-header" aria-controls="pane1{{$index}}-content">
                       <h5>{{ subpane.header }}</h5>
                     </v-pane-header>
-                    <v-pane-content>
+                    <v-pane-content id="pane1{{$index}}-content" aria-labelledby="pane1{{$index}}-header">
                       <p>{{ subpane.content }}</p>
                     </v-pane-content>
                   </v-pane>
@@ -90,20 +90,20 @@
 
           <v-accordion class="vAccordion--default" multiple control="accordionB">
 
-            <v-pane ng-repeat="pane in panes" expanded="$first">
-              <v-pane-header>
+            <v-pane ng-repeat="pane in panes" expanded="$first" id="pane1{{$index}}">
+              <v-pane-header id="pane2{{$index}}-header" aria-controls="pane2{{$index}}-content">
                 <h5>{{ pane.header }}</h5>
               </v-pane-header>
 
-              <v-pane-content>
+              <v-pane-content id="pane2{{$index}}-content" aria-labelledby="pane2{{$index}}-header">
                 <p>{{ pane.content }}</p>
 
                 <v-accordion multiple ng-if="pane.subpanes">
                   <v-pane ng-repeat="subpane in pane.subpanes">
-                    <v-pane-header>
+                    <v-pane-header id="pane3{{$index}}-header" aria-controls="pane3{{$index}}-content">
                       <h5>{{ subpane.header }}</h5>
                     </v-pane-header>
-                    <v-pane-content>
+                    <v-pane-content id="pane3{{$index}}-content" aria-labelledby="pane3{{$index}}-header">
                       <p>{{ subpane.content }}</p>
                     </v-pane-content>
                   </v-pane>

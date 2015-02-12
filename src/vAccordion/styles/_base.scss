@@ -10,7 +10,7 @@ v-pane {
   display: block;
 
   &.is-expanded {
-    > v-pane-content > v-pane-content-inner {
+    > v-pane-content > div {
       visibility: visible;
     }
   }
@@ -20,6 +20,12 @@ v-pane-header {
   display: block;
   position: relative;
   cursor: pointer;
+  user-select: none;
+  outline: none;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 v-pane-header-inner {
@@ -31,10 +37,9 @@ v-pane-content {
   position: relative;
   overflow: hidden;
   max-height: 0px;
-}
 
-v-pane-content-inner {
-  display: block;
-  visibility: none;
+  > div {
+    visibility: none;
+  }
 }
 

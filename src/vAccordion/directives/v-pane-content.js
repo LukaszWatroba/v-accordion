@@ -10,9 +10,11 @@ function vPaneContentDirective () {
     restrict: 'E',
     require: '^vPane',
     transclude: true,
-    template: '<v-pane-content-inner ng-transclude></v-pane-content-inner>',
+    template: '<div ng-transclude></div>',
     scope: {},
-    link: function () {}
+    link: function (scope, iElement, iAttrs) {
+      iAttrs.$set('role', 'tabpanel');
+    }
   };
 }
 
