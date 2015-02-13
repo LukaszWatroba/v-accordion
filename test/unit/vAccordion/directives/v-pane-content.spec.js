@@ -62,4 +62,14 @@ describe('v-pane-content directive', function () {
     expect(paneContent.html()).toContain('</div>');
   });
 
+
+  it('should add the `tabpanel` ARIA role', function () {
+    var template = generateTemplate();
+
+    var accordion = $compile(template)(scope);
+    var paneContent = accordion.find('v-pane-content');
+
+    expect(paneContent.attr('role')).toBe('tabpanel');
+  });
+
 });

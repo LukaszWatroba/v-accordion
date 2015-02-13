@@ -313,7 +313,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
         paneContent[0].style.maxHeight = '0px';
         paneHeader.attr({
           'aria-selected': 'true',
-          'tabindex': 0
+          'tabindex': '0'
         });
 
         $timeout(function () {
@@ -335,7 +335,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
         paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
         paneHeader.attr({
           'aria-selected': 'false',
-          'tabindex': -1
+          'tabindex': '-1'
         });
 
         $timeout(function () {

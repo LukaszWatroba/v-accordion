@@ -60,7 +60,7 @@ describe('v-accordion directive', function () {
   });
 
 
-  it('should allow multiple selections if `multiple` attribute is defined', function () {
+  it('should allow multiple selections if the `multiple` attribute is defined', function () {
     var template = generateTemplate({ allowMultiple: true });
     var accordion = $compile(template)(scope);
 
@@ -68,7 +68,23 @@ describe('v-accordion directive', function () {
   });
 
 
-  it('should extend custom control object with internal control', function () {
+  it('should add the ARIA `tablist` role', function () {
+    var template = generateTemplate();
+    var accordion = $compile(template)(scope);
+
+    expect(accordion.attr('role')).toBe('tablist');
+  });
+
+
+  it('should set the `aria-multiselectable` attribute to `true` if `multiple` attribute is defined', function () {
+    var template = generateTemplate({ allowMultiple: true });
+    var accordion = $compile(template)(scope);
+
+    expect(accordion.attr('aria-multiselectable')).toBe('true');
+  });
+
+
+  it('should extend custom control object', function () {
     scope.customControl = { someProperty: 'test' };
 
     var template = generateTemplate({ customControl: true });
@@ -79,7 +95,7 @@ describe('v-accordion directive', function () {
   });
 
 
-  it('should throw an error if api method is overriden in custom control object', function () {
+  it('should throw an error if the API method is overriden', function () {
     scope.customControl = { toggle: function () {} };
 
     var template = generateTemplate({ customControl: true });

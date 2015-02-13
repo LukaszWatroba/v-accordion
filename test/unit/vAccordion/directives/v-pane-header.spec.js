@@ -35,6 +35,27 @@ describe('v-pane-header directive', function () {
     accordionConfig = _accordionConfig_;
   }));
 
+  beforeEach(function() {
+    this.addMatchers({
+      toBeActive: function (checkFocus) {
+        var fails = [];
+        var actual = this.actual;
+        this.message = function() {
+          return 'Expected ' + angular.mock.dump(actual) + (this.isNot ? ' not ' : ' ') + 
+            'to be the active tab. Failures: ' + fails.join(', ');
+        };
+
+        if (actual.attr('aria-selected') != 'true') {
+          fails.push('aria-selected is not true');
+        } 
+        if (actual.attr('tabindex') != '0') {
+          fails.push('tabindex is not 0');
+        }
+        return fails.length === 0;
+      }
+    });
+  });
+
   afterEach(function () {
     scope.$destroy();
   });
@@ -48,7 +69,7 @@ describe('v-pane-header directive', function () {
   });
 
 
-  it('should transclude scope and add inner `div` wrapper', function () {
+  it('should transclude scope and create inner `div` wrapper', function () {
     var message = 'Hello World!';
 
     var template = generateTemplate({ transcludedContent: '{{ message }}' });
@@ -64,6 +85,17 @@ describe('v-pane-header directive', function () {
   });
 
 
+  it('should have `role` and `tabindex` attribute', function () {
+    var template = generateTemplate();
+
+    var accordion = $compile(template)(scope);
+    var paneHeader = accordion.find('v-pane-header');
+
+    expect(paneHeader.attr('role')).toBe('tab');
+    expect(paneHeader.attr('tabindex')).toBe('-1');
+  });
+
+
   it('should toggle the pane on click', function () {
     var template =  generateTemplate();
 
@@ -72,12 +104,17 @@ describe('v-pane-header directive', function () {
     var paneHeader = accordion.find('v-pane-header');
 
     var paneIsolateScope = pane.isolateScope();
+        paneIsolateScope.$digest();
 
     expect(paneIsolateScope.isExpanded).toBe(false);
+    expect(paneHeader.attr('aria-selected')).toBe('false');
+    expect(paneHeader.attr('tabindex')).toBe('-1');
+
     paneHeader.click();
+
     expect(paneIsolateScope.isExpanded).toBe(true);
-    paneHeader.click();
-    expect(paneIsolateScope.isExpanded).toBe(false);
+    expect(paneHeader.attr('aria-selected')).toBe('true');
+    expect(paneHeader.attr('tabindex')).toBe('0');
   });
 
 });
