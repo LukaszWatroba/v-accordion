@@ -62,7 +62,8 @@
         transform: rotate(-90deg);
       }
 
-      &:hover {
+      &:hover,
+      &:focus {
         color: $v-pane-hover-color;
       }
     }

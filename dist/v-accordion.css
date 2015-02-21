@@ -104,7 +104,7 @@ v-pane-content {
     -webkit-transform: rotate(-90deg);
         -ms-transform: rotate(-90deg);
             transform: rotate(-90deg); }
-  .vAccordion--default v-pane-header:hover {
+  .vAccordion--default v-pane-header:hover, .vAccordion--default v-pane-header:focus {
     color: #2196F3; }
 .vAccordion--default v-pane-content > div {
   padding-bottom: 20px;

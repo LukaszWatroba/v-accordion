@@ -38,7 +38,9 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       }
 
       accordionCtrl.addPane(scope);
+
       scope.accordionCtrl = accordionCtrl;
+      scope.focus = function () { paneHeader[0].focus(); };
 
       function expand () {
         accordionCtrl.disable();
@@ -89,14 +91,14 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
         paneHeader.attr({
           'aria-selected': 'true',
-          'tabindex': 0
+          'tabindex': '0'
         });
       } else {
         paneContent[0].style.maxHeight = '0px';
 
         paneHeader.attr({
           'aria-selected': 'false',
-          'tabindex': -1
+          'tabindex': '-1'
         });
       }
 
@@ -119,6 +121,14 @@ function PaneDirectiveController ($scope) {
     if (!$scope.isAnimating) {
       $scope.accordionCtrl.toggle($scope);
     }
+  };
+
+  ctrl.focus = function () {
+    $scope.isFocused = true;
+  };
+
+  ctrl.blur = function () {
+    $scope.isFocused = false;
   };
 }
 PaneDirectiveController.$inject = ['$scope'];

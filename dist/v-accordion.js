@@ -139,6 +139,48 @@ function AccordionDirectiveController ($scope) {
     }
   };
 
+  ctrl.focusNext = function () {
+    var length = $scope.panes.length;
+
+    for (var i = 0; i < length; i++) {
+      var iteratedPane = $scope.panes[i];
+
+      if (iteratedPane.isFocused) {
+        var paneToFocusIndex = i + 1;
+
+        if (paneToFocusIndex > $scope.panes.length - 1) {
+          paneToFocusIndex = 0;
+        }
+
+        var paneToFocus = $scope.panes[paneToFocusIndex];
+            paneToFocus.focus();
+
+        break;
+      }
+    }
+  };
+
+  ctrl.focusPrevious = function () {
+    var length = $scope.panes.length;
+
+    for (var i = 0; i < length; i++) {
+      var iteratedPane = $scope.panes[i];
+
+      if (iteratedPane.isFocused) {
+        var paneToFocusIndex = i - 1;
+
+        if (paneToFocusIndex < 0) {
+          paneToFocusIndex = $scope.panes.length - 1;
+        }
+
+        var paneToFocus = $scope.panes[paneToFocusIndex];
+            paneToFocus.focus();
+
+        break;
+      }
+    }
+  };
+
   ctrl.toggle = function (paneToToggle) {
     if (isDisabled || !paneToToggle) { return; }
 
@@ -248,17 +290,41 @@ angular.module('vAccordion.directives')
 function vPaneHeaderDirective () {
   return {
     restrict: 'E',
-    require: '^vPane',
+    require: ['^vPane', '^vAccordion'],
     transclude: true,
     template: '<div ng-transclude></div>',
     scope: {},
-    link: function (scope, iElement, iAttrs, paneCtrl) {
+    link: function (scope, iElement, iAttrs, ctrls) {
       iAttrs.$set('role', 'tab');
+
+      var paneCtrl = ctrls[0];
+      var accordionCtrl = ctrls[1];
 
       iElement.on('click', function () {
         scope.$apply(function () {
           paneCtrl.toggle();
         });
+      });
+
+      iElement[0].onfocus = function () {
+        paneCtrl.focus();
+      };
+
+      iElement[0].onblur = function () {
+        paneCtrl.blur();
+      };
+
+      iElement.on('keydown', function (event) {
+        if (event.keyCode === 32  || event.keyCode === 13) {
+          scope.$apply(function () { paneCtrl.toggle(); });
+          event.preventDefault();
+        } else if (event.keyCode === 39) {
+          scope.$apply(function () { accordionCtrl.focusNext(); });
+          event.preventDefault();
+        } else if (event.keyCode === 37) {
+          scope.$apply(function () { accordionCtrl.focusPrevious(); });
+          event.preventDefault();
+        }
       });
     }
   };
@@ -305,7 +371,9 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       }
 
       accordionCtrl.addPane(scope);
+
       scope.accordionCtrl = accordionCtrl;
+      scope.focus = function () { paneHeader[0].focus(); };
 
       function expand () {
         accordionCtrl.disable();
@@ -356,14 +424,14 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
         paneHeader.attr({
           'aria-selected': 'true',
-          'tabindex': 0
+          'tabindex': '0'
         });
       } else {
         paneContent[0].style.maxHeight = '0px';
 
         paneHeader.attr({
           'aria-selected': 'false',
-          'tabindex': -1
+          'tabindex': '-1'
         });
       }
 
@@ -386,6 +454,14 @@ function PaneDirectiveController ($scope) {
     if (!$scope.isAnimating) {
       $scope.accordionCtrl.toggle($scope);
     }
+  };
+
+  ctrl.focus = function () {
+    $scope.isFocused = true;
+  };
+
+  ctrl.blur = function () {
+    $scope.isFocused = false;
   };
 }
 PaneDirectiveController.$inject = ['$scope'];

@@ -109,6 +109,48 @@ function AccordionDirectiveController ($scope) {
     }
   };
 
+  ctrl.focusNext = function () {
+    var length = $scope.panes.length;
+
+    for (var i = 0; i < length; i++) {
+      var iteratedPane = $scope.panes[i];
+
+      if (iteratedPane.isFocused) {
+        var paneToFocusIndex = i + 1;
+
+        if (paneToFocusIndex > $scope.panes.length - 1) {
+          paneToFocusIndex = 0;
+        }
+
+        var paneToFocus = $scope.panes[paneToFocusIndex];
+            paneToFocus.focus();
+
+        break;
+      }
+    }
+  };
+
+  ctrl.focusPrevious = function () {
+    var length = $scope.panes.length;
+
+    for (var i = 0; i < length; i++) {
+      var iteratedPane = $scope.panes[i];
+
+      if (iteratedPane.isFocused) {
+        var paneToFocusIndex = i - 1;
+
+        if (paneToFocusIndex < 0) {
+          paneToFocusIndex = $scope.panes.length - 1;
+        }
+
+        var paneToFocus = $scope.panes[paneToFocusIndex];
+            paneToFocus.focus();
+
+        break;
+      }
+    }
+  };
+
   ctrl.toggle = function (paneToToggle) {
     if (isDisabled || !paneToToggle) { return; }
 
