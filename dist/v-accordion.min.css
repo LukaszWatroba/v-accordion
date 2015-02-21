@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.1.0
+ * @version v1.2.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT

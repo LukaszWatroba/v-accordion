@@ -1,7 +1,7 @@
 {
   "name": "v-accordion",
   "description": "vAccordion - AngularJS multi-level accordion component",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Łukasz Wątroba <l@lukaszwatroba.com>",
   "license": "MIT",
   "keywords": [
