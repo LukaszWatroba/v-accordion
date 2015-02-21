@@ -359,7 +359,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           'tabindex': 0
         });
       } else {
-        paneHeader.attr('aria-selected', 'false');
         paneContent[0].style.maxHeight = '0px';
 
         paneHeader.attr({
