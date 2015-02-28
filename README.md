@@ -124,6 +124,14 @@ Use API methods to control accordion component:
   - `collapseAll()`
 
 
+#### Events
+
+  - `vAccordion:onExpand`
+  - `vAccordion:onExpandAnimationEnd`
+  - `vAccordion:onCollapse`
+  - `vAccordion:onCollapseAnimationEnd`
+
+
 ## Callbacks
 
 Use these callbacks to get expanded/collapsed pane index:

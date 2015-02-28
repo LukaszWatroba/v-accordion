@@ -16,7 +16,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
     },
     link: function (scope, iElement, iAttrs, accordionCtrl, transclude) {
       transclude(scope.$parent, function (clone) {
-        iElement.append(clone);
+        iElement.appAnimationEnd(clone);
       });
 
       if (!angular.isDefined(scope.isExpanded)) {
@@ -39,8 +39,11 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
       accordionCtrl.addPane(scope);
 
+      scope.paneElement = iElement;
+      scope.paneContentElement = paneContent;
+      scope.paneInnerElement = paneInner;
+      
       scope.accordionCtrl = accordionCtrl;
-      scope.focus = function () { paneHeader[0].focus(); };
 
       function expand () {
         accordionCtrl.disable();
@@ -51,11 +54,14 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           'tabindex': '0'
         });
 
+        scope.$emit('vAccordion:onExpand');
+
         $timeout(function () {
           $animate.addClass(iElement, states.expanded)
             .then(function () {
               accordionCtrl.enable();
               paneContent[0].style.maxHeight = 'none';
+              scope.$emit('vAccordion:onExpandAnimationEnd');
             });
 
           setTimeout(function () {
@@ -73,10 +79,13 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           'tabindex': '-1'
         });
 
+        scope.$emit('vAccordion:onCollapse');
+
         $timeout(function () {
           $animate.removeClass(iElement, states.expanded)
             .then(function () {
               accordionCtrl.enable();
+              scope.$emit('vAccordion:onCollapseAnimationEnd');
             });
 
           setTimeout(function () {
@@ -123,11 +132,11 @@ function PaneDirectiveController ($scope) {
     }
   };
 
-  ctrl.focus = function () {
+  ctrl.focusPane = function () {
     $scope.isFocused = true;
   };
 
-  ctrl.blur = function () {
+  ctrl.blurPane = function () {
     $scope.isFocused = false;
   };
 }

@@ -8,7 +8,8 @@
       $compileProvider.debugInfoEnabled(false);
     })
 
-    .controller('MainController', function ($scope) {
+    .controller('MainController', function ($scope, $window) {
+      
       $scope.panes = [
         {
           header: 'Pane 1',
@@ -25,7 +26,7 @@
           subpanes: [
             {
               header: 'Subpane 1',
-              content: 'Lorem ipsum dolor sit amet enim.'
+              content: 'Quisque lorem tortor fringilla sed, vestibulum id, eleifend justo vel bibendum sapien massa ac turpis faucibus orci luctus non.'
             },
             {
               header: 'Subpane 2',

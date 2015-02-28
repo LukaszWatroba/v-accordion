@@ -25,11 +25,11 @@ function vPaneHeaderDirective () {
       });
 
       iElement[0].onfocus = function () {
-        paneCtrl.focus();
+        paneCtrl.focusPane();
       };
 
       iElement[0].onblur = function () {
-        paneCtrl.blur();
+        paneCtrl.blurPane();
       };
 
       iElement.on('keydown', function (event) {

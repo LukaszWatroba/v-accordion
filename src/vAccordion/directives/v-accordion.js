@@ -105,7 +105,7 @@ function AccordionDirectiveController ($scope) {
     $scope.panes.push(paneToAdd);
 
     if (paneToAdd.isExpanded) {
-      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd) });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd), target: paneToAdd,  });
     }
   };
 
@@ -123,7 +123,7 @@ function AccordionDirectiveController ($scope) {
         }
 
         var paneToFocus = $scope.panes[paneToFocusIndex];
-            paneToFocus.focus();
+            paneToFocus.paneElement.find('v-pane-header')[0].focus();
 
         break;
       }
@@ -144,7 +144,7 @@ function AccordionDirectiveController ($scope) {
         }
 
         var paneToFocus = $scope.panes[paneToFocusIndex];
-            paneToFocus.focus();
+            paneToFocus.paneElement.find('v-pane-header')[0].focus();
 
         break;
       }
