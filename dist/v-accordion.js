@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.2.0
+ * @version v1.2.1
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -373,6 +373,9 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       accordionCtrl.addPane(scope);
 
       scope.paneElement = iElement;
+      scope.paneContentElement = paneContent;
+      scope.paneInnerElement = paneInner;
+      
       scope.accordionCtrl = accordionCtrl;
 
       function expand () {
@@ -391,7 +394,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
             .then(function () {
               accordionCtrl.enable();
               paneContent[0].style.maxHeight = 'none';
-              scope.$emit('vAccordion:onExpandEnd');
+              scope.$emit('vAccordion:onExpandAnimationEnd');
             });
 
           setTimeout(function () {
@@ -415,7 +418,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           $animate.removeClass(iElement, states.expanded)
             .then(function () {
               accordionCtrl.enable();
-              scope.$emit('vAccordion:onCollapseEnd');
+              scope.$emit('vAccordion:onCollapseAnimationEnd');
             });
 
           setTimeout(function () {

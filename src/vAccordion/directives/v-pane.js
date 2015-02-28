@@ -16,7 +16,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
     },
     link: function (scope, iElement, iAttrs, accordionCtrl, transclude) {
       transclude(scope.$parent, function (clone) {
-        iElement.appAnimationEnd(clone);
+        iElement.append(clone);
       });
 
       if (!angular.isDefined(scope.isExpanded)) {
