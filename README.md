@@ -35,7 +35,7 @@
   - Put the following markup in your template:
   ```html
   <!-- add `multiple` attribute to allow multiple sections to open at once -->
-  <v-accordion class="vAccordion--dafault" multiple>
+  <v-accordion class="vAccordion--default" multiple>
     
     <!-- add expanded attribute to open the section -->
     <v-pane expanded>
@@ -63,7 +63,7 @@
 
   - You can also use `v-accordion` with `ng-repeat`:
   ```html
-  <v-accordion class="vAccordion--dafault">
+  <v-accordion class="vAccordion--default">
 
     <v-pane ng-repeat="pane in panes" expanded="$first">
       <v-pane-header>
