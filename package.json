@@ -20,7 +20,10 @@
     "url": "https://github.com/LukaszWatroba/v-accordion/issues"
   },
   "homepage": "http://lukaszwatroba.github.io/v-accordion",
-  "dependencies": {},
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-sass": "^1.3.3"
+  },
   "devDependencies": {
     "chai": "^1.9.1",
     "chai-jquery": "^1.2.3",

@@ -344,6 +344,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
     require: '^vAccordion',
     transclude: true,
     controller: PaneDirectiveController,
+    controllerAs: 'paneCtrl',
     scope: {
       isExpanded: '=?expanded'
     },
