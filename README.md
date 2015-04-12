@@ -1,6 +1,6 @@
 
 # AngularJS multi-level accordion
-  
+
   - Allows for a nested structure
   - Works with (or without) `ng-repeat`
   - Allows multiple sections to be open at once
@@ -15,7 +15,7 @@
 
 ## Usage
 
-  - If you use [bower](http://bower.io/), just `bower install v-accordion`. If not, download files [from the github repo](./dist).
+  - If you use [bower](http://bower.io/) or [npm](https://www.npmjs.com/), just `bower/npm install v-accordion`. If not, download files [from the github repo](./dist).
 
   - Include `angular.js`, `angular-animate.js`, `v-accordion.js`, and `v-accordion.css`:
   ```html
@@ -36,7 +36,7 @@
   ```html
   <!-- add `multiple` attribute to allow multiple sections to open at once -->
   <v-accordion class="vAccordion--default" multiple>
-    
+
     <!-- add expanded attribute to open the section -->
     <v-pane expanded>
       <v-pane-header>
@@ -72,7 +72,7 @@
 
       <v-pane-content>
         {{ pane.content }}
-        
+
         <!-- accordions can be nested :) -->
         <v-accordion ng-if="pane.subpanes">
           <v-pane ng-repeat="subpane in pane.subpanes">
@@ -107,7 +107,7 @@ Use API methods to control accordion component:
       {{ pane.content }}
     </v-pane-content>
   </v-pane>
-  
+
 </v-accordion>
 
 <button ng-click="accordion.toggle(0)">Toggle first pane</button>
@@ -182,5 +182,3 @@ vAccordion manages keyboard focus and adds some common aria-* attributes. BUT yo
 
 </v-accordion>
 ```
-
-
