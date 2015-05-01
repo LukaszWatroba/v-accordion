@@ -7,10 +7,9 @@
   - Optimized for mobile devices
 
 
-## Demos
+## Demo
 
   - [GitHub](http://lukaszwatroba.github.io/v-accordion)
-  - [CodePen](http://codepen.io/LukaszWatroba/pen/pvEOBZ)
 
 
 ## Usage
