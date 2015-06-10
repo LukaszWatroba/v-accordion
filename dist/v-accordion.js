@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.2.5
+ * @version v1.2.6
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -52,9 +52,6 @@ function vAccordionDirective () {
       });
       
       var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
-			
-			scope.expandCb = (angular.isFunction(scope.expandCb)) ? scope.expandCb : angular.noop;
-			scope.collapseCb = (angular.isFunction(scope.collapseCb)) ? scope.collapseCb : angular.noop;
 
       function checkCustomControlAPIMethods () {
         angular.forEach(protectedApiMethods, function (iteratedMethodName) {
@@ -94,7 +91,10 @@ function AccordionDirectiveController ($scope) {
   var isDisabled = false;
 
   $scope.panes = [];
-
+	
+	$scope.expandCb = (angular.isFunction($scope.expandCb)) ? $scope.expandCb : angular.noop;
+	$scope.collapseCb = (angular.isFunction($scope.collapseCb)) ? $scope.collapseCb : angular.noop;
+	
   ctrl.hasExpandedPane = function () {
     var bool = false;
 
