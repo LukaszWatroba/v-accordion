@@ -52,6 +52,9 @@ function vAccordionDirective () {
       });
       
       var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
+			
+			scope.expandCb = scope.expandCb || angular.noop;
+			scope.collapseCb = scope.collapseCb || angular.noop;
 
       function checkCustomControlAPIMethods () {
         angular.forEach(protectedApiMethods, function (iteratedMethodName) {

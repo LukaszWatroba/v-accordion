@@ -9,7 +9,7 @@
     })
 
     .controller('MainController', function ($scope, $window) {
-      
+
       $scope.panes = [
         {
           header: 'Pane 1',
@@ -43,7 +43,7 @@
       $scope.collapseCallback = function (index) {
         console.log('collapse:', index);
       };
-      
+
     });
 
 })(angular);
