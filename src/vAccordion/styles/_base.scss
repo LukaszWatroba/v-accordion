@@ -26,6 +26,10 @@ v-pane-header {
   &:focus {
     outline: none;
   }
+	
+	&[disabled] {
+		pointer-events: none;
+	}
 
   > div {
     display: block;

@@ -44,6 +44,8 @@ v-pane-header {
   outline: none; }
   v-pane-header:focus {
     outline: none; }
+  v-pane-header[disabled] {
+    pointer-events: none; }
   v-pane-header > div {
     display: block; }
 
