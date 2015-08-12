@@ -42,7 +42,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       scope.paneElement = iElement;
       scope.paneContentElement = paneContent;
       scope.paneInnerElement = paneInner;
-      
+
       scope.accordionCtrl = accordionCtrl;
 
       function expand () {
@@ -114,7 +114,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       scope.$watch('isExpanded', function (newValue, oldValue) {
         if (newValue === oldValue) { return true; }
         if (newValue) { expand(); }
-        else { collapse(); }            
+        else { collapse(); }
       });
     }
   };
@@ -141,4 +141,3 @@ function PaneDirectiveController ($scope) {
   };
 }
 PaneDirectiveController.$inject = ['$scope'];
-

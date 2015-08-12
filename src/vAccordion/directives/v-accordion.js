@@ -20,7 +20,7 @@ function vAccordionDirective () {
       transclude(scope.$parent, function(clone) {
         iElement.append(clone);
       });
-      
+
       var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
 
       function checkCustomControlAPIMethods () {
@@ -46,7 +46,7 @@ function vAccordionDirective () {
 
         var mergedControl = angular.extend({}, scope.internalControl, scope.control);
         scope.control = scope.internalControl = mergedControl;
-      } 
+      }
       else {
         scope.control = scope.internalControl;
       }
@@ -61,10 +61,10 @@ function AccordionDirectiveController ($scope) {
   var isDisabled = false;
 
   $scope.panes = [];
-	
+
 	$scope.expandCb = (angular.isFunction($scope.expandCb)) ? $scope.expandCb : angular.noop;
 	$scope.collapseCb = (angular.isFunction($scope.collapseCb)) ? $scope.collapseCb : angular.noop;
-	
+
   ctrl.hasExpandedPane = function () {
     var bool = false;
 
@@ -79,13 +79,29 @@ function AccordionDirectiveController ($scope) {
 
     return bool;
   };
-  
+
   ctrl.getPaneByIndex = function (index) {
-    return $scope.panes[index];
+    var thePane;
+
+    angular.forEach($scope.panes, function (iteratedPane) {
+      if (angular.isDefined(iteratedPane.$parent.$index) && iteratedPane.$parent.$index === index) {
+        thePane = iteratedPane;
+      }
+    });
+
+    return (thePane) ? thePane : $scope.panes[index];
   };
 
   ctrl.getPaneIndex = function (pane) {
-    return $scope.panes.indexOf(pane);
+    var theIndex;
+
+    angular.forEach($scope.panes, function (iteratedPane) {
+      if (angular.isDefined(iteratedPane.$parent.$index) && iteratedPane === pane) {
+        theIndex = iteratedPane.$parent.$index;
+      }
+    });
+
+    return (angular.isDefined(theIndex)) ? theIndex : $scope.panes.indexOf(pane);
   };
 
 
@@ -101,13 +117,13 @@ function AccordionDirectiveController ($scope) {
     if (!$scope.allowMultiple) {
       if (ctrl.hasExpandedPane() && paneToAdd.isExpanded) {
         throw new Error('The `multiple` attribute can\'t be found');
-      } 
+      }
     }
 
     $scope.panes.push(paneToAdd);
 
     if (paneToAdd.isExpanded) {
-      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd), target: paneToAdd,  });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd), target: paneToAdd });
     }
   };
 
@@ -184,7 +200,7 @@ function AccordionDirectiveController ($scope) {
 
   ctrl.collapse = function (paneToCollapse) {
     if (isDisabled || !paneToCollapse) { return; }
-    
+
     if (paneToCollapse.isExpanded) {
       paneToCollapse.isExpanded = false;
       $scope.collapseCb({ index: ctrl.getPaneIndex(paneToCollapse) });
@@ -229,4 +245,3 @@ function AccordionDirectiveController ($scope) {
   };
 }
 AccordionDirectiveController.$inject = ['$scope'];
-
