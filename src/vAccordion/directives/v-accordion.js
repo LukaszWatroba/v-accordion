@@ -84,7 +84,7 @@ function AccordionDirectiveController ($scope) {
     var thePane;
 
     angular.forEach($scope.panes, function (iteratedPane) {
-      if (angular.isDefined(iteratedPane.$parent.$index) && iteratedPane.$parent.$index === index) {
+      if (iteratedPane.$parent && angular.isDefined(iteratedPane.$parent.$index) && iteratedPane.$parent.$index === index) {
         thePane = iteratedPane;
       }
     });
@@ -96,7 +96,7 @@ function AccordionDirectiveController ($scope) {
     var theIndex;
 
     angular.forEach($scope.panes, function (iteratedPane) {
-      if (angular.isDefined(iteratedPane.$parent.$index) && iteratedPane === pane) {
+      if (iteratedPane.$parent && angular.isDefined(iteratedPane.$parent.$index) && iteratedPane === pane) {
         theIndex = iteratedPane.$parent.$index;
       }
     });
