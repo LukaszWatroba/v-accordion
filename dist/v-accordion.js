@@ -14,19 +14,19 @@
 angular.module('vAccordion.config', [])
   .constant('accordionConfig', {
     states: {
-      expanded: 'is-expanded'
+      expanded: 'is-expanded',
+      disabled: 'is-disabled'
     }
   });
 
 
 // Modules
 angular.module('vAccordion.directives', []);
-angular.module('vAccordion', 
+angular.module('vAccordion',
   [
     'vAccordion.config',
     'vAccordion.directives'
   ]);
-
 
 
 
@@ -361,7 +361,8 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
     transclude: true,
     controller: PaneDirectiveController,
     scope: {
-      isExpanded: '=?expanded'
+      isExpanded: '=?expanded',
+      isDisabled: '=?ngDisabled'
     },
     link: function (scope, iElement, iAttrs, accordionCtrl, transclude) {
       transclude(scope.$parent, function (clone) {
@@ -370,6 +371,10 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
       if (!angular.isDefined(scope.isExpanded)) {
         scope.isExpanded = angular.isDefined(iAttrs.expanded);
+      }
+
+      if (angular.isDefined(iAttrs.disabled)) {
+        scope.isDisabled = true; 
       }
 
       var states = accordionConfig.states;
@@ -476,7 +481,7 @@ function PaneDirectiveController ($scope) {
   var ctrl = this;
 
   ctrl.toggle = function () {
-    if (!$scope.isAnimating) {
+    if (!$scope.isAnimating && !$scope.isDisabled) {
       $scope.accordionCtrl.toggle($scope);
     }
   };

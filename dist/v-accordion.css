@@ -32,6 +32,9 @@ v-pane {
   display: block; }
   v-pane.is-expanded > v-pane-content > div {
     visibility: visible; }
+  v-pane[disabled] > v-pane-header {
+    opacity: 0.6;
+    cursor: not-allowed; }
 
 v-pane-header {
   display: block;
