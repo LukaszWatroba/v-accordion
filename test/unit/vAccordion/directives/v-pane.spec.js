@@ -1,5 +1,5 @@
 describe('v-pane directive', function () {
-  
+
   var $compile;
   var $rootScope;
   var accordionConfig;
@@ -100,7 +100,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should throw an error if multiple panes has `expanded` attribute, but the `allow-multiple` is not set', function () {
+  it('should throw an error if multiple panes has `expanded` attribute, but the `multiple` is not set', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane expanded>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -112,13 +112,16 @@ describe('v-pane directive', function () {
                     '  </v-pane>\n' +
                     '</v-accordion>';
 
-    expect(function () { $compile(template)(scope); }).toThrow();
+    expect(function () {
+      $compile(template)(scope);
+      scope.$digest();
+    }).toThrow();
   });
 
 
   it('should works with `ng-repeat` directive', function () {
     var length = 3;
-   
+
     var template =  '<v-accordion>\n' +
                     '  <v-pane ng-repeat="pane in panes">\n' +
                     '    <v-pane-header>{{ pane.header }}</v-pane-header>\n' +
@@ -130,7 +133,7 @@ describe('v-pane directive', function () {
 
     scope.panes = generatePanes(length);
     scope.$digest();
-    
+
     expect(accordion.find('v-pane').length).toEqual(length);
   });
 
