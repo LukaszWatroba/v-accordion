@@ -14,8 +14,7 @@
 angular.module('vAccordion.config', [])
   .constant('accordionConfig', {
     states: {
-      expanded: 'is-expanded',
-      disabled: 'is-disabled'
+      expanded: 'is-expanded'
     }
   });
 
@@ -374,7 +373,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       }
 
       if (angular.isDefined(iAttrs.disabled)) {
-        scope.isDisabled = true; 
+        scope.isDisabled = true;
       }
 
       var states = accordionConfig.states;
@@ -391,7 +390,9 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
         throw new Error('The `v-pane-content` directive can\'t be found');
       }
 
-      accordionCtrl.addPane(scope);
+      scope.$evalAsync(function () {
+        accordionCtrl.addPane(scope);
+      });
 
       scope.paneElement = iElement;
       scope.paneContentElement = paneContent;

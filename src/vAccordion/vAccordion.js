@@ -4,8 +4,7 @@
 angular.module('vAccordion.config', [])
   .constant('accordionConfig', {
     states: {
-      expanded: 'is-expanded',
-      disabled: 'is-disabled'
+      expanded: 'is-expanded'
     }
   });
 
