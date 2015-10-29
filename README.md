@@ -93,7 +93,7 @@
 
 #### Control
 
-Add `control` attribute and use these methods to control vAccordion from it's parent scope:
+Add `control` attribute and use following methods to control vAccordion from it's parent scope:
 
   - `toggle(indexOrId)`
   - `expand(indexOrId)`
@@ -131,7 +131,7 @@ $scope.$on('my-accordion:onReady', function () {
 
 #### Transcluded scope
 
-`$accordion` and `$pane` transcluded scope properties allows you to control the directive from inside.
+`$accordion` and `$pane` scope properties allows you to control the directive from it's transcluded scope.
 
 ##### $accordion
 
