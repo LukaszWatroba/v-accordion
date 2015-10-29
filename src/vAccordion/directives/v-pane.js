@@ -13,10 +13,18 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
     controller: PaneDirectiveController,
     scope: {
       isExpanded: '=?expanded',
-      isDisabled: '=?ngDisabled'
+      isDisabled: '=?ngDisabled',
+      id: '@?'
     },
     link: function (scope, iElement, iAttrs, accordionCtrl, transclude) {
-      transclude(scope.$parent, function (clone) {
+
+      transclude(scope.$parent.$new(), function (clone, transclusionScope) {
+        transclusionScope.$pane = scope.internalControl;
+
+        if (scope.id) {
+          transclusionScope.$pane.id = scope.id;
+        }
+
         iElement.append(clone);
       });
 
@@ -34,6 +42,8 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           paneContent = iElement.find('v-pane-content'),
           paneInner = paneContent.find('div');
 
+      var accordionId = accordionCtrl.getAccordionId();
+
       if (!paneHeader[0]) {
         throw new Error('The `v-pane-header` directive can\'t be found');
       }
@@ -42,15 +52,18 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
         throw new Error('The `v-pane-content` directive can\'t be found');
       }
 
-      scope.$evalAsync(function () {
-        accordionCtrl.addPane(scope);
-      });
-
       scope.paneElement = iElement;
       scope.paneContentElement = paneContent;
       scope.paneInnerElement = paneInner;
 
       scope.accordionCtrl = accordionCtrl;
+
+      accordionCtrl.addPane(scope);
+
+      function emitEvent (eventName) {
+        eventName = (angular.isDefined(accordionId)) ? accordionId + ':' + eventName : 'vAccoridion:' + eventName;
+        scope.$emit(eventName);
+      }
 
       function expand () {
         accordionCtrl.disable();
@@ -61,14 +74,14 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           'tabindex': '0'
         });
 
-        scope.$emit('vAccordion:onExpand');
+        emitEvent('onExpand');
 
         $timeout(function () {
           $animate.addClass(iElement, states.expanded)
             .then(function () {
               accordionCtrl.enable();
               paneContent[0].style.maxHeight = 'none';
-              scope.$emit('vAccordion:onExpandAnimationEnd');
+              emitEvent('onExpandAnimationEnd');
             });
 
           setTimeout(function () {
@@ -86,13 +99,13 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           'tabindex': '-1'
         });
 
-        scope.$emit('vAccordion:onCollapse');
+        emitEvent('onCollapse');
 
         $timeout(function () {
           $animate.removeClass(iElement, states.expanded)
             .then(function () {
               accordionCtrl.enable();
-              scope.$emit('vAccordion:onCollapseAnimationEnd');
+              emitEvent('onCollapseAnimationEnd');
             });
 
           setTimeout(function () {
@@ -133,18 +146,41 @@ vPaneDirective.$inject = ['$timeout', '$animate', 'accordionConfig'];
 function PaneDirectiveController ($scope) {
   var ctrl = this;
 
-  ctrl.toggle = function () {
+  ctrl.isExpanded = function isExpanded () {
+    return $scope.isExpanded;
+  };
+
+  ctrl.toggle = function toggle () {
     if (!$scope.isAnimating && !$scope.isDisabled) {
       $scope.accordionCtrl.toggle($scope);
     }
   };
 
-  ctrl.focusPane = function () {
+  ctrl.expand = function expand () {
+    if (!$scope.isAnimating && !$scope.isDisabled) {
+      $scope.accordionCtrl.expand($scope);
+    }
+  };
+
+  ctrl.collapse = function collapse () {
+    if (!$scope.isAnimating && !$scope.isDisabled) {
+      $scope.accordionCtrl.collapse($scope);
+    }
+  };
+
+  ctrl.focusPane = function focusPane () {
     $scope.isFocused = true;
   };
 
-  ctrl.blurPane = function () {
+  ctrl.blurPane = function blurPane () {
     $scope.isFocused = false;
+  };
+
+  $scope.internalControl = {
+    toggle: ctrl.toggle,
+    expand: ctrl.expand,
+    collapse: ctrl.collapse,
+    isExpanded: ctrl.isExpanded
   };
 }
 PaneDirectiveController.$inject = ['$scope'];

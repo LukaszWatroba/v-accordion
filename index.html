@@ -46,24 +46,22 @@
         <div class="Grid-cell u-marginBl">
           <h4 class="u-marginVm">Works with (or without) ng-repeat</h4>
 
-
-          <v-accordion class="vAccordion--default" control="accordionA" onexpand="expandCallback(index)" oncollapse="collapseCallback(index)">
-
-            <v-pane ng-repeat="pane in panes" expanded="$first">
-              <v-pane-header id="pane0{{$index}}-header" aria-controls="pane0{{$index}}-content">
-                <h5>{{ pane.header }}</h5>
+          <v-accordion id="accordionA" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
+            <v-pane id="{{ ::pane.id }}" ng-repeat="pane in panesA" expanded="$first">
+              <v-pane-header id="{{ ::pane.id }}-header" aria-controls="{{ ::pane.id }}-content">
+                <h5>{{ ::pane.header }}</h5>
               </v-pane-header>
 
-              <v-pane-content id="pane0{{$index}}-content" aria-labelledby="pane0{{$index}}-header">
-                <p>{{ pane.content }}</p>
+              <v-pane-content id="{{ ::pane.id }}-content" aria-labelledby="{{ ::pane.id }}-header">
+                <p>{{ ::pane.content }}</p>
 
-                <v-accordion ng-if="pane.subpanes">
-                  <v-pane ng-repeat="subpane in pane.subpanes" expanded="$first">
-                    <v-pane-header id="pane1{{$index}}-header" aria-controls="pane1{{$index}}-content">
-                      <h5>{{ subpane.header }}</h5>
+                <v-accordion id="nestedAccordionA" ng-if="pane.subpanes">
+                  <v-pane id="{{ ::subpane.id }}" ng-repeat="subpane in pane.subpanes" expanded="$first">
+                    <v-pane-header id="{{ ::subpane.id }}-header" aria-controls="{{ ::subpane.id }}-header">
+                      <h5>{{ ::subpane.header }}</h5>
                     </v-pane-header>
-                    <v-pane-content id="pane1{{$index}}-content" aria-labelledby="pane1{{$index}}-header">
-                      <p>{{ subpane.content }}</p>
+                    <v-pane-content id="{{ ::subpane.id }}-content" aria-labelledby="{{ ::subpane.id }}-content">
+                      <p>{{ ::subpane.content }}</p>
                     </v-pane-content>
                   </v-pane>
                 </v-accordion>
@@ -75,10 +73,10 @@
 
           <div class="ButtonGroup ButtonGroup--hz ButtonGroup--collapse u-marginVm">
             <div class="ButtonGroup-item">
-              <button class="Button Button--default" ng-click="accordionA.toggle(0)">Toogle first</button>
+              <button class="Button Button--default" ng-click="accordionA.toggle(panesA[0].id)">Toogle first</button>
             </div>
             <div class="ButtonGroup-item">
-              <button class="Button Button--default" ng-click="accordionA.toggle(panes.length - 1)">Toogle last</button>
+              <button class="Button Button--default" ng-click="accordionA.toggle(panesA[2].id)">Toogle last</button>
             </div>
           </div>
         </div>
@@ -86,24 +84,23 @@
         <div class="Grid-cell u-marginBl">
           <h4 class="u-marginVm">Allows multiple sections open at once</h4>
 
+          <v-accordion id="accordionB" class="vAccordion--default" multiple control="accordionB">
 
-          <v-accordion class="vAccordion--default" multiple control="accordionB">
-
-            <v-pane ng-repeat="pane in panes" expanded="$first" id="pane1{{$index}}">
-              <v-pane-header id="pane2{{$index}}-header" aria-controls="pane2{{$index}}-content">
-                <h5>{{ pane.header }}</h5>
+            <v-pane id="{{ ::pane.id }}" ng-repeat="pane in panesB" expanded="$first">
+              <v-pane-header id="{{ ::pane.id }}-header" aria-controls="{{ ::pane.id }}-header">
+                <h5>{{ ::pane.header }}</h5>
               </v-pane-header>
 
-              <v-pane-content id="pane2{{$index}}-content" aria-labelledby="pane2{{$index}}-header">
-                <p>{{ pane.content }}</p>
+              <v-pane-content id="{{ ::pane.id }}-content" aria-labelledby="{{ ::pane.id }}-content">
+                <p>{{ ::pane.content }}</p>
 
-                <v-accordion multiple ng-if="pane.subpanes">
-                  <v-pane ng-repeat="subpane in pane.subpanes" expanded="$first">
-                    <v-pane-header id="pane3{{$index}}-header" aria-controls="pane3{{$index}}-content">
-                      <h5>{{ subpane.header }}</h5>
+                <v-accordion id="nestedAccordionB" multiple ng-if="pane.subpanes">
+                  <v-pane id="{{ ::subpane.id }}" ng-repeat="subpane in pane.subpanes" expanded="$first">
+                    <v-pane-header id="{{ ::subpane.id }}-header" aria-controls="{{ ::subpane.id }}-header">
+                      <h5>{{ ::subpane.header }}</h5>
                     </v-pane-header>
-                    <v-pane-content id="pane3{{$index}}-content" aria-labelledby="pane3{{$index}}-header">
-                      <p>{{ subpane.content }}</p>
+                    <v-pane-content id="{{ ::subpane.id }}-content" aria-labelledby="{{ ::subpane.id }}-content">
+                      <p>{{ ::subpane.content }}</p>
                     </v-pane-content>
                   </v-pane>
                 </v-accordion>

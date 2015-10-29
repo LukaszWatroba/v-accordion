@@ -5,7 +5,7 @@ angular.module('vAccordion.directives')
   .directive('vAccordion', vAccordionDirective);
 
 
-function vAccordionDirective () {
+function vAccordionDirective ($timeout) {
   return {
     restrict: 'E',
     transclude: true,
@@ -14,14 +14,16 @@ function vAccordionDirective () {
       control: '=?',
       allowMultiple: '=?multiple',
       expandCb: '&?onexpand',
-      collapseCb: '&?oncollapse'
+      collapseCb: '&?oncollapse',
+      id: '@?'
     },
     link: function (scope, iElement, iAttrs, ctrl, transclude) {
-      transclude(scope.$parent, function(clone) {
+      transclude(scope.$parent.$new(), function (clone, transclusionScope) {
+        transclusionScope.$accordion = scope.internalControl;
         iElement.append(clone);
       });
 
-      var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll'];
+      var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll', 'hasExpandedPane'];
 
       function checkCustomControlAPIMethods () {
         angular.forEach(protectedApiMethods, function (iteratedMethodName) {
@@ -50,9 +52,15 @@ function vAccordionDirective () {
       else {
         scope.control = scope.internalControl;
       }
+
+      $timeout(function () {
+        var eventName = (angular.isDefined(ctrl.getAccordionId())) ? ctrl.getAccordionId() + ':onReady' : 'vAccordion:onReady';
+        scope.$emit(eventName);
+      }, 0);
     }
   };
 }
+vAccordionDirective.$inject = ['$timeout'];
 
 
 // vAccordion directive controller
@@ -65,7 +73,7 @@ function AccordionDirectiveController ($scope) {
 	$scope.expandCb = (angular.isFunction($scope.expandCb)) ? $scope.expandCb : angular.noop;
 	$scope.collapseCb = (angular.isFunction($scope.collapseCb)) ? $scope.collapseCb : angular.noop;
 
-  ctrl.hasExpandedPane = function () {
+  ctrl.hasExpandedPane = function hasExpandedPane () {
     var bool = false;
 
     for (var i = 0, length = $scope.panes.length; i < length; i++) {
@@ -80,7 +88,7 @@ function AccordionDirectiveController ($scope) {
     return bool;
   };
 
-  ctrl.getPaneByIndex = function (index) {
+  ctrl.getPaneByIndex = function getPaneByIndex (index) {
     var thePane;
 
     angular.forEach($scope.panes, function (iteratedPane) {
@@ -92,7 +100,7 @@ function AccordionDirectiveController ($scope) {
     return (thePane) ? thePane : $scope.panes[index];
   };
 
-  ctrl.getPaneIndex = function (pane) {
+  ctrl.getPaneIndex = function getPaneIndex (pane) {
     var theIndex;
 
     angular.forEach($scope.panes, function (iteratedPane) {
@@ -104,16 +112,36 @@ function AccordionDirectiveController ($scope) {
     return (angular.isDefined(theIndex)) ? theIndex : $scope.panes.indexOf(pane);
   };
 
+  ctrl.getPaneById = function getPaneById (id) {
+    var thePane;
 
-  ctrl.disable = function () {
+    angular.forEach($scope.panes, function (iteratedPane) {
+      if (iteratedPane.id && iteratedPane.id === id) {
+        thePane = iteratedPane;
+      }
+    });
+
+    return thePane;
+  };
+
+  ctrl.getPaneId = function getPaneId (pane) {
+    return pane.id;
+  };
+
+  ctrl.getAccordionId = function getAccordionId () {
+    return $scope.id;
+  };
+
+
+  ctrl.disable = function disable () {
     isDisabled = true;
   };
 
-  ctrl.enable = function () {
+  ctrl.enable = function enable () {
     isDisabled = false;
   };
 
-  ctrl.addPane = function (paneToAdd) {
+  ctrl.addPane = function addPane (paneToAdd) {
     if (!$scope.allowMultiple) {
       if (ctrl.hasExpandedPane() && paneToAdd.isExpanded) {
         throw new Error('The `multiple` attribute can\'t be found');
@@ -123,11 +151,11 @@ function AccordionDirectiveController ($scope) {
     $scope.panes.push(paneToAdd);
 
     if (paneToAdd.isExpanded) {
-      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd), target: paneToAdd });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToAdd), id: paneToAdd.id, pane: paneToAdd });
     }
   };
 
-  ctrl.focusNext = function () {
+  ctrl.focusNext = function focusNext () {
     var length = $scope.panes.length;
 
     for (var i = 0; i < length; i++) {
@@ -148,7 +176,7 @@ function AccordionDirectiveController ($scope) {
     }
   };
 
-  ctrl.focusPrevious = function () {
+  ctrl.focusPrevious = function focusPrevious () {
     var length = $scope.panes.length;
 
     for (var i = 0; i < length; i++) {
@@ -169,7 +197,7 @@ function AccordionDirectiveController ($scope) {
     }
   };
 
-  ctrl.toggle = function (paneToToggle) {
+  ctrl.toggle = function toggle (paneToToggle) {
     if (isDisabled || !paneToToggle) { return; }
 
     if (!$scope.allowMultiple) {
@@ -179,13 +207,13 @@ function AccordionDirectiveController ($scope) {
     paneToToggle.isExpanded = !paneToToggle.isExpanded;
 
     if (paneToToggle.isExpanded) {
-      $scope.expandCb({ index: ctrl.getPaneIndex(paneToToggle) });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToToggle), id: paneToToggle.id, pane: paneToToggle });
     } else {
-      $scope.collapseCb({ index: ctrl.getPaneIndex(paneToToggle) });
+      $scope.collapseCb({ index: ctrl.getPaneIndex(paneToToggle), id: paneToToggle.id, pane: paneToToggle });
     }
   };
 
-  ctrl.expand = function (paneToExpand) {
+  ctrl.expand = function expand (paneToExpand) {
     if (isDisabled || !paneToExpand) { return; }
 
     if (!$scope.allowMultiple) {
@@ -194,20 +222,20 @@ function AccordionDirectiveController ($scope) {
 
     if (!paneToExpand.isExpanded) {
       paneToExpand.isExpanded = true;
-      $scope.expandCb({ index: ctrl.getPaneIndex(paneToExpand) });
+      $scope.expandCb({ index: ctrl.getPaneIndex(paneToExpand), id: paneToExpand.id, pane: paneToExpand });
     }
   };
 
-  ctrl.collapse = function (paneToCollapse) {
+  ctrl.collapse = function collapse (paneToCollapse) {
     if (isDisabled || !paneToCollapse) { return; }
 
     if (paneToCollapse.isExpanded) {
       paneToCollapse.isExpanded = false;
-      $scope.collapseCb({ index: ctrl.getPaneIndex(paneToCollapse) });
+      $scope.collapseCb({ index: ctrl.getPaneIndex(paneToCollapse), id: paneToCollapse.id, pane: paneToCollapse });
     }
   };
 
-  ctrl.expandAll = function () {
+  ctrl.expandAll = function expandAll () {
     if (isDisabled) { return; }
 
     if ($scope.allowMultiple) {
@@ -219,7 +247,7 @@ function AccordionDirectiveController ($scope) {
     }
   };
 
-  ctrl.collapseAll = function (exceptionalPane) {
+  ctrl.collapseAll = function collapseAll (exceptionalPane) {
     if (isDisabled) { return; }
 
     angular.forEach($scope.panes, function (iteratedPane) {
@@ -231,17 +259,30 @@ function AccordionDirectiveController ($scope) {
 
   // API
   $scope.internalControl = {
-    toggle: function (index) {
-      ctrl.toggle( ctrl.getPaneByIndex(index) );
+    toggle: function toggle (indexOrId) {
+      if (angular.isString(indexOrId)) {
+        ctrl.toggle( ctrl.getPaneById(indexOrId) );
+      } else {
+        ctrl.toggle( ctrl.getPaneByIndex(indexOrId) );
+      }
     },
-    expand: function (index) {
-      ctrl.expand( ctrl.getPaneByIndex(index) );
+    expand: function expand (indexOrId) {
+      if (angular.isString(indexOrId)) {
+        ctrl.expand( ctrl.getPaneById(indexOrId) );
+      } else {
+        ctrl.expand( ctrl.getPaneByIndex(indexOrId) );
+      }
     },
-    collapse: function (index) {
-      ctrl.collapse( ctrl.getPaneByIndex(index) );
+    collapse: function collapse (indexOrId) {
+      if (angular.isString(indexOrId)) {
+        ctrl.collapse( ctrl.getPaneById(indexOrId) );
+      } else {
+        ctrl.collapse( ctrl.getPaneByIndex(indexOrId) );
+      }
     },
     expandAll: ctrl.expandAll,
-    collapseAll: ctrl.collapseAll
+    collapseAll: ctrl.collapseAll,
+    hasExpandedPane: ctrl.hasExpandedPane
   };
 }
 AccordionDirectiveController.$inject = ['$scope'];

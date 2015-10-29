@@ -15,24 +15,17 @@ function vPaneHeaderDirective () {
     link: function (scope, iElement, iAttrs, ctrls) {
       iAttrs.$set('role', 'tab');
 
-      var paneCtrl = ctrls[0];
-      var accordionCtrl = ctrls[1];
+      var paneCtrl = ctrls[0],
+          accordionCtrl = ctrls[1];
 
-      iElement.on('click', function () {
-        scope.$apply(function () {
-          paneCtrl.toggle();
-        });
-      });
+      var isInactive = angular.isDefined(iAttrs.inactive);
 
-      iElement[0].onfocus = function () {
-        paneCtrl.focusPane();
-      };
+      function onClick () {
+        if (isInactive) { return false; }
+        scope.$apply(function () { paneCtrl.toggle(); });
+      }
 
-      iElement[0].onblur = function () {
-        paneCtrl.blurPane();
-      };
-
-      iElement.on('keydown', function (event) {
+      function onKeyDown (event) {
         if (event.keyCode === 32  || event.keyCode === 13) {
           scope.$apply(function () { paneCtrl.toggle(); });
           event.preventDefault();
@@ -43,6 +36,24 @@ function vPaneHeaderDirective () {
           scope.$apply(function () { accordionCtrl.focusPrevious(); });
           event.preventDefault();
         }
+      }
+
+      iElement[0].onfocus = function () {
+        paneCtrl.focusPane();
+      };
+
+      iElement[0].onblur = function () {
+        paneCtrl.blurPane();
+      };
+
+      iElement.bind('click', onClick);
+      iElement.bind('keydown', onKeyDown);
+
+      scope.$on('$destroy', function () {
+        iElement.unbind('click', onClick);
+        iElement.unbind('keydown', onKeyDown);
+        iElement[0].onfocus = null;
+        iElement[0].onblur = null;
       });
     }
   };
