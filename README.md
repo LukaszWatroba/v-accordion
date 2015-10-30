@@ -226,3 +226,52 @@ vAccordion manages keyboard focus and adds some common aria-* attributes. BUT yo
 
 </v-accordion>
 ```
+
+```html
+<v-accordion multiple control="myAccordion" onexpand="expandCb(index, id)">
+  <v-pane id="myPane1">
+    <v-pane-header>
+      First pane header
+    </v-pane-header>
+
+    <v-pane-content>
+      First pane content
+    </v-pane-content>
+  </v-pane>
+
+  <v-pane id="myPane2">
+    <v-pane-header>
+      Second pane header
+    </v-pane-header>
+
+    <v-pane-content>
+      Second pane content
+
+      <v-accordion multiple control="mySubAccordion">
+        <v-pane id="mySubPane1">
+          <v-pane-header inactive>
+            First pane header
+            <button ng-click="$pane.toggle()">Toggle me</button>
+          </v-pane-header>
+
+          <v-pane-content>
+            First pane content
+          </v-pane-content>
+        </v-pane>
+      </v-accordion>
+    </v-pane-content>
+  </v-pane>
+</v-accordion>
+```
+
+```js
+myApp.controller('myAccordionController', function ($scope) {
+
+  $scope.expandCb = function (index, id) {
+    if (id === 'pane1') {
+      $scope.mySubAccordion.collapse('mySubPane1');
+    }
+  };
+
+});
+```

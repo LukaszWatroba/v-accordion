@@ -61,7 +61,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       accordionCtrl.addPane(scope);
 
       function emitEvent (eventName) {
-        eventName = (angular.isDefined(accordionId)) ? accordionId + ':' + eventName : 'vAccoridion:' + eventName;
+        eventName = (angular.isDefined(accordionId)) ? accordionId + ':' + eventName : 'vAccordion:' + eventName;
         scope.$emit(eventName);
       }
 

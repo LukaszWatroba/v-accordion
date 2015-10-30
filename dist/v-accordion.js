@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.4.0
+ * @version v1.4.1
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -461,7 +461,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       accordionCtrl.addPane(scope);
 
       function emitEvent (eventName) {
-        eventName = (angular.isDefined(accordionId)) ? accordionId + ':' + eventName : 'vAccoridion:' + eventName;
+        eventName = (angular.isDefined(accordionId)) ? accordionId + ':' + eventName : 'vAccordion:' + eventName;
         scope.$emit(eventName);
       }
 
