@@ -153,6 +153,7 @@ $scope.$on('my-accordion:onReady', function () {
 <v-accordion multiple>
 
   <v-pane ng-repeat="pane in panes">
+    <!-- here's how you can create a custom toggle button -->
     <v-pane-header inactive>
       {{ ::pane.header }}
       <button ng-click="$pane.toggle()">Toggle me</button>
@@ -170,6 +171,7 @@ $scope.$on('my-accordion:onReady', function () {
 
 
 #### Events
+
   - `vAccordion:onReady` or `yourAccordionId:onReady`
   - `vAccordion:onExpand` or `yourAccordionId:onExpand`
   - `vAccordion:onExpandAnimationEnd` or `yourAccordionId:onExpandAnimationEnd`
@@ -203,7 +205,7 @@ $scope.expandCallback = function (index, id) {
   console.log('expanded pane:', index, id);
 };
 
-$scope.collapseCallback = function (index) {
+$scope.collapseCallback = function (index, id) {
   console.log('collapsed pane:', index, id));
 };
 ```
