@@ -38,6 +38,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           paneInner = paneContent.find('div');
 
       var accordionId = accordionCtrl.getAccordionId();
+      var expandTimeout;
 
       if (!paneHeader[0]) {
         throw new Error('The `v-pane-header` directive can\'t be found');
@@ -75,8 +76,11 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           $animate.addClass(iElement, states.expanded)
             .then(function () {
               accordionCtrl.enable();
-              paneContent[0].style.maxHeight = 'none';
               emitEvent('onExpandAnimationEnd');
+
+              expandTimeout = setTimeout(function () {
+                paneContent[0].style.maxHeight = 'none';
+              }, 500);
             });
 
           setTimeout(function () {
@@ -95,6 +99,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
         });
 
         emitEvent('onCollapse');
+        clearTimeout(expandTimeout);
 
         $timeout(function () {
           $animate.removeClass(iElement, states.expanded)
