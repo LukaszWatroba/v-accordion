@@ -6,9 +6,10 @@
   - Allows multiple sections to be open at once
 
 
-## Demo
+## Demos
 
   - [GitHub](http://lukaszwatroba.github.io/v-accordion)
+  - [Linksfridge](https://linksfridge.com/help)
 
 
 ## Usage
@@ -141,6 +142,7 @@ $scope.$on('my-accordion:onReady', function () {
   - `expandAll()`
   - `collapseAll()`
   - `hasExpandedPane()`
+  - `id`
 
 ##### $pane
 
@@ -148,6 +150,7 @@ $scope.$on('my-accordion:onReady', function () {
   - `expand()`
   - `collapse()`
   - `isExpanded()`
+  - `id`
 
 ```html
 <v-accordion multiple>
@@ -199,7 +202,6 @@ Use these callbacks to get expanded/collapsed pane index and id:
 </v-accordion>
 ```
 
-
 ```js
 $scope.expandCallback = function (index, id) {
   console.log('expanded pane:', index, id);
@@ -209,6 +211,40 @@ $scope.collapseCallback = function (index, id) {
   console.log('collapsed pane:', index, id));
 };
 ```
+
+
+## Configuration
+
+#### Module
+Inject `accordionConfig` provider in your app config to change animation duration:
+
+```javascript
+angular
+  .module('myApp', ['vAccordion'])
+  .config(function (accordionConfig) {
+    accordionConfig.expandAnimationDuration = 0.5;
+  });
+```
+
+#### SCSS
+If you are using SASS, you can import v-accordion.scss file and override following variables:
+
+```scss
+$v-accordion-default-theme:         true !default;
+
+$v-accordion-spacing:               20px !default;
+
+$v-pane-border-color:               #D8D8D8 !default;
+$v-pane-expanded-border-color:      #2196F3 !default;
+$v-pane-icon-color:                 #2196F3 !default;
+$v-pane-hover-color:                #2196F3 !default;
+
+$v-pane-disabled-opacity:           0.6   !default;
+
+$v-pane-expand-animation-duration:  0.5s  !default;
+$v-pane-hover-animation-duration:   0.25s !default;
+```
+
 
 ## Accessibility
 vAccordion manages keyboard focus and adds some common aria-* attributes. BUT you should additionally place the `aria-controls` and `aria-labelledby` as follows:
