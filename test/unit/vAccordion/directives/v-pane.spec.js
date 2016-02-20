@@ -156,7 +156,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', inject(function ($timeout) {
+  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', function () {
     var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
@@ -171,7 +171,7 @@ describe('v-pane directive', function () {
     paneIsolateScope.$digest();
 
     expect(pane.hasClass('is-expanded')).toBe(true);
-  }));
+  });
 
 
   it('should set `isDisabled` flag to `true` if disabled attribute is added and has no value', function () {
@@ -210,7 +210,7 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should emit `onExpand` and `onCollapse` events', inject(function ($timeout) {
+  it('should emit `onExpand` and `onCollapse` events', function () {
     var options = { accordionId: 'testAccordion' };
     var template = generateTemplate(options);
 
@@ -231,6 +231,6 @@ describe('v-pane directive', function () {
     paneIsolateScope.$digest();
 
     expect(paneIsolateScope.$emit).toHaveBeenCalledWith(options.accordionId + ':onCollapse');
-  }));
+  });
 
 });

@@ -102,7 +102,7 @@ describe('v-accordion directive', function () {
 
     var template = generateTemplate({ customControl: true });
 
-    expect(function () { $compile(template)(scope) }).toThrow();
+    expect(function () { $compile(template)(scope); }).toThrow();
   });
 
 
@@ -197,7 +197,7 @@ describe('v-accordion directive', function () {
 
       for (var i = 0; i < samplePanes.length; i++) {
         controller.addPane(samplePanes[i]);
-      };
+      }
 
       scope.onExpand = jasmine.createSpy('onExpand spy');
       scope.$digest();
@@ -218,7 +218,7 @@ describe('v-accordion directive', function () {
 
       for (var i = 0; i < samplePanes.length; i++) {
         controller.addPane(samplePanes[i]);
-      };
+      }
 
       scope.onCollapse = jasmine.createSpy('onCollapse spy');
       scope.$digest();

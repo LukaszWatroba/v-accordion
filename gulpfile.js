@@ -65,7 +65,7 @@ gulp.task('lint-src', function() {
 
 gulp.task('lint-tests', function() {
   return gulp.src([
-      'test/**/*Spec.js'
+      'test/**/*.spec.js'
     ])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('jshint-stylish'));
@@ -76,6 +76,6 @@ gulp.task('default', ['lint-src', 'test', 'scripts', 'styles']);
 gulp.task('watch', function() {
   gulp.watch('src/vAccordion/**/*.js', ['lint-src', 'scripts']);
   gulp.watch('test/**/*.spec.js', ['lint-tests', 'test']);
-  
+
   gulp.watch('src/vAccordion/styles/**/*.scss', ['styles']);
 });
