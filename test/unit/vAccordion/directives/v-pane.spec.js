@@ -182,10 +182,12 @@ describe('v-pane directive', function () {
     var pane = accordion.find('v-pane');
     var paneHeader = accordion.find('v-pane-header');
 
+    var paneIsolateScope = pane.isolateScope();
+
     paneHeader.click();
 
-    expect(pane.isolateScope().isDisabled).toBe(true);
-    expect(pane.isolateScope().isExpanded).toBe(false);
+    expect(paneIsolateScope.isDisabled).toBe(true);
+    expect(paneIsolateScope.isExpanded).toBe(false);
   });
 
 
