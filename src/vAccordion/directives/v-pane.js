@@ -24,7 +24,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       });
 
       if (!angular.isDefined(scope.isExpanded)) {
-        scope.isExpanded = angular.isDefined(iAttrs.expanded);
+        scope.isExpanded = (angular.isDefined(iAttrs.expanded) && (iAttrs.expanded === ''));
       }
 
       if (angular.isDefined(iAttrs.disabled)) {
