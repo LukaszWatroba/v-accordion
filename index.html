@@ -18,8 +18,8 @@
     <link href="./dist/v-accordion.css" rel="stylesheet">
 
     <!-- Scripts -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.min.js"></script>
     <!-- <script src="./bower/angular/angular.js"></script> -->
     <!-- <script src="./bower/angular-animate/angular-animate.js"></script> -->
     <script src="./dist/v-accordion.js"></script>
@@ -56,7 +56,7 @@
                 <p>{{ ::pane.content }}</p>
 
                 <v-accordion id="nestedAccordionA" ng-if="pane.subpanes">
-                  <v-pane id="{{ ::subpane.id }}" ng-repeat="subpane in pane.subpanes" expanded="$first">
+                  <v-pane id="{{ ::subpane.id }}" ng-repeat="subpane in pane.subpanes" ng-disabled="subpane.isDisabled">
                     <v-pane-header id="{{ ::subpane.id }}-header" aria-controls="{{ ::subpane.id }}-header">
                       <h5>{{ ::subpane.header }}</h5>
                     </v-pane-header>
@@ -95,7 +95,7 @@
                 <p>{{ ::pane.content }}</p>
 
                 <v-accordion id="nestedAccordionB" multiple ng-if="pane.subpanes">
-                  <v-pane id="{{ ::subpane.id }}" ng-repeat="subpane in pane.subpanes" expanded="$first">
+                  <v-pane id="{{ ::subpane.id }}" ng-repeat="subpane in pane.subpanes" ng-disabled="subpane.isDisabled">
                     <v-pane-header id="{{ ::subpane.id }}-header" aria-controls="{{ ::subpane.id }}-header">
                       <h5>{{ ::subpane.header }}</h5>
                     </v-pane-header>

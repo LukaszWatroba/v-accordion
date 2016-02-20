@@ -4,10 +4,6 @@
   angular
     .module('myApp', [ 'ngAnimate', 'vAccordion' ])
 
-    .config(function ($compileProvider) {
-      $compileProvider.debugInfoEnabled(false);
-    })
-
     .controller('MainController', function ($scope) {
 
       $scope.panesA = [
@@ -34,8 +30,9 @@
             },
             {
               id: 'subpane-2a',
-              header: 'Subpane 2',
-              content: 'Curabitur et ligula. Ut molestie a, ultricies porta urna. Quisque lorem tortor fringilla sed, vestibulum id.'
+              header: 'Subpane 2 (disabled)',
+              content: 'Curabitur et ligula. Ut molestie a, ultricies porta urna. Quisque lorem tortor fringilla sed, vestibulum id.',
+              isDisabled: true
             }
           ]
         }
@@ -65,8 +62,9 @@
             },
             {
               id: 'subpane-2b',
-              header: 'Subpane 2',
-              content: 'Curabitur et ligula. Ut molestie a, ultricies porta urna. Quisque lorem tortor fringilla sed, vestibulum id.'
+              header: 'Subpane 2 (disabled)',
+              content: 'Curabitur et ligula. Ut molestie a, ultricies porta urna. Quisque lorem tortor fringilla sed, vestibulum id.',
+              isDisabled: true
             }
           ]
         }
