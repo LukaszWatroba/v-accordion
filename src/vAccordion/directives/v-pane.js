@@ -38,7 +38,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           paneInner = paneContent.find('div');
 
       var accordionId = accordionCtrl.getAccordionId();
-      var expandTimeout;
 
       if (!paneHeader[0]) {
         throw new Error('The `v-pane-header` directive can\'t be found');
@@ -64,7 +63,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       function expand () {
         accordionCtrl.disable();
 
-        paneContent[0].style.maxHeight = '0px';
         paneHeader.attr({
           'aria-selected': 'true',
           'tabindex': '0'
@@ -72,64 +70,50 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
         emitEvent('onExpand');
 
-        $timeout(function () {
-          $animate.addClass(iElement, states.expanded)
-            .then(function () {
-              accordionCtrl.enable();
-              emitEvent('onExpandAnimationEnd');
-
-              expandTimeout = setTimeout(function () {
-                paneContent[0].style.maxHeight = 'none';
-              }, 500);
-            });
-
-          setTimeout(function () {
-            paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
-          }, 0);
-        }, 0);
+        $animate
+          .addClass(iElement, states.expanded)
+          .then(function () {
+            accordionCtrl.enable();
+            emitEvent('onExpandAnimationEnd');
+          });
       }
 
       function collapse () {
         accordionCtrl.disable();
 
-        paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
         paneHeader.attr({
           'aria-selected': 'false',
           'tabindex': '-1'
         });
 
         emitEvent('onCollapse');
-        clearTimeout(expandTimeout);
 
-        $timeout(function () {
-          $animate.removeClass(iElement, states.expanded)
-            .then(function () {
-              accordionCtrl.enable();
-              emitEvent('onCollapseAnimationEnd');
-            });
-
-          setTimeout(function () {
-            paneContent[0].style.maxHeight = '0px';
-          }, 0);
-        }, 0);
+        $animate
+          .removeClass(iElement, states.expanded)
+          .then(function () {
+            accordionCtrl.enable();
+            emitEvent('onCollapseAnimationEnd');
+          });
       }
 
-      if (scope.isExpanded) {
-        iElement.addClass(states.expanded);
-        paneContent[0].style.maxHeight = 'none';
+      scope.$evalAsync(function () {
+        if (scope.isExpanded) {
+          iElement.addClass(states.expanded);
+          paneContent.css('max-height', 'none');
 
-        paneHeader.attr({
-          'aria-selected': 'true',
-          'tabindex': '0'
-        });
-      } else {
-        paneContent[0].style.maxHeight = '0px';
+          paneHeader.attr({
+            'aria-selected': 'true',
+            'tabindex': '0'
+          });
+        } else {
+          paneContent.css('max-height', '0px');
 
-        paneHeader.attr({
-          'aria-selected': 'false',
-          'tabindex': '-1'
-        });
-      }
+          paneHeader.attr({
+            'aria-selected': 'false',
+            'tabindex': '-1'
+          });
+        }
+      });
 
       scope.$watch('isExpanded', function (newValue, oldValue) {
         if (newValue === oldValue) { return true; }

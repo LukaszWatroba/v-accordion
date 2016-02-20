@@ -10,14 +10,16 @@ v-pane {
   display: block;
 
   &.is-expanded {
-    > v-pane-content > div {
-      visibility: visible;
+    > v-pane-content {
+      > div {
+        display: visible;
+      }
     }
   }
 
   &[disabled] > v-pane-header {
     opacity: $v-pane-disabled-opacity;
-    cursor: not-allowed;
+    pointer-events: none;
   }
 }
 
@@ -31,10 +33,6 @@ v-pane-header {
   &:focus {
     outline: none;
   }
-
-	&[disabled] {
-		pointer-events: none;
-	}
 
   > div {
     display: block;

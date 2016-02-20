@@ -24,6 +24,7 @@ function vAccordionDirective ($timeout) {
       post: function (scope, iElement, iAttrs, ctrl, transclude) {
         transclude(scope.$parent.$new(), function (clone, transclusionScope) {
           transclusionScope.$accordion = scope.internalControl;
+          if (scope.id) { transclusionScope.$accordion.id = scope.id; }
           iElement.append(clone);
         });
 
