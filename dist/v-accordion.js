@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.4.2
+ * @version v1.5.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -9,13 +9,62 @@
 (function (angular) {
 'use strict';
 
-
 // Config
 angular.module('vAccordion.config', [])
   .constant('accordionConfig', {
     states: {
       expanded: 'is-expanded'
-    }
+    },
+    expandAnimationDuration: 0.5
+  })
+  .animation('.is-expanded', function ($animateCss, accordionConfig) {
+    return {
+      addClass: function (element, className, done) {
+        var paneContent = angular.element(element[0].querySelector('v-pane-content')),
+            paneInner = angular.element(paneContent[0].querySelector('div'));
+
+        var height = paneInner[0].offsetHeight;
+
+        var expandAnimation = $animateCss(paneContent, {
+          easing: 'ease',
+          from: { maxHeight: '0px' },
+          to: { maxHeight: height + 'px' },
+          duration: accordionConfig.expandAnimationDuration
+        });
+
+        expandAnimation.start().done(function () {
+          paneContent.css('max-height', 'none');
+          done();
+        });
+
+        return function (isCancelled) {
+          if (isCancelled) {
+            paneContent.css('max-height', 'none');
+          }
+        };
+      },
+      removeClass: function (element, className, done) {
+        var paneContent = angular.element(element[0].querySelector('v-pane-content')),
+            paneInner = angular.element(paneContent[0].querySelector('div'));
+
+        var height = paneInner[0].offsetHeight;
+
+        var collapseAnimation = $animateCss(paneContent, {
+          easing: 'ease',
+          from: { maxHeight: height + 'px' },
+          to: { maxHeight: '0px' },
+          duration: accordionConfig.expandAnimationDuration
+        });
+
+        collapseAnimation.start().done(done);
+
+        return function (isCancelled) {
+          if (isCancelled) {
+            paneContent.css('max-height', '0px');
+          }
+        };
+      }
+    };
   });
 
 
@@ -53,6 +102,7 @@ function vAccordionDirective ($timeout) {
       post: function (scope, iElement, iAttrs, ctrl, transclude) {
         transclude(scope.$parent.$new(), function (clone, transclusionScope) {
           transclusionScope.$accordion = scope.internalControl;
+          if (scope.id) { transclusionScope.$accordion.id = scope.id; }
           iElement.append(clone);
         });
 
@@ -353,6 +403,7 @@ function vPaneHeaderDirective () {
     scope: {},
     link: function (scope, iElement, iAttrs, ctrls) {
       iAttrs.$set('role', 'tab');
+      iAttrs.$set('tabindex', '-1');
 
       var paneCtrl = ctrls[0],
           accordionCtrl = ctrls[1];
@@ -438,7 +489,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
           paneInner = paneContent.find('div');
 
       var accordionId = accordionCtrl.getAccordionId();
-      var expandTimeout;
 
       if (!paneHeader[0]) {
         throw new Error('The `v-pane-header` directive can\'t be found');
@@ -464,7 +514,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       function expand () {
         accordionCtrl.disable();
 
-        paneContent[0].style.maxHeight = '0px';
         paneHeader.attr({
           'aria-selected': 'true',
           'tabindex': '0'
@@ -472,64 +521,50 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
         emitEvent('onExpand');
 
-        $timeout(function () {
-          $animate.addClass(iElement, states.expanded)
-            .then(function () {
-              accordionCtrl.enable();
-              emitEvent('onExpandAnimationEnd');
-
-              expandTimeout = setTimeout(function () {
-                paneContent[0].style.maxHeight = 'none';
-              }, 500);
-            });
-
-          setTimeout(function () {
-            paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
-          }, 0);
-        }, 0);
+        $animate
+          .addClass(iElement, states.expanded)
+          .then(function () {
+            accordionCtrl.enable();
+            emitEvent('onExpandAnimationEnd');
+          });
       }
 
       function collapse () {
         accordionCtrl.disable();
 
-        paneContent[0].style.maxHeight = paneInner[0].offsetHeight + 'px';
         paneHeader.attr({
           'aria-selected': 'false',
           'tabindex': '-1'
         });
 
         emitEvent('onCollapse');
-        clearTimeout(expandTimeout);
 
-        $timeout(function () {
-          $animate.removeClass(iElement, states.expanded)
-            .then(function () {
-              accordionCtrl.enable();
-              emitEvent('onCollapseAnimationEnd');
-            });
-
-          setTimeout(function () {
-            paneContent[0].style.maxHeight = '0px';
-          }, 0);
-        }, 0);
+        $animate
+          .removeClass(iElement, states.expanded)
+          .then(function () {
+            accordionCtrl.enable();
+            emitEvent('onCollapseAnimationEnd');
+          });
       }
 
-      if (scope.isExpanded) {
-        iElement.addClass(states.expanded);
-        paneContent[0].style.maxHeight = 'none';
+      scope.$evalAsync(function () {
+        if (scope.isExpanded) {
+          iElement.addClass(states.expanded);
+          paneContent.css('max-height', 'none');
 
-        paneHeader.attr({
-          'aria-selected': 'true',
-          'tabindex': '0'
-        });
-      } else {
-        paneContent[0].style.maxHeight = '0px';
+          paneHeader.attr({
+            'aria-selected': 'true',
+            'tabindex': '0'
+          });
+        } else {
+          paneContent.css('max-height', '0px');
 
-        paneHeader.attr({
-          'aria-selected': 'false',
-          'tabindex': '-1'
-        });
-      }
+          paneHeader.attr({
+            'aria-selected': 'false',
+            'tabindex': '-1'
+          });
+        }
+      });
 
       scope.$watch('isExpanded', function (newValue, oldValue) {
         if (newValue === oldValue) { return true; }

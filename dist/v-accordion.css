@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.4.2
+ * @version v1.5.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -31,10 +31,10 @@ v-accordion {
 v-pane {
   display: block; }
   v-pane.is-expanded > v-pane-content > div {
-    visibility: visible; }
+    display: visible; }
   v-pane[disabled] > v-pane-header {
     opacity: 0.6;
-    cursor: not-allowed; }
+    pointer-events: none; }
 
 v-pane-header {
   display: block;
@@ -47,8 +47,6 @@ v-pane-header {
   outline: none; }
   v-pane-header:focus {
     outline: none; }
-  v-pane-header[disabled] {
-    pointer-events: none; }
   v-pane-header > div {
     display: block; }
 
@@ -65,9 +63,15 @@ v-pane-content {
 .vAccordion--default v-accordion {
   margin-top: 20px;
   padding-left: 20px; }
+.vAccordion--default v-pane-content > div {
+  padding-bottom: 20px;
+  opacity: 0;
+  -webkit-transform: translate3d(0, 30px, 0);
+          transform: translate3d(0, 30px, 0);
+  -webkit-transition: all 0.5s;
+          transition: all 0.5s; }
 .vAccordion--default v-pane {
-  -webkit-transition: -webkit-transform 0.5s;
-          transition: transform 0.5s; }
+  overflow: hidden; }
   .vAccordion--default v-pane.is-expanded > v-pane-header {
     border-bottom-color: #2196F3; }
     .vAccordion--default v-pane.is-expanded > v-pane-header::after {
@@ -81,15 +85,14 @@ v-pane-content {
     opacity: 1;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
-  .vAccordion--default v-pane.is-expanded-add > v-pane-content, .vAccordion--default v-pane.is-expanded-remove > v-pane-content {
-    -webkit-transition: max-height 0.5s;
-            transition: max-height 0.5s; }
+  .vAccordion--default v-pane[disabled] v-pane-header::after, .vAccordion--default v-pane[disabled] v-pane-header::before {
+    display: none; }
 .vAccordion--default v-pane-header {
   padding: 5px 0;
   margin-bottom: 20px;
   border-bottom: 2px solid #D8D8D8;
-  -webkit-transition: color 0.25s, border-color 0.5s;
-          transition: color 0.25s, border-color 0.5s; }
+  -webkit-transition: all 0.25s;
+          transition: all 0.25s; }
   .vAccordion--default v-pane-header::after, .vAccordion--default v-pane-header::before {
     content: '';
     display: block;
@@ -109,10 +112,3 @@ v-pane-content {
             transform: rotate(-90deg); }
   .vAccordion--default v-pane-header:hover, .vAccordion--default v-pane-header:focus {
     color: #2196F3; }
-.vAccordion--default v-pane-content > div {
-  padding-bottom: 20px;
-  opacity: 0;
-  -webkit-transform: translate3d(0, 30px, 0);
-          transform: translate3d(0, 30px, 0);
-  -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
-          transition: transform 0.5s, opacity 0.5s; }
