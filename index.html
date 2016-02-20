@@ -47,7 +47,8 @@
           <h4 class="u-marginVm">Works with (or without) ng-repeat</h4>
 
           <v-accordion id="accordionA" class="vAccordion--default" control="accordionA" onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
-            <v-pane id="{{ ::pane.id }}" ng-repeat="pane in panesA" expanded="$first">
+
+            <v-pane id="{{ ::pane.id }}" ng-repeat="pane in panesA" expanded="pane.isExpanded">
               <v-pane-header id="{{ ::pane.id }}-header" aria-controls="{{ ::pane.id }}-content">
                 <h5>{{ ::pane.header }}</h5>
               </v-pane-header>
@@ -86,7 +87,7 @@
 
           <v-accordion id="accordionB" class="vAccordion--default" multiple control="accordionB">
 
-            <v-pane id="{{ ::pane.id }}" ng-repeat="pane in panesB" expanded="$first">
+            <v-pane id="{{ ::pane.id }}" ng-repeat="pane in panesB" expanded="pane.isExpanded">
               <v-pane-header id="{{ ::pane.id }}-header" aria-controls="{{ ::pane.id }}-header">
                 <h5>{{ ::pane.header }}</h5>
               </v-pane-header>

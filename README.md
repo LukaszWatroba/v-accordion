@@ -6,7 +6,7 @@
   - Allows multiple sections to be open at once
 
 
-## Demos
+## Examples
 
   - [GitHub](http://lukaszwatroba.github.io/v-accordion)
   - [Linksfridge](https://linksfridge.com/help)
@@ -64,7 +64,7 @@
   ```html
   <v-accordion class="vAccordion--default">
 
-    <v-pane ng-repeat="pane in panes" expanded="$first">
+    <v-pane ng-repeat="pane in panes" expanded="pane.isExpanded">
       <v-pane-header>
         {{ ::pane.header }}
       </v-pane-header>
@@ -74,7 +74,7 @@
 
         <!-- accordions can be nested :) -->
         <v-accordion ng-if="pane.subpanes">
-          <v-pane ng-repeat="subpane in pane.subpanes">
+          <v-pane ng-repeat="subpane in pane.subpanes" ng-disabled="subpane.isDisabled">
             <v-pane-header>
               {{ ::subpane.header }}
             </v-pane-header>
