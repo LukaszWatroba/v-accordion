@@ -35,31 +35,11 @@ describe('v-pane-header directive', function () {
     accordionConfig = _accordionConfig_;
   }));
 
-  beforeEach(function() {
-    this.addMatchers({
-      toBeActive: function (checkFocus) {
-        var fails = [];
-        var actual = this.actual;
-        this.message = function() {
-          return 'Expected ' + angular.mock.dump(actual) + (this.isNot ? ' not ' : ' ') + 
-            'to be the active tab. Failures: ' + fails.join(', ');
-        };
-
-        if (actual.attr('aria-selected') != 'true') {
-          fails.push('aria-selected is not true');
-        } 
-        if (actual.attr('tabindex') != '0') {
-          fails.push('tabindex is not 0');
-        }
-        return fails.length === 0;
-      }
-    });
-  });
 
   afterEach(function () {
     scope.$destroy();
   });
-  
+
 
 
   it('should throw an error if `v-pane` directive controller can\'t be found', function () {
@@ -97,7 +77,7 @@ describe('v-pane-header directive', function () {
 
 
   it('should toggle the pane on click', function () {
-    var template =  generateTemplate();
+    var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
     var pane = accordion.find('v-pane');

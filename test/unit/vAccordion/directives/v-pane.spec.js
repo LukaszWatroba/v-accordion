@@ -20,6 +20,34 @@ describe('v-pane directive', function () {
     return samplePanes;
   };
 
+  var generateTemplate = function (options) {
+    var dafaults = {
+      transcludedContent: '',
+      paneId: false,
+      accordionId: false,
+      paneAttribute: false,
+      accordionAttribute: false
+    };
+
+    if (options) {
+      angular.extend(dafaults, options);
+    }
+
+    var template = '<v-accordion';
+        template += (dafaults.accordionId) ? ' id="' + dafaults.accordionId + '"' : '';
+        template += '>\n';
+        template += '<v-pane';
+        template += (dafaults.paneId) ? ' id="' + dafaults.paneId + '"' : '';
+        template += (dafaults.paneAttribute) ? ' ' + dafaults.paneAttribute : '';
+        template += '>\n';
+        template += '<v-pane-header></v-pane-header>\n';
+        template += '<v-pane-content>' + dafaults.transcludedContent + '</v-pane-content>\n';
+        template += '</v-pane>\n';
+        template += '</v-accordion>';
+
+    return template;
+  };
+
 
 
   beforeEach(module('vAccordion'));
@@ -66,37 +94,35 @@ describe('v-pane directive', function () {
 
   it('should transclude scope', function () {
     var message = 'Hello World!';
+    var options = { transcludedContent: '{{ message }}' };
 
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '    {{ message }}\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+    var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
-    var pane = accordion.find('v-pane');
+    var paneContent = accordion.find('v-pane-content');
 
     scope.message = message;
     scope.$digest();
 
-    expect(pane.html()).toContain(message);
+    expect(paneContent.html()).toContain(message);
   });
 
 
-  it('should set `isExpanded` flag to `true` if expanded attribute is added and has no value', function () {
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane expanded>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+  it('should set pane `internalControl` as `$pane` property on transcluded scope', function () {
+    var options = { paneId: 'testPane' };
+
+    var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
-    var pane = accordion.find('v-pane');
+    var transcludedScope = accordion.find('v-pane-content').scope();
 
-    expect(pane.isolateScope().isExpanded).toBe(true);
+    expect(scope.$pane).not.toBeDefined();
+    expect(transcludedScope.$pane).toBeDefined();
+    expect(transcludedScope.$pane.id).toEqual(options.paneId);
+    expect(transcludedScope.$pane.toggle).toBeDefined();
+    expect(transcludedScope.$pane.expand).toBeDefined();
+    expect(transcludedScope.$pane.collapse).toBeDefined();
+    expect(transcludedScope.$pane.isExpanded).toBeDefined();
   });
 
 
@@ -119,6 +145,50 @@ describe('v-pane directive', function () {
   });
 
 
+  it('should set `isExpanded` flag to `true` if expanded attribute is added and has no value', function () {
+    var options = { paneAttribute: 'expanded' };
+    var template = generateTemplate(options);
+
+    var accordion = $compile(template)(scope);
+    var pane = accordion.find('v-pane');
+
+    expect(pane.isolateScope().isExpanded).toBe(true);
+  });
+
+
+  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', inject(function ($timeout) {
+    var template = generateTemplate();
+
+    var accordion = $compile(template)(scope);
+    var pane = accordion.find('v-pane');
+
+    var paneIsolateScope = pane.isolateScope();
+        paneIsolateScope.$digest();
+
+    expect(pane.hasClass('is-expanded')).toBe(false);
+
+    paneIsolateScope.isExpanded = true;
+    paneIsolateScope.$digest();
+
+    expect(pane.hasClass('is-expanded')).toBe(true);
+  }));
+
+
+  it('should set `isDisabled` flag to `true` if disabled attribute is added and has no value', function () {
+    var options = { paneAttribute: 'disabled' };
+    var template = generateTemplate(options);
+
+    var accordion = $compile(template)(scope);
+    var pane = accordion.find('v-pane');
+    var paneHeader = accordion.find('v-pane-header');
+
+    paneHeader.click();
+
+    expect(pane.isolateScope().isDisabled).toBe(true);
+    expect(pane.isolateScope().isExpanded).toBe(false);
+  });
+
+
   it('should works with `ng-repeat` directive', function () {
     var length = 3;
 
@@ -138,29 +208,27 @@ describe('v-pane directive', function () {
   });
 
 
-  it('should watch the `isExpanded` value and add `is-expanded` class when it is changed to `true`', inject(function ($timeout) {
-    var template =  '<v-accordion>\n' +
-                    '  <v-pane>\n' +
-                    '    <v-pane-header></v-pane-header>\n' +
-                    '    <v-pane-content></v-pane-content>\n' +
-                    '  </v-pane>\n' +
-                    '</v-accordion>';
+  it('should emit `onExpand` and `onCollapse` events', inject(function ($timeout) {
+    var options = { accordionId: 'testAccordion' };
+    var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
-
     var pane = accordion.find('v-pane');
 
     var paneIsolateScope = pane.isolateScope();
         paneIsolateScope.$digest();
 
-    expect(pane.hasClass('is-expanded')).toBe(false);
+    spyOn(paneIsolateScope, '$emit');
 
     paneIsolateScope.isExpanded = true;
     paneIsolateScope.$digest();
 
-    $timeout.flush();
+    expect(paneIsolateScope.$emit).toHaveBeenCalledWith(options.accordionId + ':onExpand');
 
-    expect(pane.hasClass('is-expanded')).toBe(true);
+    paneIsolateScope.isExpanded = false;
+    paneIsolateScope.$digest();
+
+    expect(paneIsolateScope.$emit).toHaveBeenCalledWith(options.accordionId + ':onCollapse');
   }));
 
 });

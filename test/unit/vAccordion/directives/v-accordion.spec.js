@@ -11,6 +11,7 @@ describe('v-accordion directive', function () {
       customControl: false,
       expandCb: false,
       collapseCb: false,
+      accordionId: false,
       transcludedContent: ''
     };
 
@@ -23,6 +24,7 @@ describe('v-accordion directive', function () {
         template += (dafaults.customControl) ? ' control="customControl"' : '';
         template += (dafaults.expandCb) ? ' onexpand="onExpand(index)"' : '';
         template += (dafaults.collapseCb) ? ' oncollapse="onCollapse(index)"' : '';
+        template += (dafaults.accordionId) ? ' id="' + dafaults.accordionId + '"' : '';
         template += '>\n';
         template += dafaults.transcludedContent;
         template += '</v-accordion>';
@@ -101,6 +103,40 @@ describe('v-accordion directive', function () {
     var template = generateTemplate({ customControl: true });
 
     expect(function () { $compile(template)(scope) }).toThrow();
+  });
+
+
+  it('should transclude scope', function () {
+    var message = 'Hello World!';
+    var options = { transcludedContent: '{{ message }}' };
+    var template = generateTemplate(options);
+
+    var accordion = $compile(template)(scope);
+
+    scope.message = message;
+    scope.$digest();
+
+    expect(accordion.html()).toContain(message);
+  });
+
+
+  it('should set accordion `internalControl` as `$accordion` property on transcluded scope', function () {
+    var options = { accordionId: 'testAccordion', transcludedContent: '<v-pane><v-pane-header></v-pane-header><v-pane-content></v-pane-content></v-pane>' };
+    var template = generateTemplate(options);
+
+    var accordion = $compile(template)(scope);
+    var pane = accordion.find('v-pane');
+    var transcludedScope = pane.scope();
+
+    expect(scope.$accordion).not.toBeDefined();
+    expect(transcludedScope.$accordion).toBeDefined();
+    expect(transcludedScope.$accordion.id).toEqual(options.accordionId);
+    expect(transcludedScope.$accordion.toggle).toBeDefined();
+    expect(transcludedScope.$accordion.expand).toBeDefined();
+    expect(transcludedScope.$accordion.collapse).toBeDefined();
+    expect(transcludedScope.$accordion.expandAll).toBeDefined();
+    expect(transcludedScope.$accordion.collapseAll).toBeDefined();
+    expect(transcludedScope.$accordion.hasExpandedPane).toBeDefined();
   });
 
 

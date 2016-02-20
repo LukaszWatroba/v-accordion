@@ -1,5 +1,5 @@
 describe('v-pane-content directive', function () {
-  
+
   var $compile;
   var $rootScope;
   var accordionConfig;
@@ -37,8 +37,8 @@ describe('v-pane-content directive', function () {
   afterEach(function () {
     scope.$destroy();
   });
-  
-  
+
+
 
   it('should throw an error if `v-pane` directive controller can\'t be found', function () {
     var template = '<v-pane-content></v-pane-content>';
@@ -70,6 +70,20 @@ describe('v-pane-content directive', function () {
     var paneContent = accordion.find('v-pane-content');
 
     expect(paneContent.attr('role')).toBe('tabpanel');
+  });
+
+  it('should expand when `v-pane-header` is clicked', function () {
+    var template = generateTemplate();
+
+    var accordion = $compile(template)(scope);
+    var paneHeader = accordion.find('v-pane-header');
+    var paneContent = accordion.find('v-pane-content');
+
+    expect(paneContent.css('max-height')).toBe('');
+
+    paneHeader.click();
+
+    expect(paneContent.css('max-height')).toBe('none');
   });
 
 });
