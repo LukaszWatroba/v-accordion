@@ -216,7 +216,7 @@ $scope.collapseCallback = function (index, id) {
 ## Configuration
 
 #### Module
-Inject `accordionConfig` provider in your app config to change animation duration:
+To change the default animation duration, inject `accordionConfig` provider in your app config:
 
 ```javascript
 angular
