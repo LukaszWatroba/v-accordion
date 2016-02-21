@@ -9,6 +9,7 @@
 ## Examples
 
   - [GitHub](http://lukaszwatroba.github.io/v-accordion)
+  - [CodePen](http://codepen.io/LukaszWatroba/pen/MwdaLo)
   - [Linksfridge](https://linksfridge.com/help)
 
 
