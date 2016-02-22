@@ -7,7 +7,7 @@ angular.module('vAccordion.config', [])
     },
     expandAnimationDuration: 0.5
   })
-  .animation('.is-expanded', function ($animateCss, accordionConfig) {
+  .animation('.is-expanded', [ '$animateCss', 'accordionConfig', function ($animateCss, accordionConfig) {
     return {
       addClass: function (element, className, done) {
         var paneContent = angular.element(element[0].querySelector('v-pane-content')),
@@ -55,7 +55,7 @@ angular.module('vAccordion.config', [])
         };
       }
     };
-  });
+  } ]);
 
 
 // Modules
