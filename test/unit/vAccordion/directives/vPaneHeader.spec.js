@@ -1,4 +1,4 @@
-describe('v-pane-header directive', function () {
+describe('vPaneHeader', function () {
 
   var $compile;
   var $rootScope;
@@ -7,7 +7,7 @@ describe('v-pane-header directive', function () {
 
   var generateTemplate = function (options) {
     var dafaults = {
-      transcludedContent: ''
+      content: ''
     };
 
     if (options) {
@@ -16,7 +16,7 @@ describe('v-pane-header directive', function () {
 
     var template = '<v-accordion>\n';
         template += '<v-pane>\n';
-        template += '<v-pane-header>' + dafaults.transcludedContent + '</v-pane-header>\n';
+        template += '<v-pane-header>' + dafaults.content + '</v-pane-header>\n';
         template += '<v-pane-content></v-pane-content>\n';
         template += '</v-pane>\n';
         template += '</v-accordion>';
@@ -52,7 +52,7 @@ describe('v-pane-header directive', function () {
   it('should transclude scope and create inner `div` wrapper', function () {
     var message = 'Hello World!';
 
-    var template = generateTemplate({ transcludedContent: '{{ message }}' });
+    var template = generateTemplate({ content: '{{ message }}' });
 
     var accordion = $compile(template)(scope);
     var paneHeader = accordion.find('v-pane-header');

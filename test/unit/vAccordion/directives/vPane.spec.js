@@ -1,4 +1,4 @@
-describe('v-pane directive', function () {
+describe('vPane', function () {
 
   var $compile;
   var $rootScope;
@@ -22,26 +22,19 @@ describe('v-pane directive', function () {
 
   var generateTemplate = function (options) {
     var dafaults = {
-      transcludedContent: '',
-      paneId: false,
-      accordionId: false,
-      paneAttribute: false,
-      accordionAttribute: false
+      content: '',
+      accordionAttributes: '',
+      paneAttributes: ''
     };
 
     if (options) {
       angular.extend(dafaults, options);
     }
 
-    var template = '<v-accordion';
-        template += (dafaults.accordionId) ? ' id="' + dafaults.accordionId + '"' : '';
-        template += '>\n';
-        template += '<v-pane';
-        template += (dafaults.paneId) ? ' id="' + dafaults.paneId + '"' : '';
-        template += (dafaults.paneAttribute) ? ' ' + dafaults.paneAttribute : '';
-        template += '>\n';
+    var template = '<v-accordion ' + dafaults.accordionAttributes + '>\n';
+        template += '<v-pane ' + dafaults.paneAttributes + '>\n';
         template += '<v-pane-header></v-pane-header>\n';
-        template += '<v-pane-content>' + dafaults.transcludedContent + '</v-pane-content>\n';
+        template += '<v-pane-content>' + dafaults.content + '</v-pane-content>\n';
         template += '</v-pane>\n';
         template += '</v-accordion>';
 
@@ -94,7 +87,7 @@ describe('v-pane directive', function () {
 
   it('should transclude scope', function () {
     var message = 'Hello World!';
-    var options = { transcludedContent: '{{ message }}' };
+    var options = { content: '{{ message }}' };
 
     var template = generateTemplate(options);
 
@@ -109,16 +102,17 @@ describe('v-pane directive', function () {
 
 
   it('should set pane `internalControl` as `$pane` property on transcluded scope', function () {
-    var options = { paneId: 'testPane' };
+    var options = { paneAttributes: 'id="pane"' };
 
     var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
-    var transcludedScope = accordion.find('v-pane-content').scope();
+    var paneContent = accordion.find('v-pane-content');
+    var transcludedScope = paneContent.scope();
 
     expect(scope.$pane).not.toBeDefined();
     expect(transcludedScope.$pane).toBeDefined();
-    expect(transcludedScope.$pane.id).toEqual(options.paneId);
+    expect(transcludedScope.$pane.id).toEqual('pane');
     expect(transcludedScope.$pane.toggle).toBeDefined();
     expect(transcludedScope.$pane.expand).toBeDefined();
     expect(transcludedScope.$pane.collapse).toBeDefined();
@@ -146,7 +140,7 @@ describe('v-pane directive', function () {
 
 
   it('should set `isExpanded` flag to `true` if expanded attribute is added and has no value', function () {
-    var options = { paneAttribute: 'expanded' };
+    var options = { paneAttributes: 'expanded' };
     var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
@@ -175,7 +169,7 @@ describe('v-pane directive', function () {
 
 
   it('should set `isDisabled` flag to `true` if disabled attribute is added and has no value', function () {
-    var options = { paneAttribute: 'disabled' };
+    var options = { paneAttributes: 'disabled' };
     var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
@@ -211,7 +205,7 @@ describe('v-pane directive', function () {
 
 
   it('should emit `onExpand` and `onCollapse` events', function () {
-    var options = { accordionId: 'testAccordion' };
+    var options = { accordionAttributes: 'id="accordion"' };
     var template = generateTemplate(options);
 
     var accordion = $compile(template)(scope);
@@ -225,12 +219,12 @@ describe('v-pane directive', function () {
     paneIsolateScope.isExpanded = true;
     paneIsolateScope.$digest();
 
-    expect(paneIsolateScope.$emit).toHaveBeenCalledWith(options.accordionId + ':onExpand');
+    expect(paneIsolateScope.$emit).toHaveBeenCalledWith('accordion:onExpand');
 
     paneIsolateScope.isExpanded = false;
     paneIsolateScope.$digest();
 
-    expect(paneIsolateScope.$emit).toHaveBeenCalledWith(options.accordionId + ':onCollapse');
+    expect(paneIsolateScope.$emit).toHaveBeenCalledWith('accordion:onCollapse');
   });
 
 });
