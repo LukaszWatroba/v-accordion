@@ -9,7 +9,7 @@ function vAccordionDirective ($timeout) {
   return {
     restrict: 'E',
     transclude: true,
-    controller: AccordionDirectiveController,
+    controller: vAccordionController,
     scope: {
       control: '=?',
       allowMultiple: '=?multiple',
@@ -66,7 +66,7 @@ vAccordionDirective.$inject = ['$timeout'];
 
 
 // vAccordion directive controller
-function AccordionDirectiveController ($scope) {
+function vAccordionController ($scope) {
   var ctrl = this;
   var isDisabled = false;
 
@@ -287,4 +287,4 @@ function AccordionDirectiveController ($scope) {
     hasExpandedPane: ctrl.hasExpandedPane
   };
 }
-AccordionDirectiveController.$inject = ['$scope'];
+vAccordionController.$inject = ['$scope'];

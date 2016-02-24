@@ -10,7 +10,7 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
     restrict: 'E',
     require: '^vAccordion',
     transclude: true,
-    controller: PaneDirectiveController,
+    controller: vPaneController,
     scope: {
       isExpanded: '=?expanded',
       isDisabled: '=?ngDisabled',
@@ -127,7 +127,7 @@ vPaneDirective.$inject = ['$timeout', '$animate', 'accordionConfig'];
 
 
 // vPane directive controller
-function PaneDirectiveController ($scope) {
+function vPaneController ($scope) {
   var ctrl = this;
 
   ctrl.isExpanded = function isExpanded () {
@@ -167,4 +167,4 @@ function PaneDirectiveController ($scope) {
     isExpanded: ctrl.isExpanded
   };
 }
-PaneDirectiveController.$inject = ['$scope'];
+vPaneController.$inject = ['$scope'];
