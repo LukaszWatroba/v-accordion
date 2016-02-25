@@ -37,8 +37,9 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('styles', function() {
-  return gulp.src('src/vAccordion/styles/v-accordion.scss')
+  return gulp.src('src/vAccordion/styles/vAccordion.scss')
     .pipe(sass({style: 'expanded'}))
+    .pipe(rename({basename: 'v-accordion'} ))
     .pipe(autoprefixer('last 2 version'))
     .pipe(header(banner, { pkg : pkg } ))
     .pipe(gulp.dest('dist/'))
