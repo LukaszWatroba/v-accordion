@@ -120,7 +120,7 @@ describe('vPane', function () {
   });
 
 
-  it('should throw an error if multiple panes has `expanded` attribute, but the `multiple` is not set', function () {
+  it('should throw an error if multiple panes has `expanded` attribute, but `multiple` is not set', function () {
     var template =  '<v-accordion>\n' +
                     '  <v-pane expanded>\n' +
                     '    <v-pane-header></v-pane-header>\n' +
@@ -139,7 +139,7 @@ describe('vPane', function () {
   });
 
 
-  it('should set `isExpanded` flag to `true` if expanded attribute is added and has no value', function () {
+  it('should set `isExpanded` property to `true` if expanded attribute is added and has no value', function () {
     var options = { paneAttributes: 'expanded' };
     var template = generateTemplate(options);
 
@@ -168,7 +168,7 @@ describe('vPane', function () {
   });
 
 
-  it('should set `isDisabled` flag to `true` if disabled attribute is added and has no value', function () {
+  it('should set `isDisabled` property to `true` if `disabled` attribute is set', function () {
     var options = { paneAttributes: 'disabled' };
     var template = generateTemplate(options);
 

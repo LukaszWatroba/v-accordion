@@ -52,7 +52,7 @@ describe('vAccordion', function () {
   });
 
 
-  it('should allow multiple selections if the `multiple` attribute is defined', function () {
+  it('should allow multiple selections to be expanded if `multiple` attribute is defined', function () {
     var options = { attributes: 'multiple' };
     var template = generateTemplate(options);
     var accordion = $compile(template)(scope);
@@ -69,7 +69,7 @@ describe('vAccordion', function () {
   });
 
 
-  it('should set the `aria-multiselectable` attribute to `true` if `multiple` attribute is defined', function () {
+  it('should set `aria-multiselectable` attribute to `true` if `multiple` attribute is defined', function () {
     var options = { attributes: 'multiple' };
     var template = generateTemplate(options);
     var accordion = $compile(template)(scope);

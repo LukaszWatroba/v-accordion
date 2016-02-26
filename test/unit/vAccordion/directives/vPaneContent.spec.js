@@ -63,7 +63,7 @@ describe('vPaneContent', function () {
   });
 
 
-  it('should add the `tabpanel` ARIA role', function () {
+  it('should add `tabpanel` ARIA role', function () {
     var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
