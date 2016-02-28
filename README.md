@@ -228,7 +228,7 @@ angular
 ```
 
 #### SCSS
-If you are using SASS, you can import v-accordion.scss file and override following variables:
+If you are using SASS, you can import vAccordion.scss file and override following variables:
 
 ```scss
 $v-accordion-default-theme:         true !default;
