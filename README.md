@@ -95,7 +95,7 @@
 
 #### Control
 
-Add `control` attribute and use following methods to control vAccordion from it's parent scope:
+Add `control` attribute and use the following methods to control vAccordion from it's parent scope:
 
   - `toggle(indexOrId)`
   - `expand(indexOrId)`
@@ -131,9 +131,9 @@ $scope.$on('my-accordion:onReady', function () {
 });
 ```
 
-#### Transcluded scope
+#### Scope
 
-`$accordion` and `$pane` scope properties allows you to control the directive from it's transcluded scope.
+`$accordion` and `$pane` properties allows you to control the directive from it's transcluded scope.
 
 ##### $accordion
 
@@ -176,6 +176,8 @@ $scope.$on('my-accordion:onReady', function () {
 
 #### Events
 
+The directive emits the following events:
+
   - `vAccordion:onReady` or `yourAccordionId:onReady`
   - `vAccordion:onExpand` or `yourAccordionId:onExpand`
   - `vAccordion:onExpandAnimationEnd` or `yourAccordionId:onExpandAnimationEnd`
@@ -185,7 +187,7 @@ $scope.$on('my-accordion:onReady', function () {
 
 ## Callbacks
 
-Use these callbacks to get expanded/collapsed pane index and id:
+Use these callbacks to get the expanded/collapsed pane index and id:
 
 ```html
 <v-accordion onexpand="expandCallback(index, id)" oncollapse="collapseCallback(index, id)">
@@ -228,7 +230,7 @@ angular
 ```
 
 #### SCSS
-If you are using SASS, you can import vAccordion.scss file and override following variables:
+If you are using SASS, you can import vAccordion.scss file and override the following variables:
 
 ```scss
 $v-accordion-default-theme:         true !default;
