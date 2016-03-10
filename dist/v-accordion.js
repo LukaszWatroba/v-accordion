@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.5.1
+ * @version v1.5.2
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -90,14 +90,13 @@ function vAccordionDirective ($timeout) {
     controller: vAccordionController,
     scope: {
       control: '=?',
-      allowMultiple: '=?multiple',
       expandCb: '&?onexpand',
       collapseCb: '&?oncollapse',
       id: '@?'
     },
     link: {
       pre: function (scope, iElement, iAttrs) {
-        scope.allowMultiple = (angular.isDefined(iAttrs.multiple) && iAttrs.multiple === '');
+        scope.allowMultiple = (angular.isDefined(iAttrs.multiple) && (iAttrs.multiple === '' || iAttrs.multiple === 'true'));
       },
       post: function (scope, iElement, iAttrs, ctrl, transclude) {
         transclude(scope.$parent.$new(), function (clone, transclusionScope) {
