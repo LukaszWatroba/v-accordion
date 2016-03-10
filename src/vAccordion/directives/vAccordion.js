@@ -12,14 +12,13 @@ function vAccordionDirective ($timeout) {
     controller: vAccordionController,
     scope: {
       control: '=?',
-      allowMultiple: '=?multiple',
       expandCb: '&?onexpand',
       collapseCb: '&?oncollapse',
       id: '@?'
     },
     link: {
       pre: function (scope, iElement, iAttrs) {
-        scope.allowMultiple = (angular.isDefined(iAttrs.multiple) && iAttrs.multiple === '');
+        scope.allowMultiple = (angular.isDefined(iAttrs.multiple) && (iAttrs.multiple === '' || iAttrs.multiple === 'true'));
       },
       post: function (scope, iElement, iAttrs, ctrl, transclude) {
         transclude(scope.$parent.$new(), function (clone, transclusionScope) {
