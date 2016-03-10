@@ -75,7 +75,7 @@ gulp.task('lint-tests', function() {
 gulp.task('default', ['lint-src', 'test', 'scripts', 'styles']);
 
 gulp.task('watch', function() {
-  gulp.watch('src/vAccordion/**/*.js', ['lint-src', 'scripts']);
+  gulp.watch('src/vAccordion/**/*.js', ['lint-src', 'scripts', 'test']);
   gulp.watch('test/**/*.spec.js', ['lint-tests', 'test']);
 
   gulp.watch('src/vAccordion/styles/**/*.scss', ['styles']);
