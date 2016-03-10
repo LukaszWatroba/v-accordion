@@ -26,7 +26,7 @@ function vPaneHeaderDirective () {
         scope.$apply(function () { paneCtrl.toggle(); });
       }
 
-      function onKeyDown (event) {
+      function onKeydown (event) {
         if (event.keyCode === 32  || event.keyCode === 13) {
           scope.$apply(function () { paneCtrl.toggle(); });
           event.preventDefault();
@@ -39,20 +39,22 @@ function vPaneHeaderDirective () {
         }
       }
 
-      iElement[0].onfocus = function () {
+      function onFocus () {
         paneCtrl.focusPane();
-      };
+      }
 
-      iElement[0].onblur = function () {
+      function onBlur () {
         paneCtrl.blurPane();
-      };
+      }
 
+      iElement[0].onfocus = onFocus;
+      iElement[0].onblur = onBlur;
       iElement.bind('click', onClick);
-      iElement.bind('keydown', onKeyDown);
+      iElement.bind('keydown', onKeydown);
 
       scope.$on('$destroy', function () {
         iElement.unbind('click', onClick);
-        iElement.unbind('keydown', onKeyDown);
+        iElement.unbind('keydown', onKeydown);
         iElement[0].onfocus = null;
         iElement[0].onblur = null;
       });

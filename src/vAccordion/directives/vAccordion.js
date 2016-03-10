@@ -34,16 +34,6 @@ function vAccordionDirective ($timeout) {
           iAttrs.$set('aria-multiselectable', 'true');
         }
 
-        function checkCustomControlAPIMethods () {
-          var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll', 'hasExpandedPane'];
-
-          angular.forEach(protectedApiMethods, function (iteratedMethodName) {
-            if (scope.control[iteratedMethodName]) {
-              throw new Error('The `' + iteratedMethodName + '` method can not be overwritten');
-            }
-          });
-        }
-
         if (angular.isDefined(scope.control)) {
           checkCustomControlAPIMethods();
 
@@ -52,6 +42,16 @@ function vAccordionDirective ($timeout) {
         }
         else {
           scope.control = scope.internalControl;
+        }
+
+        function checkCustomControlAPIMethods () {
+          var protectedApiMethods = ['toggle', 'expand', 'collapse', 'expandAll', 'collapseAll', 'hasExpandedPane'];
+
+          angular.forEach(protectedApiMethods, function (iteratedMethodName) {
+            if (scope.control[iteratedMethodName]) {
+              throw new Error('The `' + iteratedMethodName + '` method can not be overwritten');
+            }
+          });
         }
 
         $timeout(function () {
