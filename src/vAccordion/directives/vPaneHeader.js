@@ -14,7 +14,7 @@ function vPaneHeaderDirective () {
     scope: {},
     link: function (scope, iElement, iAttrs, ctrls) {
       iAttrs.$set('role', 'tab');
-      iAttrs.$set('tabindex', '-1');
+      iAttrs.$set('tabindex', '0');
 
       var paneCtrl = ctrls[0],
           accordionCtrl = ctrls[1];

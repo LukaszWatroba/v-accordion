@@ -72,7 +72,7 @@ describe('vPaneHeader', function () {
     var paneHeader = accordion.find('v-pane-header');
 
     expect(paneHeader.attr('role')).toBe('tab');
-    expect(paneHeader.attr('tabindex')).toBe('-1');
+    expect(paneHeader.attr('tabindex')).toBe('0');
   });
 
 
@@ -88,13 +88,11 @@ describe('vPaneHeader', function () {
 
     expect(paneIsolateScope.isExpanded).toBe(false);
     expect(paneHeader.attr('aria-selected')).toBe('false');
-    expect(paneHeader.attr('tabindex')).toBe('-1');
 
     paneHeader.click();
 
     expect(paneIsolateScope.isExpanded).toBe(true);
     expect(paneHeader.attr('aria-selected')).toBe('true');
-    expect(paneHeader.attr('tabindex')).toBe('0');
   });
 
 });

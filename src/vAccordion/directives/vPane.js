@@ -65,7 +65,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
         paneHeader.attr({
           'aria-selected': 'true',
-          'tabindex': '0'
         });
 
         emitEvent('onExpand');
@@ -83,7 +82,6 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
         paneHeader.attr({
           'aria-selected': 'false',
-          'tabindex': '-1'
         });
 
         emitEvent('onCollapse');
@@ -103,14 +101,12 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
           paneHeader.attr({
             'aria-selected': 'true',
-            'tabindex': '0'
           });
         } else {
           paneContent.css('max-height', '0px');
 
           paneHeader.attr({
             'aria-selected': 'false',
-            'tabindex': '-1'
           });
         }
       });
