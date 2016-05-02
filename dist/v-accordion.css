@@ -1,6 +1,6 @@
 /**
  * vAccordion - AngularJS multi-level accordion component
- * @version v1.5.2
+ * @version v1.6.0
  * @link http://lukaszwatroba.github.io/v-accordion
  * @author Łukasz Wątroba <l@lukaszwatroba.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -63,6 +63,7 @@ v-pane-content {
 .vAccordion--default v-accordion {
   margin-top: 20px;
   padding-left: 20px; }
+
 .vAccordion--default v-pane-content > div {
   padding-bottom: 20px;
   opacity: 0;
@@ -70,6 +71,7 @@ v-pane-content {
           transform: translate3d(0, 30px, 0);
   -webkit-transition: all 0.5s;
           transition: all 0.5s; }
+
 .vAccordion--default v-pane {
   overflow: hidden; }
   .vAccordion--default v-pane.is-expanded > v-pane-header {
@@ -87,6 +89,7 @@ v-pane-content {
             transform: translate3d(0, 0, 0); }
   .vAccordion--default v-pane[disabled] v-pane-header::after, .vAccordion--default v-pane[disabled] v-pane-header::before {
     display: none; }
+
 .vAccordion--default v-pane-header {
   padding: 5px 0;
   margin-bottom: 20px;
