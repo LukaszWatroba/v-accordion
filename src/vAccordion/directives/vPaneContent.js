@@ -14,6 +14,7 @@ function vPaneContentDirective () {
     scope: {},
     link: function (scope, iElement, iAttrs) {
       iAttrs.$set('role', 'tabpanel');
+      iAttrs.$set('aria-hidden', 'true');
     }
   };
 }

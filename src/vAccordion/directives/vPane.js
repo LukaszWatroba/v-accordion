@@ -63,6 +63,8 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       function expand () {
         accordionCtrl.disable();
 
+        paneContent.attr('aria-hidden', 'false');
+
         paneHeader.attr({
           'aria-selected': 'true',
           'aria-expanded': 'true'
@@ -80,6 +82,8 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
       function collapse () {
         accordionCtrl.disable();
+
+        paneContent.attr('aria-hidden', 'true');
 
         paneHeader.attr({
           'aria-selected': 'false',
@@ -99,14 +103,18 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       scope.$evalAsync(function () {
         if (scope.isExpanded) {
           iElement.addClass(states.expanded);
-          paneContent.css('max-height', 'none');
+          paneContent
+            .css('max-height', 'none')
+            .attr('aria-hidden', 'false');
 
           paneHeader.attr({
             'aria-selected': 'true',
             'aria-expanded': 'true'
           });
         } else {
-          paneContent.css('max-height', '0px');
+          paneContent
+            .css('max-height', '0px')
+            .attr('aria-hidden', 'true');
 
           paneHeader.attr({
             'aria-selected': 'false',
