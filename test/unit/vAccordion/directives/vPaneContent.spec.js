@@ -63,13 +63,14 @@ describe('vPaneContent', function () {
   });
 
 
-  it('should add `tabpanel` ARIA role', function () {
+  it('should add ARIA attributes', function () {
     var template = generateTemplate();
 
     var accordion = $compile(template)(scope);
     var paneContent = accordion.find('v-pane-content');
 
     expect(paneContent.attr('role')).toBe('tabpanel');
+    expect(paneContent.attr('aria-hidden')).toBeDefined();
   });
 
   it('should expand when `v-pane-header` is clicked', function () {
@@ -80,10 +81,12 @@ describe('vPaneContent', function () {
     var paneContent = accordion.find('v-pane-content');
 
     expect(paneContent.css('max-height')).toBe('');
+    expect(paneContent.attr('aria-hidden')).toBe('true');
 
     paneHeader.click();
 
     expect(paneContent.css('max-height')).toBe('none');
+    expect(paneContent.attr('aria-hidden')).toBe('false');
   });
 
 });

@@ -63,9 +63,11 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       function expand () {
         accordionCtrl.disable();
 
+        paneContent.attr('aria-hidden', 'false');
+
         paneHeader.attr({
           'aria-selected': 'true',
-          'tabindex': '0'
+          'aria-expanded': 'true'
         });
 
         emitEvent('onExpand');
@@ -81,9 +83,11 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       function collapse () {
         accordionCtrl.disable();
 
+        paneContent.attr('aria-hidden', 'true');
+
         paneHeader.attr({
           'aria-selected': 'false',
-          'tabindex': '-1'
+          'aria-expanded': 'false'
         });
 
         emitEvent('onCollapse');
@@ -99,18 +103,22 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
       scope.$evalAsync(function () {
         if (scope.isExpanded) {
           iElement.addClass(states.expanded);
-          paneContent.css('max-height', 'none');
+          paneContent
+            .css('max-height', 'none')
+            .attr('aria-hidden', 'false');
 
           paneHeader.attr({
             'aria-selected': 'true',
-            'tabindex': '0'
+            'aria-expanded': 'true'
           });
         } else {
-          paneContent.css('max-height', '0px');
+          paneContent
+            .css('max-height', '0px')
+            .attr('aria-hidden', 'true');
 
           paneHeader.attr({
             'aria-selected': 'false',
-            'tabindex': '-1'
+            'aria-expanded': 'false'
           });
         }
       });

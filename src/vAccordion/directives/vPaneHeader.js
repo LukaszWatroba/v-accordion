@@ -14,7 +14,7 @@ function vPaneHeaderDirective () {
     scope: {},
     link: function (scope, iElement, iAttrs, ctrls) {
       iAttrs.$set('role', 'tab');
-      iAttrs.$set('tabindex', '-1');
+      iAttrs.$set('tabindex', '0');
 
       var paneCtrl = ctrls[0],
           accordionCtrl = ctrls[1];
@@ -30,10 +30,10 @@ function vPaneHeaderDirective () {
         if (event.keyCode === 32  || event.keyCode === 13) {
           scope.$apply(function () { paneCtrl.toggle(); });
           event.preventDefault();
-        } else if (event.keyCode === 39) {
+        } else if (event.keyCode === 39 || event.keyCode === 40) {
           scope.$apply(function () { accordionCtrl.focusNext(); });
           event.preventDefault();
-        } else if (event.keyCode === 37) {
+        } else if (event.keyCode === 37 || event.keyCode === 38) {
           scope.$apply(function () { accordionCtrl.focusPrevious(); });
           event.preventDefault();
         }
