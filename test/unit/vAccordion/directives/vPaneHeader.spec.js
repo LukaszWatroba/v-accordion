@@ -88,11 +88,13 @@ describe('vPaneHeader', function () {
 
     expect(paneIsolateScope.isExpanded).toBe(false);
     expect(paneHeader.attr('aria-selected')).toBe('false');
+    expect(paneHeader.attr('aria-expanded')).toBe('false');
 
     paneHeader.click();
 
     expect(paneIsolateScope.isExpanded).toBe(true);
     expect(paneHeader.attr('aria-selected')).toBe('true');
+    expect(paneHeader.attr('aria-expanded')).toBe('true');
   });
 
 });
