@@ -211,7 +211,7 @@ $scope.expandCallback = function (index, id) {
 };
 
 $scope.collapseCallback = function (index, id) {
-  console.log('collapsed pane:', index, id));
+  console.log('collapsed pane:', index, id);
 };
 ```
 
