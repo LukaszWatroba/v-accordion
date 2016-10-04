@@ -35,16 +35,21 @@ function vPaneDirective ($timeout, $animate, accordionConfig) {
 
       var paneHeader = iElement.find('v-pane-header'),
           paneContent = iElement.find('v-pane-content'),
-          paneInner = paneContent.find('div');
+          paneInner;
 
       var accordionId = accordionCtrl.getAccordionId();
 
       if (!paneHeader[0]) {
         throw new Error('The `v-pane-header` directive can\'t be found');
+      } else {
+        paneHeader = angular.element(iElement.find('v-pane-header')[0]);
       }
 
       if (!paneContent[0]) {
         throw new Error('The `v-pane-content` directive can\'t be found');
+      } else {
+        paneContent = angular.element(iElement.find('v-pane-content')[0]);
+        paneInner = paneContent.find('div');
       }
 
       scope.paneElement = iElement;
